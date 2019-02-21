@@ -18,7 +18,7 @@ android {
     }
     defaultConfig {
         applicationId "no.ntnu.tdt4240.g17.cool_game"
-        minSdkVersion 9
+        minSdkVersion 23
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -100,8 +100,8 @@ eclipse {
     }
 
     jdt {
-        sourceCompatibility = 1.6
-        targetCompatibility = 1.6
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 
     classpath {
