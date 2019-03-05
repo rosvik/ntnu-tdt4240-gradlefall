@@ -1,20 +1,18 @@
 buildscript {
-    
-
     repositories {
         mavenLocal()
-        mavenCentral()
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
         google()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.0'
-        
-
     }
 }
+
+description = "Very cool game, totally not towerfall"
 
 allprojects {
     apply plugin: "eclipse"
@@ -32,7 +30,7 @@ allprojects {
 
     repositories {
         mavenLocal()
-        mavenCentral()
+        jcenter()
         google()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
@@ -40,6 +38,7 @@ allprojects {
 }
 
 project(":desktop") {
+    description = "Desktop client"
     apply plugin: "java"
 
 
@@ -55,6 +54,7 @@ project(":desktop") {
 }
 
 project(":android") {
+    description = "Android client"
     apply plugin: "android"
 
     configurations { natives }
@@ -85,15 +85,36 @@ project(":android") {
 }
 
 project(":core") {
-    apply plugin: "java"
+    description = "Common code for clients"
+    apply plugin: "java-library"
 
 
     dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        implementation project(":common")
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        implementation "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         
+    }
+}
+
+project(":server") {
+    description = "Main game server"
+    apply plugin: 'java'
+
+    dependencies {
+        compile project(":common")
+    }
+}
+
+project(":common") {
+    description = "Code that is common for both client and server"
+
+    apply plugin: 'java-library'
+
+    dependencies {
+
     }
 }
 
