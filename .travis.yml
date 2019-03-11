@@ -1,4 +1,4 @@
-language: andriod
+language: android
 jdk:
   - oraclejdk8
 before_script: cd game
