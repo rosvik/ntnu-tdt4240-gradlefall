@@ -8,15 +8,19 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0'
+        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath "de.mannodermaus.gradle.plugins:android-junit5:1.4.0.0"
+        classpath 'org.jacoco:org.jacoco.core:0.8.0'
     }
 }
 
 description = "Very cool game, totally not towerfall"
 
+
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
+    apply plugin: "jacoco"
 
     version = '1.0'
     ext {
@@ -26,6 +30,7 @@ allprojects {
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
+        junitVersion = '5.4.0'
     }
 
     repositories {
@@ -35,7 +40,16 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
+
+
+    jacoco {
+        toolVersion = '0.8.0'
+    }
+    tasks.withType(Test) {
+        jacoco.includeNoLocationClasses = true
+    }
 }
+
 
 project(":desktop") {
     description = "Desktop client"
@@ -49,13 +63,13 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
-        
     }
 }
 
 project(":android") {
     description = "Android client"
     apply plugin: "android"
+    apply plugin: "de.mannodermaus.android-junit5"
 
     configurations { natives }
 
@@ -95,7 +109,14 @@ project(":core") {
         implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         implementation "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        
+
+        testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
+
+        testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        testImplementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        testImplementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
     }
 }
 
@@ -115,6 +136,65 @@ project(":common") {
 
     dependencies {
 
+    }
+
+}
+
+
+subprojects {
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src/main/java']
+            }
+            resources {
+                srcDirs = ['src/main/resources']
+            }
+        }
+        test {
+            java {
+                srcDirs = ['src/test/java']
+            }
+            resources {
+                srcDirs = ['src/test/resources']
+            }
+        }
+    }
+
+    dependencies {
+        testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+        testImplementation "org.mockito:mockito-core:2.21.0"
+    }
+}
+
+configure(subprojects.findAll {it.name != "android"}) {
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+    }
+    test.finalizedBy jacocoTestReport
+    check.dependsOn jacocoTestCoverageVerification
+    jacocoTestCoverageVerification {
+        violationRules {
+            rule {
+                limit {
+                    counter = 'LINE'
+                    value = 'COVEREDRATIO'
+                    minimum = 0.6
+                }
+            }
+        }
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled true
+            csv.enabled false
+            html.destination file("${buildDir}/jacocoHtml")
+        }
     }
 }
 
