@@ -19,6 +19,8 @@ public class TransformComponent implements Component {
 
     private Vector2 position;
     private Vector2 scale;
+    /** Depth into screen (z axis). 0 is the screen, negative is deeper into the screen. */
+    private int depth;
     /** Rotation in radians. */
     private float rotation;
 
