@@ -169,6 +169,15 @@ subprojects {
 }
 
 configure(subprojects.findAll {it.name != "android"}) {
+    // Some things just don't work in an android module.
+    // Enable such things here.
+
+    apply plugin: "checkstyle"
+    checkstyle {
+        toolVersion = '8.18'
+        checkstyleTest.enabled = false
+    }
+
     test {
         useJUnitPlatform()
         testLogging {
