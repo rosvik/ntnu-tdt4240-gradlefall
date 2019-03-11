@@ -36,3 +36,25 @@ Running checkstyle manually with gradle:
 Copy the file `/game/config/gitHooks/pre-commit` to `/.git/hooks/`
 
 Alternatively, enable `Run checkstyle` checkbox in Android Studio commit dialog.
+
+#### Lombok
+
+Lombok can generate code with *annotation processing*: it reads your source code and writes code.
+We use it to generate
+```java
+private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ServerMain.class)
+```
+
+by adding `@SLF4J` before the class definition:
+
+```java
+@Slf4j
+public final class ServerMain {
+}
+```
+
+Install lombok:
+
+1. `Settings` > `Plugins` > `Browse Repositories...`
+2. Search for `Lombok`
+3. Install and restart Android Studio.
