@@ -15,6 +15,6 @@ public final class ServerMain {
      * @param args command line arguments
      */
     public static void main(final String[] args) {
-        log.error("Testing");
+        log.info("Server starting up");
     }
 }
