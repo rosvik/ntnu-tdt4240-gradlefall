@@ -23,6 +23,7 @@ public class MainGame extends ApplicationAdapter {
     public final void create() {
         batch = new SpriteBatch();
         arena = new Arena("map2.tmx", 16f, 32f, 20f, batch);
+        arena.setBackground("background.png");
     }
 
     @Override

@@ -1,6 +1,8 @@
 package no.ntnu.tdt4240.g17.cool_game.game_arena;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -13,34 +15,35 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Game arena.
  */
-@SuppressWarnings("CheckStyle")
 @Slf4j
 public class Arena {
-
-    /**
-     * Path to file.
-     */
-    private String filePath;
 
     /**
      * Documentation: https://github.com/libgdx/libgdx/wiki/Tile-maps .
      */
     private TiledMap map;
 
-    /** Batch */
+    /** Batch. */
     private Batch batch;
 
-    /** Scale. */
-    private float unitScale;
-    /** Pixel size (width and height) of a tile.. */
-    private float tileSize;
-    /** Number of tiles in height.. */
-    private float height;
-    /** Number of tiles in width.. */
-    private float width;
+    /** Path to .tmx file. */
+    private String filePath;
+
+    /** Path to file. */
+    private Texture background;
 
     /** Renderer. */
     private OrthogonalTiledMapRenderer renderer;
+
+    /** Scale. */
+    private float unitScale;
+    /** Pixel size (width and height) of a tile. */
+    private float tileSize;
+    /** Number of tiles in height. */
+    private float height;
+    /** Number of tiles in width. */
+    private float width;
+
 
 
     /**
@@ -69,6 +72,7 @@ public class Arena {
 
     /**
      * Render the arena.
+     *
      * @throws LayerNotFoundException When a required layer was not found.
      */
     public void render() throws LayerNotFoundException {
@@ -77,18 +81,21 @@ public class Arena {
         MapLayer backgroundLayer = getLayer("background");
         MapLayer foregroundLayer = getLayer("foreground");
 
+        if (background != null) {
+            batch.draw(background, 0f, 0f, width, height);
+        }
+
         drawLayer(mapLayer);
         drawLayer(backgroundLayer);
 
         // TODO: Characters should be rendered between these layers.
 
         drawLayer(foregroundLayer);
-
     }
 
 
     /**
-     * Render a specific layer of the map.
+     * Render a specific layer of the arena.
      *
      * @param layer The MapLayer that should be rendered.
      */
@@ -98,6 +105,15 @@ public class Arena {
 
         renderer.renderTileLayer(tiledMapTileLayer);
 
+    }
+
+    /**
+     * Set the background texture.
+     *
+     * @param image Path to the image file.
+     */
+    public void setBackground(final String image) {
+        background = new Texture(image);
     }
 
     /**
@@ -117,6 +133,7 @@ public class Arena {
         int index = map.getLayers().getIndex(layer);
         return map.getLayers().get(index);
     }
+
 }
 
 /**
@@ -125,7 +142,7 @@ public class Arena {
 class LayerNotFoundException extends RuntimeException {
     /**
      * @param layerName Name of the layer that was not found.
-     * @param fileName Name of the current file
+     * @param fileName Name of the current file.
      */
     LayerNotFoundException(final String layerName, final String fileName) {
         super("Could not find layer " + layerName + " in file " + fileName);
