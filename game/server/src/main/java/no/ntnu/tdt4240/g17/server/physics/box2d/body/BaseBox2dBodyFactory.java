@@ -28,6 +28,7 @@ public abstract class BaseBox2dBodyFactory {
      * @return newly created body.
      */
     public final Body create(final Entity entity) {
+        // BodyDef can be cached and reused
         final BodyDef bodyDef = new BodyDef();
         bodyDef.fixedRotation = hasFixedRotation();
         bodyDef.type = getType();

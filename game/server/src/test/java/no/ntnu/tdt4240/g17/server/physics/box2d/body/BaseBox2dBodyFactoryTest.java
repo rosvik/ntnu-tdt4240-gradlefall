@@ -49,27 +49,7 @@ class BaseBox2dBodyFactoryTest {
     @Test
     void shouldUseAbstractMethodsWhenCreatingBody() {
         // Given
-        BaseBox2dBodyFactory factory = new BaseBox2dBodyFactory(world) {
-            @Override
-            protected boolean hasFixedRotation() {
-                return false;
-            }
-
-            @Override
-            protected BodyDef.BodyType getType() {
-                return BodyDef.BodyType.DynamicBody;
-            }
-
-            @Override
-            protected void setBodyDefSettings(BodyDef bodyDef) {
-
-            }
-
-            @Override
-            protected void addShapes(Body body) {
-
-            }
-        };
+        BaseBox2dBodyFactory factory = createFactory(world);
         factory = Mockito.spy(factory);
         final Entity entity = new Entity();
 
@@ -81,5 +61,48 @@ class BaseBox2dBodyFactoryTest {
         verify(factory).getType();
         verify(factory, times(1)).addShapes(body);
         verify(factory).setBodyDefSettings(notNull());
+    }
+
+    @Test
+    void shouldSetEntityAsUserData() {
+        // Given
+        final BaseBox2dBodyFactory factory = createFactory(world);
+        final Entity entity = new Entity();
+
+        // When
+        final Body body = factory.create(entity);
+
+        // Then
+        assertSame(entity, body.getUserData(), "Factory does not set entity as user data");
+    }
+
+    private static BaseBox2dBodyFactory createFactory(World world) {
+        return new EmptyBaseBox2dBodyFactory(world);
+    }
+
+    static class EmptyBaseBox2dBodyFactory extends BaseBox2dBodyFactory {
+        public EmptyBaseBox2dBodyFactory(final World world) {
+            super(world);
+        }
+
+        @Override
+        protected boolean hasFixedRotation() {
+            return false;
+        }
+
+        @Override
+        protected BodyDef.BodyType getType() {
+            return BodyDef.BodyType.DynamicBody;
+        }
+
+        @Override
+        protected void setBodyDefSettings(BodyDef bodyDef) {
+
+        }
+
+        @Override
+        protected void addShapes(Body body) {
+
+        }
     }
 }
