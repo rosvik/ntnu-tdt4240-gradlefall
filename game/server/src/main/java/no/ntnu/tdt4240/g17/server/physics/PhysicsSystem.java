@@ -10,14 +10,17 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.Collections;
 
+import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.server.physics.box2d.Box2dBodyComponent;
 import no.ntnu.tdt4240.g17.server.physics.box2d.TransformComponent;
 
 /**
  * Created by Kristian 'krissrex' Rekstad on 3/11/2019.
  *
+ * Based on https://www.gamedevelopment.blog/ashley-and-box2d-tutorial/
  * @author Kristian 'krissrex' Rekstad
  */
+@Slf4j
 public class PhysicsSystem extends IntervalSystem {
 
     /**
@@ -53,7 +56,11 @@ public class PhysicsSystem extends IntervalSystem {
 
     @Override
     protected final void updateInterval() {
+        final long before = System.currentTimeMillis();
         world.step(interval, velocityIterations, positionIterations);
+        final long time = System.currentTimeMillis() - before;
+        log.trace("Physics update took %d ms", time);
+        // Can reduce iterations if time is too long
 
         for (Entity entity : entitiesToUpdate) {
             TransformComponent transformComponent = TransformComponent.MAPPER.get(entity);
