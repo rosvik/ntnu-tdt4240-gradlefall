@@ -143,25 +143,19 @@ project(":common") {
 
 subprojects {
     sourceSets {
-        main {
-            java {
-                srcDirs = ['src/main/java']
-            }
-            resources {
-                srcDirs = ['src/main/resources']
-            }
-        }
-        test {
-            java {
-                srcDirs = ['src/test/java']
-            }
-            resources {
-                srcDirs = ['src/test/resources']
-            }
-        }
+        main.java.srcDirs = ['src/main/java']
+        main.resources.srcDirs = ['src/main/resources']
+        test.java.srcDirs = ['src/test/java']
+        test.resources.srcDirs = ['src/test/resources']
     }
 
     dependencies {
+        implementation "org.slf4j:slf4j-api:1.7.26"
+        implementation "ch.qos.logback:logback-classic:1.2.3"
+
+        compileOnly 'org.projectlombok:lombok:1.18.6'
+        annotationProcessor 'org.projectlombok:lombok:1.18.6'
+
         testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
         testImplementation "org.mockito:mockito-core:2.21.0"
@@ -169,6 +163,15 @@ subprojects {
 }
 
 configure(subprojects.findAll {it.name != "android"}) {
+    // Some things just don't work in an android module.
+    // Enable such things here.
+
+    apply plugin: "checkstyle"
+    checkstyle {
+        toolVersion = '8.18'
+        checkstyleTest.enabled = false
+    }
+
     test {
         useJUnitPlatform()
         testLogging {
