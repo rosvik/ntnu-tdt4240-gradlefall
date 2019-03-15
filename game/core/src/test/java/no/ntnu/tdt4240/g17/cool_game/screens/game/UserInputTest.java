@@ -1,5 +1,4 @@
-package no.ntnu.tdt4240.g17.cool_game;
-
+package no.ntnu.tdt4240.g17.cool_game.screens.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -9,10 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
-import no.ntnu.tdt4240.g17.cool_game.screens.game.MovementOutput;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.UserInputButtons;
-
-public final class MainGame extends ApplicationAdapter {
+public final class UserInputTest extends ApplicationAdapter {
     SpriteBatch batch;
     BitmapFont font;
     ShapeRenderer shapeRenderer;
@@ -35,8 +31,7 @@ public final class MainGame extends ApplicationAdapter {
         Gdx.gl.glLineWidth(2);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.rect(ib.getJoystickBox().x, ib.getJoystickBox().y,
-                ib.getJoystickBox().width, ib.getJoystickBox().height);
+        shapeRenderer.rect(ib.getJoystickBox().x, ib.getJoystickBox().y, ib.getJoystickBox().width, ib.getJoystickBox().height);
         shapeRenderer.arc(ib.getJoystick().x, ib.getJoystick().y, ib.getJoystick().radius, 0, 360);
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rect(ib.getButtonBox().x, ib.getButtonBox().y, ib.getButtonBox().width, ib.getButtonBox().height);
@@ -50,10 +45,8 @@ public final class MainGame extends ApplicationAdapter {
         shapeRenderer.rect(ib.getPlace().x, ib.getPlace().y, ib.getPlace().width, ib.getPlace().height);
         shapeRenderer.end();
         batch.begin();
-        font.draw(batch, "x: " + Integer.toString(Gdx.input.getX())
-                + ", y: " + Integer.toString(Gdx.input.getY()), 10, 20);
-        font.draw(batch, "Angle, Magnitude: "
-                + output.getJoystickOutput() + ", Button: " + output.getButtonOutput(), 500, 400);
+        font.draw(batch, "x: " + Integer.toString(Gdx.input.getX()) + ", y: " + Integer.toString(Gdx.input.getY()), 10, 20);
+        font.draw(batch, "Angle, Magnitude: " + output.getJoystickOutput() + ", Button: " + output.getButtonOutput(), 500, 400);
         if (Gdx.input.isTouched()) {
             output = ib.processInput(Gdx.input.getX(), Gdx.input.getY());
         }
@@ -65,3 +58,4 @@ public final class MainGame extends ApplicationAdapter {
         batch.dispose();
     }
 }
+
