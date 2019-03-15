@@ -14,8 +14,11 @@ import com.badlogic.gdx.utils.Pool;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Game arena.
+ * Created by Johannes Tomren Røsvik (@rosvik) on 3/11/2019.
+ *
+ * @author Johannes Tomren Røsvik (@rosvik)
  */
+
 @Slf4j
 public class Arena {
 
