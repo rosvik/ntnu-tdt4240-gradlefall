@@ -9,7 +9,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,36 +24,68 @@ public class Arena {
      */
     private TiledMap map;
 
-    /** Batch. */
+    /**
+     * Batch.
+     */
     private Batch batch;
 
-    /** Path to .tmx file. */
+    /**
+     * Path to .tmx file.
+     */
     private String filePath;
 
-    /** Path to file. */
+    /**
+     * Path to file.
+     */
     private Texture background;
 
-    /** Renderer. */
+    /**
+     * Renderer.
+     */
     private OrthogonalTiledMapRenderer renderer;
 
-    /** Scale. */
+    /**
+     * Scale.
+     */
     private float unitScale;
-    /** Pixel size (width and height) of a tile. */
+    /**
+     * Pixel size (width and height) of a tile.
+     */
     private float tileSize;
-    /** Number of tiles in height. */
+    /**
+     * Number of tiles in height.
+     */
     private float height;
-    /** Number of tiles in width. */
+    /**
+     * Number of tiles in width.
+     */
     private float width;
 
+    /**
+     * Walls for collision detection.
+     */
+    private Pool<Rectangle> rectPool = new Pool<Rectangle>() {
+        @Override
+        protected Rectangle newObject() {
+            return new Rectangle();
+        }
+    };
 
 
     /**
      * @param filePath Path to .tmx file.
      * @param tileSize Pixel size (width and height) of a tile.
-     * @param height Number of tiles in height.
-     * @param width Number of tiles in width.
+     * @param height   Number of tiles in height.
+     * @param width    Number of tiles in width.
+     * @param batch    The batch to render the arena to.
      */
-    public Arena(final String filePath, final float tileSize, final float width, final float height, final Batch batch) {
+    public Arena(
+            final String filePath,
+            final float tileSize,
+            final float width,
+            final float height,
+            final Batch batch
+    ) {
 
         this.filePath = filePath;
         this.height = height;
@@ -74,7 +105,6 @@ public class Arena {
 
     /**
      * Render the arena.
-
      */
     public void render() {
 
@@ -120,6 +150,7 @@ public class Arena {
     /**
      * @param layer Name of layer.
      * @throws RuntimeException When a required layer is not found.
+     * @return MapLayer The layer with given layer name.
      */
     public MapLayer getLayer(final String layer) {
         int mapIndex = map.getLayers().getIndex(layer);
@@ -134,4 +165,55 @@ public class Arena {
         int index = map.getLayers().getIndex(layer);
         return map.getLayers().get(index);
     }
+
+    /**
+     * Get a 2D array describing the layout of the arena.
+     *
+     * @return boolean[][] A 2D array where true signifies that a block is present at [y][x]
+     */
+    public boolean[][] getTiles() {
+        // tiles[y][x]
+        boolean[][] tiles = new boolean[(int) height][(int) width];
+
+        TiledMapTileLayer mapLayer = (TiledMapTileLayer) getLayer("map");
+
+        // y values are counted from bottom to top
+        for (int y = tiles.length - 1; y >= 0; y--) {
+
+            // x values are counted from left to right
+            for (int x = 0; x < tiles[y].length; x++) {
+
+                // Set the value to true if there is a block
+                tiles[y][x] = mapLayer.getCell(x, y) != null;
+
+            }
+        }
+
+        return tiles;
+    }
+
+    /**
+     * Print the layout of the arena to the console.
+     */
+    public void printTiles() {
+        // multi[y][x]
+        boolean[][] multi = getTiles();
+
+        // y values are counted from bottom to top
+        for (int y = multi.length - 1; y >= 0; y--) {
+
+            // x values are counted from left to right
+            for (int x = 0; x < multi[y].length; x++) {
+
+                if (multi[y][x]) {
+                    System.out.print('X');
+                } else {
+                    System.out.print('-');
+                }
+
+            }
+            System.out.println();
+        }
+    }
+
 }
