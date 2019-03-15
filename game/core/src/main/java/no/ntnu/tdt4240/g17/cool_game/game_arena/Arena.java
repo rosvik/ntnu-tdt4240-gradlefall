@@ -1,6 +1,5 @@
 package no.ntnu.tdt4240.g17.cool_game.game_arena;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -9,6 +8,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -72,10 +74,9 @@ public class Arena {
 
     /**
      * Render the arena.
-     *
-     * @throws LayerNotFoundException When a required layer was not found.
+
      */
-    public void render() throws LayerNotFoundException {
+    public void render() {
 
         MapLayer mapLayer = getLayer("map");
         MapLayer backgroundLayer = getLayer("background");
@@ -118,13 +119,13 @@ public class Arena {
 
     /**
      * @param layer Name of layer.
-     * @throws LayerNotFoundException When a required layer is not found.
+     * @throws RuntimeException When a required layer is not found.
      */
     public MapLayer getLayer(final String layer) {
         int mapIndex = map.getLayers().getIndex(layer);
 
         if (mapIndex < 0 && layer.equals("map")) {
-            throw new LayerNotFoundException(layer, filePath);
+            throw new RuntimeException("Could not find layer " + layer + " in file " + filePath);
         } else if (mapIndex < 0) {
             log.warn("Could not find layer %s in file %s", layer, filePath);
             return new MapLayer();
@@ -132,19 +133,5 @@ public class Arena {
 
         int index = map.getLayers().getIndex(layer);
         return map.getLayers().get(index);
-    }
-
-}
-
-/**
- * When a required layer is not found.
-*/
-class LayerNotFoundException extends RuntimeException {
-    /**
-     * @param layerName Name of the layer that was not found.
-     * @param fileName Name of the current file.
-     */
-    LayerNotFoundException(final String layerName, final String fileName) {
-        super("Could not find layer " + layerName + " in file " + fileName);
     }
 }
