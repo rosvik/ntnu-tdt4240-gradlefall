@@ -1,6 +1,7 @@
 package no.ntnu.tdt4240.g17.cool_game.screens.navigation;
 
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.Disposable;
 
 
 import no.ntnu.tdt4240.g17.cool_game.screens.main_menu.HomeController;
@@ -13,7 +14,7 @@ import no.ntnu.tdt4240.g17.cool_game.screens.settings_menu.SettingsView;
  *
  */
 
-public class Navigator extends Game {
+public class Navigator implements Disposable {
     /**
      * Home to refer to be used later on.
      */
@@ -38,23 +39,25 @@ public class Navigator extends Game {
 
     private SettingsController preferences;
 
+    private Screen screen;
+
     /**
-     * defaultscreen when started.
+     * Initialize the navigator.
      */
-    @Override
-    public void create() {
+    public void initialize() {
         loadingView = new LoadingView(this);
         preferences = new SettingsController();
-        setScreen(loadingView);
-
+        homeView = new HomeView(this, new HomeController(this));
+        setScreen(homeView);
     }
 
-    /**
-     * @param screen is screen. method changes view.
-     */
-    public void changeView(final int screen) {
 
-        switch (screen) {
+    /**
+     * @param screenIndex is screenIndex. method changes view.
+     */
+    public void changeView(final int screenIndex) {
+
+        switch (screenIndex) {
             case SETTING:
                 settingsView = new SettingsView(this, new SettingsController());
                 this.setScreen(settingsView);
@@ -72,6 +75,37 @@ public class Navigator extends Game {
      */
     public SettingsController getPreferences() {
         return this.preferences;
+    }
+
+    /**
+     * Set the currently active screen.
+     * @param screen .
+     */
+    public void setScreen(final Screen screen) {
+        if (this.screen != null) {
+            this.screen.hide();
+            this.screen.dispose();
+        }
+        this.screen = screen;
+        if (this.screen != null) {
+            this.screen.show();
+        }
+    }
+
+    /**
+     * @return the currently actvive screen or null.
+     */
+    public Screen getScreen() {
+        return screen;
+    }
+
+    /**
+     * dispoces method to implemented from the interface.
+     */
+    @Override
+    public void dispose() {
+        this.screen.dispose();
+        this.screen = null;
     }
 }
 
