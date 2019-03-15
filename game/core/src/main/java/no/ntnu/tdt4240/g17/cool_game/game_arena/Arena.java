@@ -1,5 +1,6 @@
 package no.ntnu.tdt4240.g17.cool_game.game_arena;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -164,7 +165,7 @@ public class Arena {
         if (mapIndex < 0 && layer.equals("map")) {
             throw new RuntimeException("Could not find layer " + layer + " in file " + filePath);
         } else if (mapIndex < 0) {
-            log.warn("Could not find layer %s in file %s", layer, filePath);
+            log.warn("Could not find layer {} in file {}", layer, filePath);
             return new MapLayer();
         }
 
