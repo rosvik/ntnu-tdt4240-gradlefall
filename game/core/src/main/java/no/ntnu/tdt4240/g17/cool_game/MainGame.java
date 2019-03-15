@@ -34,6 +34,7 @@ public class MainGame extends ApplicationAdapter {
 
         // Render the arena
         arena.render();
+        arena.renderForeground();
 
         //batch.draw(img, 0, 0);
         batch.end();

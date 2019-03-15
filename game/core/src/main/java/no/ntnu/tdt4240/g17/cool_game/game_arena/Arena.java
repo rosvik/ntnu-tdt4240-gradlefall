@@ -113,7 +113,6 @@ public class Arena {
 
         MapLayer mapLayer = getLayer("map");
         MapLayer backgroundLayer = getLayer("background");
-        MapLayer foregroundLayer = getLayer("foreground");
 
         if (background != null) {
             batch.draw(background, 0f, 0f, width, height);
@@ -122,8 +121,13 @@ public class Arena {
         drawLayer(mapLayer);
         drawLayer(backgroundLayer);
 
-        // TODO: Characters should be rendered between these layers.
+    }
 
+    /**
+     * Render the foreground layers.
+     */
+    public void renderForeground() {
+        MapLayer foregroundLayer = getLayer("foreground");
         drawLayer(foregroundLayer);
     }
 
@@ -136,7 +140,6 @@ public class Arena {
     public void drawLayer(final MapLayer layer) {
 
         TiledMapTileLayer tiledMapTileLayer = (TiledMapTileLayer) layer;
-
         renderer.renderTileLayer(tiledMapTileLayer);
 
     }
