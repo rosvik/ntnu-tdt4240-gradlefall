@@ -7,6 +7,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import lombok.Getter;
+
 /**
  * Creates bodies for projectiles.
  * <p>
@@ -16,16 +18,39 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class ProjectileBox2dBodyFactory extends BaseBox2dBodyFactory {
 
-    private Vector2 tailCoordinate = new Vector2(-0.4f, 0f);
+    /**
+     * A vector with local coordinates for the tail of created arrows.
+     */
+    @Getter
+    private Vector2 tailCoordinate = new Vector2(0f, 0f);
+
     private Vector2 initialDirection = new Vector2(1f, 0);
+
+    /**
+     * Values are stored in (x, y) order.
+     */
+    private final float[] shapeTemplate;
 
     /**
      * Create a new factory to create projectiles.
      * Use {@link #getTailCoordinate()} and {@link #getInitialDirection()} to apply drag force etc.
+     *
      * @param world the world to create objets in
      */
     public ProjectileBox2dBodyFactory(final World world) {
         super(world);
+
+        // Somewhat arrow shaped with left edge/tail at (0, 0) and tip at (0.4, 0).
+        // Points towards direction [1, 0].
+        float arrowThickness = 0.05f;
+        float arrowLength = 0.6f;
+        float thickPoint = 0.5f;
+        shapeTemplate = new float[] {
+                0f, 0f, // Tail
+                thickPoint, -arrowThickness, // Bottom
+                arrowLength, 0f, // The tip
+                thickPoint, arrowThickness // Top
+        };
     }
 
     /**
@@ -63,14 +88,13 @@ public class ProjectileBox2dBodyFactory extends BaseBox2dBodyFactory {
     protected void addShapes(final Body body) {
         final PolygonShape polygonShape = new PolygonShape();
 
-        // Somewhat arrow shaped with right edge/tip at (0, 0) and tail at (-0.4, 0).
-        // Points towards [1, 0] vector direction.
-        polygonShape.set(new float[] {
-                tailCoordinate.x, tailCoordinate.y,
-                -0.1f, -0.1f,
-                0f, 0f, // The tip
-                -0.1f, 0.1f
-        });
+        // Translate all points to start from tailCoordinate.
+        final float[] points = shapeTemplate.clone();
+        for (int i = 0; i < points.length / 2; i += 2) {
+            points[i] += tailCoordinate.x;
+            points[i + 1] += tailCoordinate.y;
+        }
+        polygonShape.set(points);
 
         final FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.restitution = 0.05f;
@@ -85,14 +109,8 @@ public class ProjectileBox2dBodyFactory extends BaseBox2dBodyFactory {
     }
 
     /**
-     * @return a vector with world coordinates for the tail of created arrows
-     */
-    public Vector2 getTailCoordinate() {
-        return tailCoordinate;
-    }
-
-    /**
      * Do not alter this vector. It's value is not read.
+     *
      * @return a vector with the direction of the arrow tip
      */
     public Vector2 getInitialDirection() {

@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
- * Created by Kristian 'krissrex' Rekstad on 3/12/2019.
+ * A base class to extend when creating Box2d {@link Body bodies}.
  *
  * @author Kristian 'krissrex' Rekstad
  */
