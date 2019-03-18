@@ -149,6 +149,8 @@ public class Arena {
 
     /**
      * Get a string representation of the arena layout.
+     *
+     * @return A string representation of the arena layout.
      */
     public String toString() {
         // multi[y][x]
@@ -174,10 +176,20 @@ public class Arena {
         return out.toString();
     }
 
+    /**
+     * Get the height in blocks of the Arena.
+     *
+     * @return The height in blocks of the Arena.
+     */
     public float getHeight() {
         return height;
     }
 
+    /**
+     * Get the width in blocks of the Arena.
+     *
+     * @return The width in blocks of the Arena.
+     */
 
     public float getWidth() {
         return width;

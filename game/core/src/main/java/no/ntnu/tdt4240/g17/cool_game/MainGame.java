@@ -19,10 +19,10 @@ public class MainGame extends ApplicationAdapter {
     /** Arena. */
     private Arena arena;
 
-    /** Arena width in tiles */
+    /** Arena width in tiles. */
     private float width;
 
-    /** Arena height in tiles */
+    /** Arena height in tiles. */
     private float height;
 
     @Override
