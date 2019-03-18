@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 
 import org.hamcrest.MatcherAssert;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CharacterBox2dBodyFactoryTest {
 
     private World world;
+    private float characterHeight;
 
     @BeforeAll
     static void setUpBox2d() {
@@ -49,6 +51,25 @@ class CharacterBox2dBodyFactoryTest {
         assertNotNull(body, "Did not create body");
         assertTrue(body.isFixedRotation(), "Player should not rotate");
         assertThat("Has incorrect number of shapes", body.getFixtureList().size, is(1));
-        assertThat("Wrong body type", body.getType(), is(BodyDef.BodyType.KinematicBody));
+        assertThat("Wrong body type. Should be affected by gravity", body.getType(), is(BodyDef.BodyType.DynamicBody));
+    }
+
+    @Test
+    void shouldHaveBottomLeftAtOrigin() {
+        // Given
+        final CharacterBox2dBodyFactory factory = new CharacterBox2dBodyFactory(world, 0.3f);
+        final float width = factory.getCharacterWidth();
+        final float height = factory.getCharacterHeight();
+        final Entity entity = new Entity();
+
+        // When
+        final Body body = factory.create(entity);
+
+        // Then
+        final Fixture fixture = body.getFixtureList().get(0);
+        assertTrue(fixture.testPoint(0, 0), "Origo is not in shape");
+        assertTrue(fixture.testPoint(width/2f, height/2f), "Bottom left is not at origo");
+        assertFalse(fixture.testPoint(-width/2f, height/2f), "Left side is left of origo");
+        assertFalse(fixture.testPoint(width/2f, -height/2f), "Bottom is below of origo");
     }
 }

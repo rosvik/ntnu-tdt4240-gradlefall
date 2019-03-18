@@ -64,12 +64,12 @@ public class ProjectileBox2dBodyFactory extends BaseBox2dBodyFactory {
         final PolygonShape polygonShape = new PolygonShape();
 
         // Somewhat arrow shaped with right edge/tip at (0, 0) and tail at (-0.4, 0).
-        // Points towards [1, 0] vector direction.
+        // Points towards direction [1, 0].
         polygonShape.set(new float[] {
-                tailCoordinate.x, tailCoordinate.y,
-                -0.1f, -0.1f,
+                tailCoordinate.x, tailCoordinate.y, // Tail
+                -0.1f, -0.1f, // Bottom
                 0f, 0f, // The tip
-                -0.1f, 0.1f
+                -0.1f, 0.1f // Top
         });
 
         final FixtureDef fixtureDef = new FixtureDef();
