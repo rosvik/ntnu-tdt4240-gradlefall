@@ -113,6 +113,44 @@ class WrapAroundSystemTest {
         assertThat(transformComponent.getPosition().x, is(initialPosition.x));
     }
 
+
+    @Test
+    void shouldWrapEntitiesBelowArena() {
+        // Given
+        final WrapAroundSystem system = new WrapAroundSystem(0, bounds);
+        final Rectangle boundingBox = new Rectangle(0, 0, 1f, 1f);
+        final Vector2 entityPosition = new Vector2(0, bounds.y - boundingBox.height);
+
+        final TransformComponent transformComponent = initializeSystem(boundingBox, entityPosition);
+
+        // When
+        system.processEntity(entity, 0);
+
+        // Then
+        // TODO finish test
+        assertThat(transformComponent.getPosition().y, is(bounds.y + bounds.height));
+        fail("Not complete");
+    }
+
+    @Test
+    void shouldWrapEntitiesAboveArena() {
+        // Given
+        final WrapAroundSystem system = new WrapAroundSystem(0, bounds);
+        final Rectangle boundingBox = new Rectangle(0, 0, 1f, 1f);
+        final Vector2 entityPosition = new Vector2(0, bounds.y - boundingBox.height);
+
+        final TransformComponent transformComponent = initializeSystem(boundingBox, entityPosition);
+
+        // When
+        system.processEntity(entity, 0);
+
+        // Then
+        //TODO finish test
+        assertThat(transformComponent.getPosition().y, is(bounds.y - boundingBox.height));
+        fail("Not complete");
+    }
+
+
     @NotNull
     private TransformComponent initializeSystem(final Rectangle boundingBox, final Vector2 entityPosition) {
         when(bodyMock.getPosition()).thenReturn(entityPosition);
