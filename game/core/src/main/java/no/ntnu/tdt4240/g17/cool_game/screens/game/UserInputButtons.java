@@ -97,7 +97,12 @@ public class UserInputButtons {
         return new Vector2(angle, Math.min(scaleNumber(magnitude), 100));
     }
 
-    private float scaleNumber(float number) {
+    /**
+     * Scale a number up to a percentage of the joystick radius.
+     * @param number the number to scale
+     * @return the scaled number
+     */
+    private float scaleNumber(final float number) {
         return (100 * (number)) / joystickRadius;
     }
 }
