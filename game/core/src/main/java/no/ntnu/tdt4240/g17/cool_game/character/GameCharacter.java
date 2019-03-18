@@ -21,10 +21,10 @@ public class GameCharacter {
 
     /**
      * Constructor.
-     * @param name = character name, must be the same as the character animation in DungeonTileset.atals. e.g. wizzard_f, knigth_m, zombie...
+     * @param name = character name, must be the same as the character animation in DungeonTileset.atlas.
      * @param xPosition = The initial starting x position for the character
      * @param yPosition = The initial starting y position for the character
-     * @param atlas = Textureatlas whit animation sprites
+     * @param atlas = TextureA  tlas whit animation sprites
      */
     public GameCharacter(final String name, final int xPosition, final int yPosition, final TextureAtlas atlas) {
         this.state = new GameCharacterState(xPosition, yPosition);
@@ -61,11 +61,15 @@ public class GameCharacter {
     }
 
     /**
-     * @param batch = spritebatch, function will draw the current frame to this spritebatch.
+     * @param batch = function will draw the current frame to this spritebatch.
      * @param stateTime = time of game, chooses what frame will be shown
      */
     public void draw(final SpriteBatch batch, final float stateTime) {
         TextureRegion characterTextureRegion = this.animation.getFrame(stateTime);
-        batch.draw(characterTextureRegion, this.state.getxPosition(), this.state.getyPosition(), this.animation.getWidth(), this.animation.getHeight());
+        batch.draw(characterTextureRegion,
+                this.state.getyPosition(),
+                this.state.getxPosition(),
+                this.animation.getWidth(),
+                this.animation.getHeight());
     }
 }

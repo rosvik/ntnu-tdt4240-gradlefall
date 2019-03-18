@@ -19,7 +19,7 @@ public class GameCharacterAnimation {
 
     /**
      * Consturctor.
-     * @param name = character name, must be the same as the character animation in DungeonTilset.atals. e.g. wizzard_f, knigth_m, zombie...
+     * @param name = character name, must be the same as the character animation in DungeonTilset.atlas.
      * @param atlas = Textureatlas whit animation sprites
      */
     public GameCharacterAnimation(final String name, final TextureAtlas atlas) {
@@ -29,7 +29,8 @@ public class GameCharacterAnimation {
         this.jumpingAnimation = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegion(name + "_idle_anim"));
 
         if (atlas.findRegion(name + "_hit_anim") == null) {
-            this.fallingAnimation = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegions(name + "_idle_anim").get(2));
+            this.fallingAnimation =
+                    new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegions(name + "_idle_anim").get(2));
         } else {
             this.fallingAnimation = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegion(name + "_hit_anim"));
         }
