@@ -10,11 +10,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class GameCharacterAnimation {
 
     private Animation<TextureRegion> animation;
-    private final Animation<TextureRegion> RUNNING_ANIMATION;
-    private final Animation<TextureRegion> IDLE_ANIMATION;
-    private final Animation<TextureRegion> JUMPING_ANIMATION;
-    private final Animation<TextureRegion> FALLING_ANIMATION;
-    private final float FRAME_DURATION = 1 / 8f;
+    private final Animation<TextureRegion> runningAnimation;
+    private final Animation<TextureRegion> idleAnimation;
+    private final Animation<TextureRegion> jumpingAnimation;
+    private final Animation<TextureRegion> fallingAnimation;
+    private static final float FRAME_DURATION = 1 / 8f;
     private boolean isMovingLeft;
 
     /**
@@ -24,15 +24,17 @@ public class GameCharacterAnimation {
      */
     public GameCharacterAnimation(final String name, final TextureAtlas atlas) {
         this.isMovingLeft = false;
-        this.IDLE_ANIMATION = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegions(name + "_idle_anim"));
-        this.RUNNING_ANIMATION = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegions(name + "_run_anim"));
-        this.JUMPING_ANIMATION = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegion(name + "_idle_anim"));
+        this.idleAnimation = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegions(name + "_idle_anim"));
+        this.runningAnimation = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegions(name + "_run_anim"));
+        this.jumpingAnimation = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegion(name + "_idle_anim"));
+
         if (atlas.findRegion(name + "_hit_anim") == null) {
-            this.FALLING_ANIMATION = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegions(name + "_idle_anim").get(2));
+            this.fallingAnimation = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegions(name + "_idle_anim").get(2));
         } else {
-            this.FALLING_ANIMATION = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegion(name + "_hit_anim"));
+            this.fallingAnimation = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegion(name + "_hit_anim"));
         }
         this.idle();
+
     }
 
     /**
@@ -43,26 +45,25 @@ public class GameCharacterAnimation {
     }
 
     /**
-     * Jump.
+     * Changes the animation to jumping animation.
      */
     public void jump() {
-        this.animation = this.JUMPING_ANIMATION;
+        this.animation = this.jumpingAnimation;
     }
 
     /**
-     * Fall.
+     * Changes the animation to falling animation.
      */
     public void fall() {
-        this.animation = this.FALLING_ANIMATION;
+        this.animation = this.fallingAnimation;
     }
 
     /**
-     * Move character left
-     * Temporary, will be change to support vectors from controller/server.
+     * Changes the animation to running animation and sets movingLeft to true.
      */
     public void moveLeft() {
         this.isMovingLeft = true;
-        this.animation = this.RUNNING_ANIMATION;
+        this.animation = this.runningAnimation;
     }
 
     /**
@@ -71,21 +72,21 @@ public class GameCharacterAnimation {
      */
     public void moveRigth() {
         this.isMovingLeft = false;
-        this.animation = this.RUNNING_ANIMATION;
+        this.animation = this.runningAnimation;
     }
 
     /**
-     * idle.
+     * Changes the animation to idle animation.
      */
     public void idle() {
-        this.animation = this.IDLE_ANIMATION;
+        this.animation = this.idleAnimation;
     }
 
     /**
-     * hit.
+     * Changes the animation to fall (hit) animation.
      */
     public void hit() {
-        this.animation = this.FALLING_ANIMATION;
+        this.animation = this.fallingAnimation;
     }
 
     /**
@@ -106,8 +107,43 @@ public class GameCharacterAnimation {
     }
 
     /**
-     * @param stateTime
-     * @return
+     * @return running animation.
+     */
+    public Animation<TextureRegion> getRunningAnimation() {
+        return runningAnimation;
+    }
+
+    /**
+     * @return idle animation.
+     */
+    public Animation<TextureRegion> getIdleAnimation() {
+        return idleAnimation;
+    }
+
+    /**
+     * @return jumping animation.
+     */
+    public Animation<TextureRegion> getJumpingAnimation() {
+        return jumpingAnimation;
+    }
+
+    /**
+     * @return falling animation.
+     */
+    public Animation<TextureRegion> getFallingAnimation() {
+        return fallingAnimation;
+    }
+
+    /**
+     * @return true if animation is movingleft
+     */
+    public boolean isMovingLeft() {
+        return isMovingLeft;
+    }
+
+    /**
+     * @param stateTime = current time of animation.
+     * @return current frame in animation
      */
     public TextureRegion getFrame(final float stateTime) {
         return this.animation.getKeyFrame(stateTime, true);

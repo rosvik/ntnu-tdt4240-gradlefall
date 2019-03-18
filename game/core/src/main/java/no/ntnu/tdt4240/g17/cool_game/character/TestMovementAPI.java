@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import java.util.Random;
 
 /**
- * testmovement.
+ * Only used for offline testing of character movement.
  */
 public class TestMovementAPI {
     private int xValue;
@@ -25,15 +25,23 @@ public class TestMovementAPI {
 
     }
 
-
+    /**
+     * @return x-value.
+     */
     public int getxValue() {
         return this.xValue;
     }
 
+    /**
+     * @return y-value.
+     */
     public int getyValue() {
         return this.yValue;
     }
 
+    /**
+     * changes pos-value.
+     */
     public void changeXvalue() {
         if (this.xRange == 0 && this.yRange == 0) {
             this.rollTheDice();
@@ -60,6 +68,9 @@ public class TestMovementAPI {
         }
     }
 
+    /**
+     * next movement.
+     */
     private void rollTheDice() {
         int dice = this.rand.nextInt(6);
         if (dice == 0 || dice == 1) {

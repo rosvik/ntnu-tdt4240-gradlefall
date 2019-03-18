@@ -5,10 +5,11 @@ import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
 import java.util.Stack;
 
 /**
- * State of a gamecharacter
+ * State of a gamecharacter.
  * - posistion
  * - number of lives
  * - character score
+ * - number of projectiles
  */
 public class GameCharacterState {
     private int xPosition;
@@ -61,12 +62,12 @@ public class GameCharacterState {
     }
 
     /**
-     * @param xPosition = the new x-position
-     * @param yPosition = the new y-position
+     * @param newxPosition = the new x-position
+     * @param newyPosition = the new y-position
      */
-    public void setPosition(final int xPosition, final int yPosition) {
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
+    public void setPosition(final int newxPosition, final int newyPosition) {
+        this.xPosition = newxPosition;
+        this.yPosition = newyPosition;
     }
 
     /**
@@ -77,10 +78,10 @@ public class GameCharacterState {
     }
 
     /**
-     * @param lives = number of new lives
+     * @param increment = number of new lives
      */
-    public void addLives(final int lives) {
-        this.lives += lives;
+    public void addLives(final int increment) {
+        this.lives += increment;
     }
 
     /**
@@ -92,10 +93,10 @@ public class GameCharacterState {
     }
 
     /**
-     * @param lives = number of lives to remove
+     * @param decrement = number of lives to remove
      */
-    public void removeLives(final int lives) {
-        this.lives -= lives;
+    public void removeLives(final int decrement) {
+        this.lives -= decrement;
     }
 
     /**
@@ -106,10 +107,10 @@ public class GameCharacterState {
     }
 
     /**
-     * @param score = increases the character score
+     * @param increment = increases the character score
      */
-    public void increaseScore(final int score) {
-        this.score += score;
+    public void increaseScore(final int increment) {
+        this.score += increment;
     }
 
     /**
