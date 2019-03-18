@@ -3,7 +3,6 @@ package no.ntnu.tdt4240.g17.cool_game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
@@ -13,11 +12,10 @@ import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
  */
 public class MainGame extends ApplicationAdapter {
     /** Batch to render. */
-    private SpriteBatch batch;
-    /** Test image. */
-    private Texture img;
+    SpriteBatch batch;
+
     /** Arena. */
-    private Arena arena;
+    Arena arena;
 
     @Override
     public final void create() {
@@ -42,6 +40,5 @@ public class MainGame extends ApplicationAdapter {
     @Override
     public final void dispose() {
         batch.dispose();
-        img.dispose();
     }
 }
