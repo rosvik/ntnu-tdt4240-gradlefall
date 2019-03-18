@@ -20,10 +20,12 @@ import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerComponent;
+import no.ntnu.tdt4240.g17.server.game_engine.projectile.ProjectileComponent;
 import no.ntnu.tdt4240.g17.server.physics.box2d.Box2dBodyComponent;
 import no.ntnu.tdt4240.g17.server.physics.box2d.TransformComponent;
 import no.ntnu.tdt4240.g17.server.physics.box2d.body.ArenaTileBox2dBodyFactory;
 import no.ntnu.tdt4240.g17.server.physics.box2d.body.CharacterBox2dBodyFactory;
+import no.ntnu.tdt4240.g17.server.physics.box2d.body.ProjectileBox2dBodyFactory;
 import no.ntnu.tdt4240.g17.server.physics.util.DesktopPhysicsVisualizer;
 import sun.misc.ThreadGroupUtils;
 
@@ -56,11 +58,11 @@ public class ArenaSimulationIT {
         engine.addSystem(physicsSystem);
         engine.addSystem(new PlayerPositionDebugSystem(1));
 
-        // Numbers are players
+        // Numbers are players, - are arrows
         final String arena =
                         "### ###\n" +
                         "#     #\n" +
-                        "#    3#\n" +
+                        "#-   3#\n" +
                         "#     #\n" +
                         "#     #\n" +
                         "# ### #\n" +
@@ -123,6 +125,7 @@ public class ArenaSimulationIT {
 
         final CharacterBox2dBodyFactory characterFactory = new CharacterBox2dBodyFactory(world, 1f);
         final ArenaTileBox2dBodyFactory arenaFactory = new ArenaTileBox2dBodyFactory(world, 1f, 1f);
+        final ProjectileBox2dBodyFactory projectileFactor = new ProjectileBox2dBodyFactory(world);
         final int entityCount = arena.replaceAll(" ", "").length();
 
         List<Entity> entities = new ArrayList<>(entityCount);
@@ -155,6 +158,12 @@ public class ArenaSimulationIT {
                     final Body body = arenaFactory.create(entity);
                     body.setTransform(x, y, 0f);
                     entity.add(new Box2dBodyComponent(body));
+                } else if (letter == '-') {
+                    final Body body = projectileFactor.create(entity);
+                    body.setTransform(x, y, 0f);
+                    entity.add(new Box2dBodyComponent(body));
+                    entity.add(new TransformComponent(new Vector2(body.getPosition()), new Vector2(1f, 1f), body.getAngle()));
+                    entity.add(new ProjectileComponent(null));
                 }
             }
         }
