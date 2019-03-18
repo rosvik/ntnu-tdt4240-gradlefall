@@ -5,6 +5,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * A factory to create {@link Body} suitable for characters.
  *
@@ -13,7 +16,13 @@ import com.badlogic.gdx.physics.box2d.World;
 public class CharacterBox2dBodyFactory extends BaseBox2dBodyFactory {
 
     private float linearDamping;
+
+    /** The height of created characters in meters. */
+    @Getter @Setter
     private float characterHeight = 1.8f;
+
+    /** The width of created characters in meters. */
+    @Getter @Setter
     private float characterWidth = 0.5f;
 
     /**
@@ -72,17 +81,4 @@ public class CharacterBox2dBodyFactory extends BaseBox2dBodyFactory {
         shape.dispose();
     }
 
-    /**
-     * @return the height of created characters in meters
-     */
-    public float getCharacterHeight() {
-        return characterHeight;
-    }
-
-    /**
-     * @return the width of created characters in meters
-     */
-    public float getCharacterWidth() {
-        return characterWidth;
-    }
 }
