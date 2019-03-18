@@ -24,7 +24,7 @@ public class GameCharacter {
      * @param name = character name, must be the same as the character animation in DungeonTileset.atlas.
      * @param xPosition = The initial starting x position for the character
      * @param yPosition = The initial starting y position for the character
-     * @param atlas = TextureA  tlas whit animation sprites
+     * @param atlas = TextureAtlas with animation sprites
      */
     public GameCharacter(final String name, final int xPosition, final int yPosition, final TextureAtlas atlas) {
         this.state = new GameCharacterState(xPosition, yPosition);
@@ -32,7 +32,7 @@ public class GameCharacter {
     }
 
     /**
-     * @return the caracters animation
+     * @return the characters animation
      */
     public GameCharacterAnimation getAnimation() {
         return this.animation;
