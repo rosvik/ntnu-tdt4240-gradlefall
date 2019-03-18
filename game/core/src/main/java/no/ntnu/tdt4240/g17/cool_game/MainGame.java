@@ -1,5 +1,4 @@
 package no.ntnu.tdt4240.g17.cool_game;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
