@@ -15,7 +15,6 @@ public class UserInputButtons {
     private Rectangle joystickBox, jump, shoot, place, buttonBox;
     private Circle joystick;
     private int joystickRatio, screenHeight, screenWidth;
-    ;
     private long joystickRadius;
     private Vector2 joystickCenter;
 
