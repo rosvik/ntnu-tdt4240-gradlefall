@@ -40,4 +40,31 @@ class ArenaTest extends GameTest {
     }
 
 
+    @Test
+    void render() {
+    }
+
+    @Test
+    void renderForeground() {
+    }
+
+    @Test
+    void drawLayer() {
+    }
+
+    @Test
+    void setBackground() {
+    }
+
+    @Test
+    void getLayer() {
+    }
+
+    @Test
+    void getTiles() {
+    }
+
+    @Test
+    void printTiles() {
+    }
 }
