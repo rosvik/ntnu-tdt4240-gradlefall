@@ -6,7 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 
 
 /**
- * A playable game character.
+ * How to add new character.
+ * atlas = new TextureAtlas("DungeonTileset.atlas");
+ * character = new GameCharacter("big_zombie", 100,  100, atlas);
+ *
+ * Then in render() in mainGames.
+ * character.render(new X Value, new Y Value);
+ * character.draw(spritebatch from maingame, stateTime from maingame)
  */
 @Slf4j
 public class GameCharacter {
