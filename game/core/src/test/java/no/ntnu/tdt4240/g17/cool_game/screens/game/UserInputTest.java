@@ -8,6 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * By running this class you are able to visibly see the UI controls and test if input gives the expected output
+ */
+
 public final class UserInputTest extends ApplicationAdapter {
     SpriteBatch batch;
     BitmapFont font;
