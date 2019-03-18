@@ -157,6 +157,8 @@ subprojects {
     }
 
     dependencies {
+        implementation 'org.jetbrains:annotations:17.0.0'
+
         implementation "org.slf4j:slf4j-api:1.7.26"
         testImplementation "org.slf4j:slf4j-api:1.7.26"
 
