@@ -5,6 +5,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * A factory to create {@link Body} suitable for characters.
  *
@@ -14,9 +17,18 @@ public class CharacterBox2dBodyFactory extends BaseBox2dBodyFactory {
 
     private float linearDamping;
 
+    /** The height of created characters in meters. */
+    @Getter @Setter
+    private float characterHeight = 1.8f;
+
+    /** The width of created characters in meters. */
+    @Getter @Setter
+    private float characterWidth = 0.5f;
+
     /**
      * Create a factory for character body generation.
-     * @param world the world to create bodies in
+     *
+     * @param world         the world to create bodies in
      * @param linearDamping velocity damping of the character
      */
     public CharacterBox2dBodyFactory(final World world, final float linearDamping) {
@@ -33,12 +45,11 @@ public class CharacterBox2dBodyFactory extends BaseBox2dBodyFactory {
     }
 
     /**
-     * @return Kinematic as players should be controlled by inputs, not forces
+     * @return Kinematic as players should be affected by forces like gravity
      */
     @Override
     protected BodyDef.BodyType getType() {
-        //TODO: perhaps dynamic is better, unsure here.
-        return BodyDef.BodyType.KinematicBody;
+        return BodyDef.BodyType.DynamicBody;
     }
 
     /**
@@ -51,18 +62,23 @@ public class CharacterBox2dBodyFactory extends BaseBox2dBodyFactory {
 
     /**
      * Creates a box of 1.8m height.
+     *
      * @param body attach shapes to this
      */
     @Override
     protected void addShapes(final Body body) {
         final PolygonShape shape = new PolygonShape();
-        final float characterHeight = 1.8f;
-        final float characterWidth = 0.5f;
-        shape.setAsBox(characterHeight, characterWidth);
+        shape.set(new float[]{
+                0, 0,
+                characterWidth, 0,
+                characterWidth, characterHeight,
+                0, characterHeight
+        });
         /* roughly 70kg weight.
         Does not matter for kinematic objects, they have 0 mass */
         final int characterDensity = 77;
         body.createFixture(shape, characterDensity);
         shape.dispose();
     }
+
 }

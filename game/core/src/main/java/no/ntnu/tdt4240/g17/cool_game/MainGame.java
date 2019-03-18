@@ -4,17 +4,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
+
 /**
  * Main game class.
  */
 public class MainGame extends ApplicationAdapter {
     /** Batch to render. */
-    private SpriteBatch batch;
+    SpriteBatch batch;
+
+    /** Arena. */
+    Arena arena;
 
     @Override
     public final void create() {
         batch = new SpriteBatch();
-
+        arena = new Arena("map2.tmx", 16f, 32f, 20f, batch);
+        arena.setBackground("background.png");
     }
 
     @Override
@@ -22,6 +28,11 @@ public class MainGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
+
+        // Render the arena
+        arena.render();
+
+        //batch.draw(img, 0, 0);
         batch.end();
     }
 

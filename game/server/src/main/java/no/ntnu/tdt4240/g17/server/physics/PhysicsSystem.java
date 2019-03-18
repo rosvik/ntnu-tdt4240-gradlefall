@@ -25,13 +25,14 @@ public class PhysicsSystem extends IntervalSystem {
 
     /**
      * Family of components the engine should work on.
+     * Currently {@link Box2dBodyComponent} and {@link TransformComponent}.
      */
     public static final Family PHYSICS_FAMILY = Family.all(
             Box2dBodyComponent.class,
             TransformComponent.class
     ).get();
     private final Family family;
-    private final float interval;
+    private final float intervalSeconds;
 
     private int velocityIterations = 6;
     private int positionIterations = 3;
@@ -43,13 +44,13 @@ public class PhysicsSystem extends IntervalSystem {
      * Create a new Physics system for an {@link com.badlogic.ashley.core.Engine}.
      *
      * @param family   the family to work with. Use {@link #PHYSICS_FAMILY}
-     * @param interval how often to update the physics at minimum.
+     * @param intervalSeconds how often to update the physics at minimum in seconds.
      * @param priority the priority of the system in {@link com.badlogic.ashley.core.Engine}.
      * @param world    {@link com.badlogic.gdx.physics.box2d.Box2D} world.
      */
-    public PhysicsSystem(final Family family, final float interval, final int priority, final World world) {
-        super(interval, priority);
-        this.interval = interval;
+    public PhysicsSystem(final Family family, final float intervalSeconds, final int priority, final World world) {
+        super(intervalSeconds, priority);
+        this.intervalSeconds = intervalSeconds;
         this.family = family;
         this.world = world;
     }
@@ -57,9 +58,9 @@ public class PhysicsSystem extends IntervalSystem {
     @Override
     protected final void updateInterval() {
         final long before = System.currentTimeMillis();
-        world.step(interval, velocityIterations, positionIterations);
+        world.step(intervalSeconds, velocityIterations, positionIterations);
         final long time = System.currentTimeMillis() - before;
-        log.trace("Physics update took %d ms", time);
+        log.trace("Physics update took {} ms", time);
         // Can reduce iterations if time is too long
 
         for (Entity entity : entitiesToUpdate) {
