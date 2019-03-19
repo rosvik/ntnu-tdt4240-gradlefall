@@ -86,7 +86,7 @@ public class ProjectileBox2dBodyFactory extends BaseBox2dBodyFactory {
     protected void setBodyDefSettings(final BodyDef bodyDef) {
         bodyDef.angularDamping = 3f; // Seemed okay to avoid rotating too much, from the iforce2d article.
         bodyDef.bullet = true;
-        bodyDef.linearDamping = 0f;
+        bodyDef.linearDamping = 0.4f;
     }
 
     /**
