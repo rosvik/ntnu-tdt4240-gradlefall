@@ -14,6 +14,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import no.ntnu.tdt4240.g17.server.physics.PhysicsSystem;
+import no.ntnu.tdt4240.g17.server.physics.WrapAroundSystem;
 import no.ntnu.tdt4240.g17.server.physics.box2d.body.CharacterBox2dBodyFactory;
 
 /**
@@ -47,5 +49,20 @@ class PlayerEntityFactoryTest {
         // Then
         assertTrue(PlayerEntityFactory.FAMILY.matches(entity),
                 "Entity is missing components. Has: " + entity.getComponents().toString());
+    }
+
+    @Test
+    void shouldHaveComponentsNeededForSystems() {
+        // Given
+        final PlayerEntityFactory playerEntityFactory = new PlayerEntityFactory(bodyFactory);
+        final Entity playerEntity = playerEntityFactory.create("1", "Test player");
+
+        // When
+        final boolean wrapAroundMatches = WrapAroundSystem.FAMILY.matches(playerEntity);
+        final boolean physicsMatches = PhysicsSystem.PHYSICS_FAMILY.matches(playerEntity);
+
+        // Then
+        assertTrue(wrapAroundMatches, "Player is missing a component for WrapAroundSystem");
+        assertTrue(physicsMatches, "Player is missing a component for PhysicsSystem");
     }
 }
