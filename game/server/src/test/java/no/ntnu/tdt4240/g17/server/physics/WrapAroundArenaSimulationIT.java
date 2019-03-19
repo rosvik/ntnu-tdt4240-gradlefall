@@ -80,7 +80,7 @@ public class WrapAroundArenaSimulationIT {
     }
 
     @Test @Disabled
-    void simulateArenaWithWrappingAndGui() {
+    void simulateArenaWithFallingAndWrappingAndGui() {
         // Numbers are players, - are arrows
         final String arena =
                 "# ### #\n" +
@@ -88,8 +88,11 @@ public class WrapAroundArenaSimulationIT {
                 "     1 \n" +
                 "# ### #\n" +
                 "       \n" +
+                "       \n" +
                 "# ### #";
-        final Rectangle arenaBounds = new Rectangle(0, 0, arena.split("\n")[0].length(), arena.length());
+        final int width = arena.split("\n")[0].length();
+        final int height = arena.split("\n").length;
+        final Rectangle arenaBounds = new Rectangle(0, 0, width, height);
 
         // Configure
         final World world = new World(new Vector2(0, -9.81f), true);
