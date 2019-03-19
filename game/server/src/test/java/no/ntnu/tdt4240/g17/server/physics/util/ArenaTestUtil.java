@@ -1,6 +1,7 @@
 package no.ntnu.tdt4240.g17.server.physics.util;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerComponent;
 import no.ntnu.tdt4240.g17.server.game_engine.projectile.ProjectileComponent;
 import no.ntnu.tdt4240.g17.server.physics.ArenaSimulationIT;
+import no.ntnu.tdt4240.g17.server.physics.box2d.BoundingBoxComponent;
 import no.ntnu.tdt4240.g17.server.physics.box2d.Box2dBodyComponent;
 import no.ntnu.tdt4240.g17.server.physics.box2d.TransformComponent;
 import no.ntnu.tdt4240.g17.server.physics.box2d.body.ArenaTileBox2dBodyFactory;
@@ -25,14 +27,16 @@ import no.ntnu.tdt4240.g17.server.physics.box2d.body.ProjectileBox2dBodyFactory;
  */
 @Slf4j
 public class ArenaTestUtil {
-    private ArenaTestUtil() { }
+    private ArenaTestUtil() {
+    }
 
 
     /**
      * Create an arena in box2d with tiles and characters from the given arena string.
-     *
+     * <p>
      * <br/><br/>
      * #sokobak #tretteberg
+     *
      * @param arena a string with <code>#</code>, <code>"space"</code> and <code>0-9</code>
      * @param world
      * @return
@@ -46,7 +50,7 @@ public class ArenaTestUtil {
 
         final CharacterBox2dBodyFactory characterFactory = new CharacterBox2dBodyFactory(world, 1f);
         final ArenaTileBox2dBodyFactory arenaFactory = new ArenaTileBox2dBodyFactory(world, 1f, 1f);
-        final ProjectileBox2dBodyFactory projectileFactor = new ProjectileBox2dBodyFactory(world);
+        final ProjectileBox2dBodyFactory projectileFactory = new ProjectileBox2dBodyFactory(world);
         final int entityCount = arena.replaceAll(" ", "").length();
 
         List<Entity> entities = new ArrayList<>(entityCount);
@@ -75,16 +79,19 @@ public class ArenaTestUtil {
                     entity.add(new Box2dBodyComponent(body));
                     entity.add(new TransformComponent(new Vector2(body.getPosition()), new Vector2(1f, 1f), body.getAngle()));
                     entity.add(new PlayerComponent("" + playerNumber, "Player " + playerNumber));
+                    entity.add(new BoundingBoxComponent(
+                            new Rectangle(0, 0, characterFactory.getCharacterWidth(), characterFactory.getCharacterHeight())));
                 } else if (letter == '#') {
                     final Body body = arenaFactory.create(entity);
                     body.setTransform(x, y, 0f);
                     entity.add(new Box2dBodyComponent(body));
                 } else if (letter == '-') {
-                    final Body body = projectileFactor.create(entity);
+                    final Body body = projectileFactory.create(entity);
                     body.setTransform(x, y, 0f);
                     entity.add(new Box2dBodyComponent(body));
                     entity.add(new TransformComponent(new Vector2(body.getPosition()), new Vector2(1f, 1f), body.getAngle()));
                     entity.add(new ProjectileComponent(null));
+                    entity.add(new BoundingBoxComponent(projectileFactory.getBoundingBox()));
                 }
             }
         }
