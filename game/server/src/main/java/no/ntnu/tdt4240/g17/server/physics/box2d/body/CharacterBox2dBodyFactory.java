@@ -68,9 +68,11 @@ public class CharacterBox2dBodyFactory extends BaseBox2dBodyFactory {
     @Override
     protected void addShapes(final Body body) {
         final PolygonShape shape = new PolygonShape();
+        // The bottom has a center point and lifted edges to avoid getting stuck between tiles.
         shape.set(new float[]{
-                0, 0,
-                characterWidth, 0,
+                0, 0.05f,
+                characterWidth / 2f, 0,
+                characterWidth, 0.05f,
                 characterWidth, characterHeight,
                 0, characterHeight
         });
