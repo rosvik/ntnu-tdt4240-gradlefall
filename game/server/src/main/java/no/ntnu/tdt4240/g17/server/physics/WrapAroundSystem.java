@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
+import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerComponent;
 import no.ntnu.tdt4240.g17.server.game_engine.projectile.ProjectileComponent;
 import no.ntnu.tdt4240.g17.server.physics.box2d.BoundingBoxComponent;
@@ -18,6 +19,7 @@ import no.ntnu.tdt4240.g17.server.physics.box2d.TransformComponent;
  *
  * @author Kristian 'krissrex' Rekstad
  */
+@Slf4j
 public class WrapAroundSystem extends IteratingSystem {
 
     /**
@@ -62,14 +64,18 @@ public class WrapAroundSystem extends IteratingSystem {
 
         if (position.x + entityBounds.width < bounds.x) {
             newPosition.x = bounds.x + bounds.width;
+            log.trace("Wrapped entity to new X: {}", newPosition.x);
         } else if (position.x > bounds.x + bounds.width) {
             newPosition.x = bounds.x - entityBounds.width;
+            log.trace("Wrapped entity to new X: {}", newPosition.x);
         }
 
         if (position.y + entityBounds.height < bounds.y) {
             newPosition.y = bounds.y + bounds.height;
+            log.trace("Wrapped entity to new Y: {}", newPosition.y);
         } else if (position.y > bounds.y + bounds.height) {
             newPosition.y = bounds.y - entityBounds.height;
+            log.trace("Wrapped entity to new Y: {}", newPosition.y);
         }
 
         body.setTransform(newPosition, body.getAngle());
