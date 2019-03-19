@@ -1,5 +1,6 @@
 package no.ntnu.tdt4240.g17.server.physics.box2d.body;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -26,6 +27,10 @@ public class ProjectileBox2dBodyFactory extends BaseBox2dBodyFactory {
 
     private Vector2 initialDirection = new Vector2(1f, 0);
 
+    /** The bounding box for a projectile. */
+    @Getter
+    private Rectangle boundingBox;
+
     /**
      * Values are stored in (x, y) order.
      */
@@ -51,6 +56,9 @@ public class ProjectileBox2dBodyFactory extends BaseBox2dBodyFactory {
                 arrowLength, 0f, // The tip
                 thickPoint, arrowThickness // Top
         };
+
+        // Depends on tailCoordinate, so this must be moved if tail is moved.
+        boundingBox = new Rectangle(0f, -thickPoint, arrowLength, thickPoint);
     }
 
     /**
