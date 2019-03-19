@@ -119,7 +119,7 @@ class WrapAroundSystemTest {
         // Given
         final WrapAroundSystem system = new WrapAroundSystem(0, bounds);
         final Rectangle boundingBox = new Rectangle(0, 0, 1f, 1f);
-        final Vector2 entityPosition = new Vector2(0, bounds.y - boundingBox.height);
+        final Vector2 entityPosition = new Vector2(0, bounds.y - boundingBox.height - 0.1f);
 
         final TransformComponent transformComponent = initializeSystem(boundingBox, entityPosition);
 
@@ -129,7 +129,6 @@ class WrapAroundSystemTest {
         // Then
         // TODO finish test
         assertThat(transformComponent.getPosition().y, is(bounds.y + bounds.height));
-        fail("Not complete");
     }
 
     @Test
@@ -137,7 +136,7 @@ class WrapAroundSystemTest {
         // Given
         final WrapAroundSystem system = new WrapAroundSystem(0, bounds);
         final Rectangle boundingBox = new Rectangle(0, 0, 1f, 1f);
-        final Vector2 entityPosition = new Vector2(0, bounds.y - boundingBox.height);
+        final Vector2 entityPosition = new Vector2(0, bounds.y + bounds.height + 0.1f);
 
         final TransformComponent transformComponent = initializeSystem(boundingBox, entityPosition);
 
@@ -147,7 +146,6 @@ class WrapAroundSystemTest {
         // Then
         //TODO finish test
         assertThat(transformComponent.getPosition().y, is(bounds.y - boundingBox.height));
-        fail("Not complete");
     }
 
 
