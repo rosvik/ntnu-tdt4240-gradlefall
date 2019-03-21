@@ -108,7 +108,9 @@ public class Navigator implements Disposable {
      */
     @Override
     public void dispose() {
-        this.screen.dispose();
+        if (this.screen != null) {
+            this.screen.dispose();
+        }
         this.screen = null;
     }
 }

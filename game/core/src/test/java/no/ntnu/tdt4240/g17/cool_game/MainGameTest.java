@@ -37,14 +37,6 @@ class MainGameTest extends GameTest {
         assertThrows(IllegalArgumentException.class, mainGame::create, "SpriteBatch must be mocked and will throw in tests");
     }
 
-    @Test
-    void shouldRender() {
-        // Given
-        mainGame.arena = Mockito.mock(Arena.class);
-
-        // When
-        mainGame.render();
-    }
 
     @Test
     void disposeShouldNotThrow() {

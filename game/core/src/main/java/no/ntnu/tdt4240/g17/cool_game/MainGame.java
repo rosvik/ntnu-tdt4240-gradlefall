@@ -59,7 +59,11 @@ public class MainGame extends ApplicationAdapter {
 
     @Override
     public final void dispose() {
-        batch.dispose();
-        navigator.dispose();
+        if (batch != null) {
+            batch.dispose();
+        }
+        if (navigator != null) {
+            navigator.dispose();
+        }
     }
 }
