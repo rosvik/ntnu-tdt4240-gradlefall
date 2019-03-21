@@ -102,6 +102,19 @@ project(":core") {
     description = "Common code for clients"
     apply plugin: "java-library"
 
+    // Exclude all views from test coverage, because they are untestable
+    // because of Stage, SpriteBatch and shaders.
+    jacocoTestCoverageVerification {
+        afterEvaluate {
+            classDirectories = files(classDirectories.files.collect {
+                fileTree(dir: it,
+                        exclude: [
+                                'no/ntnu/tdt4240/g17/cool_game/screens/**/*View*.class'
+                        ]
+                )
+            })
+        }
+    }
 
     dependencies {
         implementation project(":common")
