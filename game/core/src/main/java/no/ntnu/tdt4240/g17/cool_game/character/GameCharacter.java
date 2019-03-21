@@ -26,7 +26,7 @@ public class GameCharacter {
      * @param yPosition = The initial starting y position for the character
      * @param atlas = TextureAtlas with animation sprites
      */
-    public GameCharacter(final String name, final int xPosition, final int yPosition, final TextureAtlas atlas) {
+    public GameCharacter(final String name, final float xPosition, final float yPosition, final TextureAtlas atlas) {
         this.state = new GameCharacterState(xPosition, yPosition);
         this.animation = new GameCharacterAnimation(name, atlas);
     }
@@ -44,7 +44,7 @@ public class GameCharacter {
      * @param newX = the new x posistion
      * @param newY = the new y posistion
      */
-    public void render(final int newX, final int newY) {
+    public void render(final float newX, final float newY) {
         if (newY > this.state.getyPosition()) {
             this.animation.jump();
         } else if (newY  < this.state.getyPosition()) {
@@ -67,8 +67,8 @@ public class GameCharacter {
     public void draw(final SpriteBatch batch, final float stateTime) {
         TextureRegion characterTextureRegion = this.animation.getFrame(stateTime);
         batch.draw(characterTextureRegion,
-                this.state.getyPosition(),
                 this.state.getxPosition(),
+                this.state.getyPosition(),
                 this.animation.getWidth(),
                 this.animation.getHeight());
     }

@@ -1,8 +1,8 @@
 package no.ntnu.tdt4240.g17.cool_game.character;
 
-import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
-
 import java.util.Stack;
+
+import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
 
 /**
  * State of a gamecharacter.
@@ -12,8 +12,8 @@ import java.util.Stack;
  * - number of projectiles
  */
 public class GameCharacterState {
-    private int xPosition;
-    private int yPosition;
+    private float xPosition;
+    private float yPosition;
     private int lives;
     private int score;
     private Projectile projectileType;
@@ -24,7 +24,7 @@ public class GameCharacterState {
      * @param xPosisiton = the inital x posistion
      * @param yPosisiton = the inital y posistion'
      */
-    public GameCharacterState(final int xPosisiton, final int yPosisiton) {
+    public GameCharacterState(final float xPosisiton, final float yPosisiton) {
         this.xPosition = xPosisiton;
         this.yPosition = yPosisiton;
         this.lives = 3;
@@ -36,28 +36,28 @@ public class GameCharacterState {
     /**
      * @return the y-posistion to the character.
      */
-    public int getyPosition() {
+    public float getyPosition() {
         return yPosition;
     }
 
     /**
      * @param yPosition = the new y posistion
      */
-    public void setyPosition(final int yPosition) {
+    public void setyPosition(final float yPosition) {
         this.yPosition = yPosition;
     }
 
     /**
      * @return the x-posistion to the character
      */
-    public int getxPosition() {
+    public float getxPosition() {
         return xPosition;
     }
 
     /**
      * @param xPosisiton = the new x-posistion
      */
-    public void setxPosition(final int xPosisiton) {
+    public void setxPosition(final float xPosisiton) {
         this.xPosition = xPosisiton;
     }
 
@@ -65,7 +65,7 @@ public class GameCharacterState {
      * @param newxPosition = the new x-position
      * @param newyPosition = the new y-position
      */
-    public void setPosition(final int newxPosition, final int newyPosition) {
+    public void setPosition(final float newxPosition, final float newyPosition) {
         this.xPosition = newxPosition;
         this.yPosition = newyPosition;
     }
