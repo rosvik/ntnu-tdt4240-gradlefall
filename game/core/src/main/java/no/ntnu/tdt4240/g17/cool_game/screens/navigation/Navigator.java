@@ -1,20 +1,37 @@
 package no.ntnu.tdt4240.g17.cool_game.screens.navigation;
 
-import com.badlogic.gdx.Screen;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Disposable;
 
 
+import lombok.Data;
 import no.ntnu.tdt4240.g17.cool_game.screens.main_menu.HomeController;
 import no.ntnu.tdt4240.g17.cool_game.screens.main_menu.HomeView;
-import no.ntnu.tdt4240.g17.cool_game.screens.loading.LoadingView;
 import no.ntnu.tdt4240.g17.cool_game.screens.settings_menu.SettingsController;
+import no.ntnu.tdt4240.g17.cool_game.screens.settings_menu.SettingsModel;
 import no.ntnu.tdt4240.g17.cool_game.screens.settings_menu.SettingsView;
 
 /**
  *
  */
-
+@Data
 public class Navigator implements Disposable {
+
+    /**
+     * A screen in the application.
+     */
+    public enum Screen {
+        /**
+         * Main home screen.
+         */
+        HOME,
+        /**
+         * Settings screen.
+         */
+        SETTING
+    }
+
     /**
      * Home to refer to be used later on.
      */
@@ -24,64 +41,51 @@ public class Navigator implements Disposable {
      */
     public static final int SETTING = 1;
 
-    /**
-     * storingvariable for loadingView.
-     */
-    private LoadingView loadingView;
-    /**
-     * storingvariable.
-     */
-    private SettingsView settingsView;
-    /**
-     * storingvariable.
-     */
-    private HomeView homeView;
+    private com.badlogic.gdx.Screen screen;
 
-    private SettingsController preferences;
 
-    private Screen screen;
+    /**
+     * initialzed throught a constructor.
+     */
+    public Navigator() {
+        this.initialize();
+    }
 
     /**
      * Initialize the navigator.
+     * TODO: lag en factory for alle views
      */
     public void initialize() {
-        loadingView = new LoadingView(this);
-        preferences = new SettingsController();
-        homeView = new HomeView(this, new HomeController(this));
+        HomeView homeView = new HomeView(new HomeController(this));
         setScreen(homeView);
     }
-
 
     /**
      * @param screenIndex is screenIndex. method changes view.
      */
-    public void changeView(final int screenIndex) {
+    public void changeView(final Screen screenIndex) {
 
         switch (screenIndex) {
             case SETTING:
-                settingsView = new SettingsView(this, new SettingsController());
+                SettingsModel settingsModel = new SettingsModel(Gdx.app.getPreferences(SettingsModel.PREFS_NAME));
+                SettingsView settingsView = new SettingsView(this,
+                        new SettingsController(settingsModel), settingsModel);
                 this.setScreen(settingsView);
                 break;
             default:
             case HOME:
-                homeView = new HomeView(this, new HomeController(this));
+                HomeView homeView = new HomeView(new HomeController(this));
                 this.setScreen(homeView);
                 break;
         }
     }
 
     /**
-     * @return preferences
-     */
-    public SettingsController getPreferences() {
-        return this.preferences;
-    }
-
-    /**
      * Set the currently active screen.
+     *
      * @param screen .
      */
-    public void setScreen(final Screen screen) {
+    public void setScreen(final com.badlogic.gdx.Screen screen) {
         if (this.screen != null) {
             this.screen.hide();
             this.screen.dispose();
@@ -95,7 +99,7 @@ public class Navigator implements Disposable {
     /**
      * @return the currently actvive screen or null.
      */
-    public Screen getScreen() {
+    public com.badlogic.gdx.Screen getScreen() {
         return screen;
     }
 

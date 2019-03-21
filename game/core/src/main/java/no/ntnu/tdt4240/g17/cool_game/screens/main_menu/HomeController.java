@@ -30,6 +30,6 @@ public class HomeController {
      * g.
      */
     public void changeToSettings() {
-        parent.changeView(Navigator.SETTING);
+        parent.changeView(Navigator.Screen.SETTING);
     }
 }

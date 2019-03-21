@@ -32,7 +32,7 @@ public class LoadingView implements Screen {
      */
     @Override
     public void render(final float delta) {
-        parent.changeView(Navigator.HOME);
+        parent.changeView(Navigator.Screen.HOME);
     }
 
     @Override

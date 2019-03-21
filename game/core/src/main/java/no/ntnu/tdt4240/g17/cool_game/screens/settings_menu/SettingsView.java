@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -25,41 +23,31 @@ import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
  */
 public class SettingsView implements Screen {
 
-    /**
-     * gg.
-     */
-    public static final int TOPSPAN = 10;
-    /**
-     * g.
-     */
-    public static final float FRACTION = 30f;
-    /**
-     * @param mainClass Orchestrator class
-     */
-    private Navigator parent;
-    /**
-     * field for settingcontroller.
-     */
+    private static final int TOP_SPAN = 10;
+
+    private Navigator navigator;
     private SettingsController settingsController;
+    private SettingsModel settingsModel;
+
     private Label titleLabel;
     private Label volumeMusicLabel;
     private Label volumeSoundLabel;
     private Label musicOnOffLabel;
     private Label soundOnOffLabel;
 
-    /**
-     * stageclass.
-     */
     private Stage stage;
+
 
     /**
      * @param navigator          reference to main.
-     * @param settingsController settingscontroller.
+     * @param settingsController controller
+     * @param settingsModel      model
      */
-    public SettingsView(final Navigator navigator, final SettingsController settingsController) {
-        parent = navigator;
-        this.settingsController = new SettingsController();
-        stage = new Stage(new ScreenViewport());
+    public SettingsView(final Navigator navigator, final SettingsController settingsController,
+                        final SettingsModel settingsModel) {
+        this.navigator = navigator;
+        this.settingsModel = settingsModel;
+        this.settingsController = settingsController;
     }
 
     /**
@@ -67,6 +55,8 @@ public class SettingsView implements Screen {
      */
     @Override
     public void show() {
+        stage = new Stage(new ScreenViewport());
+
         stage.clear();
         Gdx.input.setInputProcessor(stage);
 
@@ -74,55 +64,50 @@ public class SettingsView implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        Skin skin = new Skin(Gdx.files.internal("android/assets/skin/neon-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal("skin/neon-ui.json"));
+        setUpUiComponents(table, skin);
 
+    }
+
+    /**
+     * Create ui components and add them to the table.
+     * @param table components are added to this
+     * @param skin the visual appearance of all components
+     */
+    private void setUpUiComponents(final Table table, final Skin skin) {
         //volumbutton
-        final Slider volumeMusicSlider = new Slider(0f, 1f, 0.1f, false, skin);
-        volumeMusicSlider.setValue(parent.getPreferences().getMusicVolume());
-        volumeMusicSlider.addListener(new EventListener() {
-            @Override
-            public boolean handle(final Event event) {
-                parent.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
-                return false;
-            }
+        final Slider musicVolumeSlider = new Slider(0f, 1f, 0.1f, false, skin);
+        musicVolumeSlider.setValue(settingsModel.getMusicVolume());
+        musicVolumeSlider.addListener(event -> {
+            settingsController.changeMusicVolume(musicVolumeSlider.getValue());
+            return true;
         });
 
         // sound volume
-        final Slider soundMusicSlider = new Slider(0f, 1f, 0.1f, false, skin);
-        soundMusicSlider.setValue(parent.getPreferences().getSoundVolume());
-        soundMusicSlider.addListener(new EventListener() {
-            @Override
-            public boolean handle(final Event event) {
-                parent.getPreferences().setSoundVolume(soundMusicSlider.getValue());
-                return false;
-            }
+        final Slider soundVolumeSlider = new Slider(0f, 1f, 0.1f, false, skin);
+        soundVolumeSlider.setValue(settingsModel.getSoundVolume());
+        soundVolumeSlider.addListener(event -> {
+            settingsController.changeSoundVolume(soundVolumeSlider.getValue());
+            return true;
         });
 
 
         // music on/off
-        final CheckBox musicCheckbox = new CheckBox(null, skin);
-        musicCheckbox.setChecked(parent.getPreferences().isMusicEnabled());
-        musicCheckbox.addListener(new EventListener() {
-            @Override
-            public boolean handle(final Event event) {
-                boolean enabled = musicCheckbox.isChecked();
-                parent.getPreferences().setMusicEnabled(enabled);
-                return false;
-            }
+        CheckBox musicCheckbox = new CheckBox(null, skin);
+        musicCheckbox.setChecked(settingsModel.isMusicEnabled());
+        musicCheckbox.addListener(event -> {
+            boolean enabled = musicCheckbox.isChecked();
+            settingsController.toggleMusic(enabled);
+            return true;
         });
 
         // sound on/off
         final CheckBox soundEffectsCheckbox = new CheckBox(null, skin);
-        soundEffectsCheckbox.setChecked(parent.getPreferences().isSoundEffectsEnabled());
-        soundEffectsCheckbox.addListener(new EventListener() {
-            @Override
-            public boolean handle(final Event event) {
-                /*boolean enabled = soundEffectsCheckbox.isChecked();
-                parent.getPreferences().setSoundEffectsEnabled(enabled);
-                return false;*/
-                settingsController.getMainPrefs(parent);
-                return false;
-            }
+        soundEffectsCheckbox.setChecked(settingsModel.isSoundEffectsEnabled());
+        soundEffectsCheckbox.addListener(event -> {
+            boolean enabled = soundEffectsCheckbox.isChecked();     //enables checkbox
+            settingsController.toggleSoundEffects(enabled);
+            return false;
         });
 
 
@@ -131,8 +116,7 @@ public class SettingsView implements Screen {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(final ChangeEvent event, final Actor actor) {
-                //parent.changeView(Navigator.HOME);
-                settingsController.backToHome(parent);
+                settingsController.backToHome(navigator);
             }
         });
 
@@ -143,21 +127,20 @@ public class SettingsView implements Screen {
         soundOnOffLabel = new Label("Sound Effect", skin);
 
         table.add(titleLabel).colspan(2);
-        table.row().pad(TOPSPAN, 0, 0, TOPSPAN);
+        table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);
         table.add(volumeMusicLabel).left();
-        table.add(volumeMusicSlider);
-        table.row().pad(TOPSPAN, 0, 0, TOPSPAN);
+        table.add(musicVolumeSlider);
+        table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);
         table.add(musicOnOffLabel).left();
         table.add(musicCheckbox);
-        table.row().pad(TOPSPAN, 0, 0, TOPSPAN);
+        table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);
         table.add(volumeSoundLabel).left();
-        table.add(soundMusicSlider);
-        table.row().pad(TOPSPAN, 0, 0, TOPSPAN);
+        table.add(soundVolumeSlider);
+        table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);
         table.add(soundOnOffLabel).left();
         table.add(soundEffectsCheckbox);
-        table.row().pad(TOPSPAN, 0, 0, TOPSPAN);
+        table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);
         table.add(backButton).colspan(2);
-
     }
 
     /**
@@ -170,9 +153,8 @@ public class SettingsView implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // tell our stage to do actions and draw itself
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / FRACTION));
+        stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-
     }
 
     /**

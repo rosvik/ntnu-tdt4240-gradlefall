@@ -22,7 +22,7 @@ public class MainGame extends ApplicationAdapter {
         batch = new SpriteBatch();
     //  img = new Texture("badlogic.jpg");
         navigator = new Navigator();
-        navigator.initialize();
+        //navigator.initialize();
     }
 
     @Override

@@ -11,9 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
-
-
 
 /**
  *
@@ -28,10 +25,7 @@ public class HomeView implements Screen {
      * ROW.
      */
     public static final int ROW = 10;
-    /**
-     * @param mainClass Orchestrator class
-     */
-    private Navigator parent;
+
     private HomeController homeController;
 
     /**
@@ -40,11 +34,9 @@ public class HomeView implements Screen {
     private Stage stage;
 
     /**
-     * @param navigator      reference to main
      * @param homeController needs to take in homecontroler.
      */
-    public HomeView(final Navigator navigator, final HomeController homeController) {
-        parent = navigator;
+    public HomeView(final HomeController homeController) {
         this.homeController = homeController;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -64,7 +56,7 @@ public class HomeView implements Screen {
         stage.addActor(table);
 
         //create buttons with skin
-        Skin skin = new Skin(Gdx.files.internal("android/assets/skin/neon-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal("skin/neon-ui.json"));
         TextButton play = new TextButton("PLAY", skin);
         TextButton settings = new TextButton("SETTINGS", skin);
         TextButton quit = new TextButton("QUIT", skin);
