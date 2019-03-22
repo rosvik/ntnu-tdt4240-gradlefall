@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.esotericsoftware</groupId>
+  <artifactId>kryonet</artifactId>
+  <versioning>
+    <release>2.22.0-RC1-local</release>
+    <versions>
+      <version>2.22.0-RC1-local</version>
+    </versions>
+    <lastUpdated>20190322135449</lastUpdated>
+  </versioning>
+</metadata>

@@ -1,7 +1,5 @@
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-}
-
 sourceCompatibility = "8"
 targetCompatibility = "8"
+dependencies {
+    implementation files('libs/kryonet-2.22.0-RC1.jar')
+}
