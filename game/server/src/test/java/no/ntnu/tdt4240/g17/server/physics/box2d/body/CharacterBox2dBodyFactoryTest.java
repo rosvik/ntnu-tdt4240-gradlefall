@@ -67,7 +67,9 @@ class CharacterBox2dBodyFactoryTest {
 
         // Then
         final Fixture fixture = body.getFixtureList().get(0);
-        assertTrue(fixture.testPoint(0, 0), "Origo is not in shape");
+        assertFalse(fixture.testPoint(0, 0), "Left corner is not raised");
+        assertFalse(fixture.testPoint(width, 0), "Right corner is not raised");
+        assertTrue(fixture.testPoint(width/2, 0), "Center does not touch ground");
         assertTrue(fixture.testPoint(width/2f, height/2f), "Bottom left is not at origo");
         assertFalse(fixture.testPoint(-width/2f, height/2f), "Left side is left of origo");
         assertFalse(fixture.testPoint(width/2f, -height/2f), "Bottom is below of origo");
