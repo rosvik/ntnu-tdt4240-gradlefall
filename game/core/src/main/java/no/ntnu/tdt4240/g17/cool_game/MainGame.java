@@ -3,7 +3,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
@@ -21,14 +20,14 @@ public class MainGame extends ApplicationAdapter {
     /** Arena. */
     Arena arena;
 
-    /** GameCharacter */
+    /** GameCharacter. */
     GameCharacter character1;
 
-    /* Textureatlas */
+    /* Textureatlas. */
     TextureAtlas dungeonTilset;
     TextureAtlas projectiles;
 
-    // Projectile
+    // Projectile.
     Projectile projectile;
 
     @Override
@@ -50,7 +49,7 @@ public class MainGame extends ApplicationAdapter {
 
         /** API. */
 
-        /* character */
+        /* character. */
         //character1.render(api1.getxValue(), api1.getyValue());
         //projectile.render(Gdx.input.getX(), -Gdx.input.getY() + 570);
         //projectile.render(arrowApi.getxValue(), arrowApi.getyValue());

@@ -1,5 +1,6 @@
 package no.ntnu.tdt4240.g17.cool_game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import org.junit.jupiter.api.Test;
@@ -32,8 +33,8 @@ public class DeleteThis_CodeCoverageHackTest {
      */
     @Test
     void jacocoCodeCoverageHack() {
-        new GameCharacter("knight_m",0,0, new TextureAtlas("TextureAtlas/Characters/DungeonTileset.atlas"));
-        new Projectile("arrow",0,0,135, new TextureAtlas("TextureAtlas/Projectiles/Projectiles.atlas"));
+        new GameCharacter("knight_m",0,0, new TextureAtlas(Gdx.files.internal("./TextureAtlas/Characters/DungeonTileset.atlas")));
+        new Projectile("arrow",0,0,135, new TextureAtlas("./TextureAtlas/Projectiles/Projectiles.atlas"));
         new GameView();
         new HighscoreView();
         new LoadingView();

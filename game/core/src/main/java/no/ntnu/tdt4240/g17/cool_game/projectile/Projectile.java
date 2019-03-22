@@ -19,7 +19,11 @@ public class Projectile {
      * @param baseAngle = the angle of the projectile in projectile.atlas
      * @param projectilesTexture = the textureatlas where the projectile sprite is.
      */
-   public Projectile(final String name, final int xPosition, final int yPosition, final float baseAngle, final TextureAtlas projectilesTexture) {
+   public Projectile(final String name,
+                     final int xPosition,
+                     final int yPosition,
+                     final float baseAngle,
+                     final TextureAtlas projectilesTexture) {
        this.projectiles = projectilesTexture;
        float height = projectiles.findRegion(name).getTexture().getHeight();
        float width = projectiles.findRegion(name).getTexture().getWidth();
@@ -34,7 +38,8 @@ public class Projectile {
      * @param newY = the new y position
      */
     public void render(final float newX, final float newY) {
-        float newDirectionAngle = new Float(Math.atan2(newY - this.state.getyPosition(), newX - this.state.getxPosition())  * 180.0d / Math.PI);
+        float newDirectionAngle = new Float(
+                Math.atan2(newY - this.state.getyPosition(), newX - this.state.getxPosition())  * 180.0d / Math.PI);
         this.state.setDirectionAngle(newDirectionAngle);
         this.state.setxPosition(newX);
         this.state.setyPosition(newY);

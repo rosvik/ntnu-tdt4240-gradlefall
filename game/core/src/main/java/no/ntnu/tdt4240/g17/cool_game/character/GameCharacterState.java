@@ -1,8 +1,5 @@
 package no.ntnu.tdt4240.g17.cool_game.character;
 
-import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
-
-import java.util.Stack;
 
 /**
  * State of a gamecharacter.

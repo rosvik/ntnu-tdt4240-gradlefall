@@ -22,7 +22,11 @@ public class ProjectileState {
      * @param height = the height of the sprite
      * @param width = the width of the sprite
      */
-    public ProjectileState(final int xPosition, final int yPosition, final float baseAngle, final float height, final float width) {
+    public ProjectileState(final int xPosition,
+                           final int yPosition,
+                           final float baseAngle,
+                           final float height,
+                           final float width) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.baseAngle = baseAngle;
