@@ -27,7 +27,7 @@ public abstract class BaseBox2dBodyFactory {
      * @param entity will be set as {@link Body#getUserData() userData} for the body
      * @return newly created body.
      */
-    public final Body create(final Entity entity) {
+    public Body create(final Entity entity) {
         // BodyDef can be cached and reused
         final BodyDef bodyDef = new BodyDef();
         bodyDef.fixedRotation = hasFixedRotation();
