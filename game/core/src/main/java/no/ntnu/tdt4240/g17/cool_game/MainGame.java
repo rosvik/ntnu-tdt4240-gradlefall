@@ -34,13 +34,11 @@ public class MainGame extends ApplicationAdapter {
 
     UserInputButtons userInputButtons;
 
-    MovementFormat movementFormat;
+    MovementFormat firstFinger, secondFinger, movementFormat;
 
     InputToMovementOutput inputToMovementOutput;
 
     Vector2 oldPosition;
-
-    MovementFormat newPosition;
 
     int screenHeigth, screenWidth;
 
@@ -62,7 +60,6 @@ public class MainGame extends ApplicationAdapter {
         userInputButtons = new UserInputButtons(screenHeigth, screenWidth);
         inputToMovementOutput = new InputToMovementOutput();
         oldPosition = new Vector2(screenWidth / 2, screenHeigth / 2);
-        newPosition = new MovementFormat("", 0);
         shapeRenderer = new ShapeRenderer();
     }
 
@@ -81,12 +78,17 @@ public class MainGame extends ApplicationAdapter {
 
         // Render the arena
         //arena.render();
-        if (Gdx.input.isTouched()) {
-            movementFormat = userInputButtons.processInput(Gdx.input.getX(), Gdx.input.getY());
+        if (Gdx.input.isTouched(1)) {
+            firstFinger = userInputButtons.processInput(Gdx.input.getX(0), Gdx.input.getY(0));
+            secondFinger = userInputButtons.processInput(Gdx.input.getX(1), Gdx.input.getY(1));
+            movementFormat = inputToMovementOutput.getOutput(firstFinger, secondFinger);
+        } else if (Gdx.input.isTouched(0)) {
+            firstFinger = userInputButtons.processInput(Gdx.input.getX(0), Gdx.input.getY(0));
+            movementFormat = inputToMovementOutput.getOutput(firstFinger);
         } else {
-            movementFormat = new MovementFormat("joystick", new Vector2(0, 0));
+            firstFinger = new MovementFormat("joystick", new Vector2(0, 0));
+            movementFormat = inputToMovementOutput.getOutput(firstFinger);
         }
-        movementFormat = inputToMovementOutput.getOutput(movementFormat);
         font.draw(batch, "button: " + movementFormat.getButtonInput() + ", value: " + movementFormat.getValue(), 10, 20);
         character.render(200, 500);
         character.draw(batch, stateTime);
