@@ -16,8 +16,6 @@ public class GameCharacterState {
     private int yPosition;
     private int lives;
     private int score;
-    private Projectile projectileType;
-    private Stack<Projectile> projectiles = new Stack<>();
 
     /**
      * Constructor.
@@ -29,8 +27,6 @@ public class GameCharacterState {
         this.yPosition = yPosisiton;
         this.lives = 3;
         this.score = 0;
-        this.projectileType = new Projectile("arrow", 0, 0, 135);
-        this.addProjectiles(3);
     }
 
     /**
@@ -113,29 +109,4 @@ public class GameCharacterState {
         this.score += increment;
     }
 
-    /**
-     * Shoot.
-     * TODO Projectile.shoot or something
-     */
-    public void shoot() {
-        if (!this.projectiles.empty()) {
-            this.projectiles.pop();
-        }
-    }
-
-    /**
-     * @param numberOfProjectiles = how many projectiles to add
-     */
-    public void addProjectiles(final int numberOfProjectiles) {
-        for (int i = 1; i <= numberOfProjectiles; i++) {
-            this.projectiles.add(this.projectileType);
-        }
-    }
-
-    /**
-     * @return number of projectiles
-     */
-    public int getNumberOfProjectiles() {
-        return this.projectiles.size();
-    }
 }

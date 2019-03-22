@@ -1,16 +1,13 @@
 package no.ntnu.tdt4240.g17.cool_game.character;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.libgdx.test.util.GameTest;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class GameCharacterTest  extends GameTest {
 
-    private GameCharacter gameCharacter = new GameCharacter("wizzard_m", 100, 100, new TextureAtlas(Gdx.files.internal("DungeonTilset.atlas")));
+    private GameCharacter gameCharacter = new GameCharacter("wizzard_m", 100, 100, new TextureAtlas("TextureAtlas/Characters/DungeonTileset.atlas"));
 
     @Test
     void render() {

@@ -1,15 +1,14 @@
 package no.ntnu.tdt4240.g17.cool_game.projectile;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.libgdx.test.util.GameTest;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.hamcrest.Matchers;
 
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class ProjectileTest extends GameTest {
-    Projectile testProjectile = new Projectile("arrow", 0,0, 135);
+    TextureAtlas atlas = new TextureAtlas("TextureAtlas/Projectiles/Projectiles.atlas");
+    Projectile testProjectile = new Projectile("arrow", 0,0, 135, atlas);
 
     @Test
     void getState() {

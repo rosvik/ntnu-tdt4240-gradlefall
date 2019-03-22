@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class Projectile {
    private ProjectileState state;
-   private TextureAtlas projectiles = new TextureAtlas("./Assets/Projectiles2.atlas");
+   private TextureAtlas projectiles;
    private TextureRegion projectile;
 
     /**
@@ -17,8 +17,10 @@ public class Projectile {
      * @param xPosition = start x position to projectile
      * @param yPosition = start y position to projectile
      * @param baseAngle = the angle of the projectile in projectile.atlas
+     * @param projectilesTexture = the textureatlas where the projectile sprite is.
      */
-   public Projectile(final String name, final int xPosition, final int yPosition, final float baseAngle) {
+   public Projectile(final String name, final int xPosition, final int yPosition, final float baseAngle, final TextureAtlas projectilesTexture) {
+       this.projectiles = projectilesTexture;
        float height = projectiles.findRegion(name).getTexture().getHeight();
        float width = projectiles.findRegion(name).getTexture().getWidth();
        this.state = new ProjectileState(xPosition, yPosition, baseAngle, height, width);

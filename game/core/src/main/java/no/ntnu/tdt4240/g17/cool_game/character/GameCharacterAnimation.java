@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
- * Character animation.
+ * Characters animation.
  */
 public class GameCharacterAnimation {
 

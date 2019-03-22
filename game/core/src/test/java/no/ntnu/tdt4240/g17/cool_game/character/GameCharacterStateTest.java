@@ -64,16 +64,4 @@ class GameCharacterStateTest {
         this.testState.increaseScore(100);
         Assert.assertEquals(100, this.testState.getScore());
     }
-
-    @Test
-    public void testGetNumberOfProjectiles(){
-        Assert.assertEquals(3, this.testState.getNumberOfProjectiles());
-    }
-
-    @Test
-    public void testShoot(){
-        this.testState.shoot();
-        Assert.assertEquals(2, this.testState.getNumberOfProjectiles());
-
-    }
 }

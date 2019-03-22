@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
-import no.ntnu.tdt4240.g17.cool_game.character.TestMovementAPI;
-import no.ntnu.tdt4240.g17.cool_game.projectile.TestShootingAPI;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
 import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
 
@@ -28,7 +26,7 @@ public class MainGame extends ApplicationAdapter {
 
     /* Textureatlas */
     TextureAtlas dungeonTilset;
-
+    TextureAtlas projectiles;
 
     // Projectile
     Projectile projectile;
@@ -38,10 +36,11 @@ public class MainGame extends ApplicationAdapter {
         batch = new SpriteBatch();
         // arena = new Arena("map2.tmx", 16f, 32f, 20f, batch);
         //arena.setBackground("background.png");
-        dungeonTilset = new TextureAtlas("./Assets/DungeonTileset.atlas");
+        dungeonTilset = new TextureAtlas("./Assets/TextureAtlas/Characters/DungeonTileset.atlas");
+        projectiles = new TextureAtlas("Assets/TextureAtlas/Projectiles/Projectiles.atlas");
         character1 = new GameCharacter("knight_f", 100, 100, dungeonTilset);
         stateTime = 0;
-        projectile = new Projectile("fireball", 0, 0, -90);
+        projectile = new Projectile("arrow", 0, 0, 135, projectiles);
     }
 
     @Override
@@ -49,9 +48,12 @@ public class MainGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        /** API. */
+
         /* character */
-        //character1.render(10, 10);
+        //character1.render(api1.getxValue(), api1.getyValue());
         //projectile.render(Gdx.input.getX(), -Gdx.input.getY() + 570);
+        //projectile.render(arrowApi.getxValue(), arrowApi.getyValue());
 
         batch.begin();
 
