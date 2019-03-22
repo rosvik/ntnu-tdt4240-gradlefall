@@ -1,8 +1,7 @@
 package no.ntnu.tdt4240.g17.cool_game;
 
+import com.libgdx.test.util.GameTest;
 import org.junit.jupiter.api.Test;
-
-import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.GameView;
 import no.ntnu.tdt4240.g17.cool_game.screens.highscore.HighscoreView;
 import no.ntnu.tdt4240.g17.cool_game.screens.loading.LoadingView;
@@ -29,7 +28,6 @@ public class DeleteThis_CodeCoverageHackTest {
      */
     @Test
     void jacocoCodeCoverageHack() {
-        new Projectile();
         new GameView();
         new HighscoreView();
         new LoadingView();

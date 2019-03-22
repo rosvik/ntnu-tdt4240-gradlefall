@@ -1,27 +1,30 @@
 package no.ntnu.tdt4240.g17.cool_game.character;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.libgdx.test.util.GameTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
-class GameCharacterStateTest {
-    private GameCharacterState testState = new GameCharacterState(0,0);
 
+class GameCharacterStateTest extends GameTest {
+    private TextureAtlas projectiles = new TextureAtlas("./TextureAtlas/Projectiles/Projectiles.atlas");
+    private GameCharacterState testState = new GameCharacterState(0,0, "arrow", projectiles);
 
     @Test
-    public void testGetyPosistion() {
+    void testGetyPosistion() {
         Assert.assertEquals(0,this.testState.getyPosition());
         //A public void method annotated with @Test will be executed as a test case.
     }
 
     @Test
-    public void testGetxPosistion() {
+    void testGetxPosistion() {
         Assert.assertEquals(0,this.testState.getxPosition());
         //A public void method annotated with @Test will be executed as a test case.
     }
 
     @Test
-    public void testSetters() {
+    void testSetters() {
         this.testState.setxPosition(10);
         this.testState.setyPosition(10);
         Assert.assertEquals(10,this.testState.getxPosition());
@@ -33,47 +36,44 @@ class GameCharacterStateTest {
     }
 
     @Test
-    public void testGetLives(){
+    void testGetLives(){
         Assert.assertEquals(3, this.testState.getLives());
     }
 
     @Test
-    public void testRemoveLives(){
+    void testRemoveLives(){
         this.testState.removeLives(1);
         Assert.assertEquals(2, this.testState.getLives());
     }
 
     @Test
-    public void testAddLives(){
+    void testAddLives(){
         this.testState.addLives(1);
         Assert.assertEquals(4,this.testState.getLives());
     }
 
     @Test
-    public void testIsDead(){
+    void testIsDead(){
         Assert.assertFalse(this.testState.isDead());
     }
 
     @Test
-    public void testGetScore(){
+    void testGetScore(){
         Assert.assertEquals(0, this.testState.getScore());
     }
 
     @Test
-    public void testIncreaseScore(){
+    void testIncreaseScore(){
         this.testState.increaseScore(100);
         Assert.assertEquals(100, this.testState.getScore());
     }
 
     @Test
-    public void testGetNumberOfProjectiles(){
-        Assert.assertEquals(3, this.testState.getNumberOfProjectiles());
-    }
-
-    @Test
-    public void testShoot(){
+    void testProjectiles(){
+        Assert.assertEquals(3,this.testState.getNumberOfProjectiles());
         this.testState.shoot();
-        Assert.assertEquals(2, this.testState.getNumberOfProjectiles());
-
+        Assert.assertEquals(2,this.testState.getNumberOfProjectiles());
+        this.testState.addProjectiles(2);
+        Assert.assertEquals(4,this.testState.getNumberOfProjectiles());
     }
 }
