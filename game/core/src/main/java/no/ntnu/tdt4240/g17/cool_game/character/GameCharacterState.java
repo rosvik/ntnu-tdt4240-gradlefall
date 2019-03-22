@@ -29,7 +29,7 @@ public class GameCharacterState {
         this.yPosition = yPosisiton;
         this.lives = 3;
         this.score = 0;
-        this.projectileType = new Projectile();
+        this.projectileType = new Projectile("arrow", 0, 0, 135);
         this.addProjectiles(3);
     }
 

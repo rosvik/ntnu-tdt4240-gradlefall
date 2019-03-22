@@ -56,8 +56,7 @@ public class GameCharacter {
         } else {
             this.animation.idle();
         }
-        this.state.setxPosition(newX);
-        this.state.setyPosition(newY);
+        this.state.setPosition(newX, newY);
     }
 
     /**
@@ -67,8 +66,8 @@ public class GameCharacter {
     public void draw(final SpriteBatch batch, final float stateTime) {
         TextureRegion characterTextureRegion = this.animation.getFrame(stateTime);
         batch.draw(characterTextureRegion,
-                this.state.getyPosition(),
                 this.state.getxPosition(),
+                this.state.getyPosition(),
                 this.animation.getWidth(),
                 this.animation.getHeight());
     }
