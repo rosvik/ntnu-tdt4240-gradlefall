@@ -50,14 +50,14 @@ public class UserInputButtons {
      * @return which button is pressed and a vector with angle and magnitude if the joystick is pressed.
      * The vector is (0,0) if only a button is pressed
      */
-    public MovementOutput processInput(final double x, final double y) {
+    public MovementFormat processInput(final double x, final double y) {
         double relativeY = this.screenHeight - y;
         if (buttonBox.contains((float) x, (float) relativeY)) {
-            return new MovementOutput(calculateButtonInput((float) x, (float) relativeY), new Vector2(0, 0));
+            return new MovementFormat(calculateButtonInput((float) x, (float) relativeY), new Vector2(0, 0));
         } else if (joystickBox.contains((float) x, (float) relativeY)) {
-            return new MovementOutput("joystick", calculateJoystickInput(x, y));
+            return new MovementFormat("joystick", calculateJoystickInput(x, y));
         }
-        return new MovementOutput("No overlap", new Vector2(0, 0));
+        return new MovementFormat("No overlap", new Vector2(0, 0));
     }
 
     /**

@@ -17,7 +17,7 @@ public final class UserInputTest extends ApplicationAdapter {
     BitmapFont font;
     ShapeRenderer shapeRenderer;
     UserInputButtons ib;
-    MovementOutput output;
+    MovementFormat output;
 
     @Override
     public void create() {
@@ -25,7 +25,7 @@ public final class UserInputTest extends ApplicationAdapter {
         font  = new BitmapFont();
         shapeRenderer = new ShapeRenderer();
         ib = new UserInputButtons(Gdx.graphics.getHeight(), Gdx.graphics.getWidth());
-        output = new MovementOutput("", new Vector2(0, 0));
+        output = new MovementFormat("", new Vector2(0, 0));
     }
 
     @Override
@@ -50,7 +50,7 @@ public final class UserInputTest extends ApplicationAdapter {
         shapeRenderer.end();
         batch.begin();
         font.draw(batch, "x: " + Integer.toString(Gdx.input.getX()) + ", y: " + Integer.toString(Gdx.input.getY()), 10, 20);
-        font.draw(batch, "Angle, Magnitude: " + output.getJoystickOutput() + ", Button: " + output.getButtonOutput(), 500, 400);
+        font.draw(batch, "Angle, Magnitude: " + output.getJoystickInput() + ", Button: " + output.getButtonInput(), 500, 400);
         if (Gdx.input.isTouched()) {
             output = ib.processInput(Gdx.input.getX(), Gdx.input.getY());
         }

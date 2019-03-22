@@ -8,27 +8,27 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 
-public class MovementOutputTest {
+public class MovementFormatTest {
 
-    MovementOutput movementOutput;
+    MovementFormat movementFormat;
 
     @Test
     void buttonOutputShouldBeString() {
         // Given
-        movementOutput = new MovementOutput("jump", new Vector2(0,0));
+        movementFormat = new MovementFormat("jump", new Vector2(0,0));
         // When
 
         // Then
-        assertThat(movementOutput.getButtonOutput(), isA(String.class));
+        assertThat(movementFormat.getButtonInput(), isA(String.class));
     }
 
     @Test
     void joystickOutputShouldBeVector2() {
         // Given
-        movementOutput = new MovementOutput("jump", new Vector2(0,0));
+        movementFormat = new MovementFormat("jump", new Vector2(0,0));
         // When
 
         // Then
-        assertThat(movementOutput.getJoystickOutput(), isA(Vector2.class));
+        assertThat(movementFormat.getJoystickInput(), isA(Vector2.class));
     }
 }

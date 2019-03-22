@@ -17,10 +17,10 @@ class UserInputButtonsTest {
         // Given
         UIButtons = new UserInputButtons(SCREEN_HEIGHT, SCREEN_WIDTH);
         // When
-        MovementOutput movementOutput = UIButtons.processInput(160, 310);
+        MovementFormat movementFormat = UIButtons.processInput(160, 310);
         // Then
-        assertEquals(movementOutput.getButtonOutput(), "joystick");
-        assertEquals(movementOutput.getJoystickOutput(), new Vector2(90, 100));
+        assertEquals(movementFormat.getButtonInput(), "joystick");
+        assertEquals(movementFormat.getJoystickInput(), new Vector2(90, 100));
     }
 
     @Test
@@ -28,10 +28,10 @@ class UserInputButtonsTest {
         // Given
         UIButtons = new UserInputButtons(SCREEN_HEIGHT, SCREEN_WIDTH);
         // When
-        MovementOutput movementOutput = UIButtons.processInput(160, 522);
+        MovementFormat movementFormat = UIButtons.processInput(160, 522);
         // Then
-        assertEquals(movementOutput.getButtonOutput(), "joystick");
-        assertEquals(movementOutput.getJoystickOutput(), new Vector2(270, 100));
+        assertEquals(movementFormat.getButtonInput(), "joystick");
+        assertEquals(movementFormat.getJoystickInput(), new Vector2(270, 100));
     }
 
     @Test
@@ -39,10 +39,10 @@ class UserInputButtonsTest {
         // Given
         UIButtons = new UserInputButtons(SCREEN_HEIGHT, SCREEN_WIDTH);
         // When
-        MovementOutput movementOutput = UIButtons.processInput(266, 416);
+        MovementFormat movementFormat = UIButtons.processInput(266, 416);
         // Then
-        assertEquals(movementOutput.getButtonOutput(), "joystick");
-        assertEquals(movementOutput.getJoystickOutput(), new Vector2(0, 100));
+        assertEquals(movementFormat.getButtonInput(), "joystick");
+        assertEquals(movementFormat.getJoystickInput(), new Vector2(0, 100));
     }
 
     @Test
@@ -50,10 +50,10 @@ class UserInputButtonsTest {
         // Given
         UIButtons = new UserInputButtons(SCREEN_HEIGHT, SCREEN_WIDTH);
         // When
-        MovementOutput movementOutput = UIButtons.processInput(54, 416);
+        MovementFormat movementFormat = UIButtons.processInput(54, 416);
         // Then
-        assertEquals(movementOutput.getButtonOutput(), "joystick");
-        assertEquals(movementOutput.getJoystickOutput(), new Vector2(180, 100));
+        assertEquals(movementFormat.getButtonInput(), "joystick");
+        assertEquals(movementFormat.getJoystickInput(), new Vector2(180, 100));
     }
 
     @Test
@@ -61,9 +61,9 @@ class UserInputButtonsTest {
         // Given
         UIButtons = new UserInputButtons(SCREEN_HEIGHT, SCREEN_WIDTH);
         // When
-        MovementOutput movementOutput = UIButtons.processInput(50, 416);
+        MovementFormat movementFormat = UIButtons.processInput(50, 416);
         // Then
-        assertEquals(movementOutput.getJoystickOutput(), new Vector2(180, 100));
+        assertEquals(movementFormat.getJoystickInput(), new Vector2(180, 100));
     }
 
     @Test
@@ -71,10 +71,10 @@ class UserInputButtonsTest {
         // Given
         UIButtons = new UserInputButtons(SCREEN_HEIGHT, SCREEN_WIDTH);
         // When
-        MovementOutput movementOutput = UIButtons.processInput(766, 425);
+        MovementFormat movementFormat = UIButtons.processInput(766, 425);
         // Then
-        assertEquals(movementOutput.getButtonOutput(), "jump");
-        assertEquals(movementOutput.getJoystickOutput(), new Vector2(0, 0));
+        assertEquals(movementFormat.getButtonInput(), "jump");
+        assertEquals(movementFormat.getJoystickInput(), new Vector2(0, 0));
     }
 
     @Test
@@ -82,10 +82,10 @@ class UserInputButtonsTest {
         // Given
         UIButtons = new UserInputButtons(SCREEN_HEIGHT, SCREEN_WIDTH);
         // When
-        MovementOutput movementOutput = UIButtons.processInput(764, 525);
+        MovementFormat movementFormat = UIButtons.processInput(764, 525);
         // Then
-        assertEquals(movementOutput.getButtonOutput(), "shoot");
-        assertEquals(movementOutput.getJoystickOutput(), new Vector2(0, 0));
+        assertEquals(movementFormat.getButtonInput(), "shoot");
+        assertEquals(movementFormat.getJoystickInput(), new Vector2(0, 0));
     }
 
     @Test
@@ -93,10 +93,10 @@ class UserInputButtonsTest {
         // Given
         UIButtons = new UserInputButtons(SCREEN_HEIGHT, SCREEN_WIDTH);
         // When
-        MovementOutput movementOutput = UIButtons.processInput(944, 520);
+        MovementFormat movementFormat = UIButtons.processInput(944, 520);
         // Then
-        assertEquals(movementOutput.getButtonOutput(), "place");
-        assertEquals(movementOutput.getJoystickOutput(), new Vector2(0, 0));
+        assertEquals(movementFormat.getButtonInput(), "place");
+        assertEquals(movementFormat.getJoystickInput(), new Vector2(0, 0));
     }
 
 }

@@ -11,9 +11,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
-import no.ntnu.tdt4240.g17.cool_game.character.InputToMovement;
+import no.ntnu.tdt4240.g17.cool_game.character.InputToMovementOutput;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.MovementOutput;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.MovementFormat;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.UserInputButtons;
 
 /**
@@ -34,11 +34,13 @@ public class MainGame extends ApplicationAdapter {
 
     UserInputButtons userInputButtons;
 
-    MovementOutput movementOutput;
+    MovementFormat movementFormat;
 
-    InputToMovement inputToMovement;
+    InputToMovementOutput inputToMovementOutput;
 
-    Vector2 oldPosition, newPosition;
+    Vector2 oldPosition;
+
+    MovementFormat newPosition;
 
     int screenHeigth, screenWidth;
 
@@ -58,9 +60,9 @@ public class MainGame extends ApplicationAdapter {
         character = new GameCharacter("big_zombie", 100,  100, atlas);
         stateTime = 0;
         userInputButtons = new UserInputButtons(screenHeigth, screenWidth);
-        inputToMovement = new InputToMovement();
+        inputToMovementOutput = new InputToMovementOutput();
         oldPosition = new Vector2(screenWidth / 2, screenHeigth / 2);
-        newPosition = new Vector2(0, 0);
+        newPosition = new MovementFormat("", 0);
         shapeRenderer = new ShapeRenderer();
     }
 
@@ -80,16 +82,13 @@ public class MainGame extends ApplicationAdapter {
         // Render the arena
         //arena.render();
         if (Gdx.input.isTouched()) {
-            movementOutput = userInputButtons.processInput(Gdx.input.getX(), Gdx.input.getY());
+            movementFormat = userInputButtons.processInput(Gdx.input.getX(), Gdx.input.getY());
         } else {
-            movementOutput = new MovementOutput("joystick", new Vector2(0, 0));
+            movementFormat = new MovementFormat("joystick", new Vector2(0, 0));
         }
-        newPosition = inputToMovement.getNewMovement(oldPosition, movementOutput, screenHeigth, stateTime);
-        character.render(newPosition.x, newPosition.y);
-        oldPosition = newPosition;
-
-        //character.render((int) ((userInputButtons.processInput(Gdx.input.getX() , Gdx.input.getY())).getJoystickOutput().y) + screenWidth/2, screenHeigth/2);
-        character.render(oldPosition.x, oldPosition.y);
+        movementFormat = inputToMovementOutput.getOutput(movementFormat);
+        font.draw(batch, "button: " + movementFormat.getButtonInput() + ", value: " + movementFormat.getValue(), 10, 20);
+        character.render(200, 500);
         character.draw(batch, stateTime);
         //batch.draw();
 
