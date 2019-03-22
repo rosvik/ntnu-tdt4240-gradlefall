@@ -37,7 +37,7 @@ public class MainGame extends ApplicationAdapter {
         //arena.setBackground("background.png");
         dungeonTilset = new TextureAtlas("./Assets/TextureAtlas/Characters/DungeonTileset.atlas");
         projectiles = new TextureAtlas("Assets/TextureAtlas/Projectiles/Projectiles.atlas");
-        character1 = new GameCharacter("knight_f", 100, 100, dungeonTilset);
+        character1 = new GameCharacter("knight_f", 100, 100, dungeonTilset, "arrow", projectiles);
         stateTime = 0;
         projectile = new Projectile("arrow", 0, 0, 135, projectiles);
     }

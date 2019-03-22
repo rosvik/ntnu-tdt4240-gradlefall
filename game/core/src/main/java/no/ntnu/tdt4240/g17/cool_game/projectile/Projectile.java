@@ -40,6 +40,17 @@ public class Projectile {
     public void render(final float newX, final float newY) {
         float newDirectionAngle = new Float(
                 Math.atan2(newY - this.state.getyPosition(), newX - this.state.getxPosition())  * 180.0d / Math.PI);
+        this.render(newX, newY, newDirectionAngle);
+    }
+
+    /**
+     * Render the character.
+     * Changes the position and animation.
+     * @param newX = the new x position
+     * @param newY = the new y position
+     * @param newDirectionAngle = the new direction
+     */
+    public void render(final float newX, final float newY, final float newDirectionAngle) {
         this.state.setDirectionAngle(newDirectionAngle);
         this.state.setxPosition(newX);
         this.state.setyPosition(newY);
