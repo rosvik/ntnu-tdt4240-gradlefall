@@ -6,18 +6,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.Iterator;
 
@@ -50,7 +45,7 @@ class PhysicsSystemTest {
         world = new World(new Vector2(0, -9.81f), true);
 
         engine = new Engine();
-        physicsSystem = new PhysicsSystem(PhysicsSystem.PHYSICS_FAMILY, INTERVAL, 0, world);
+        physicsSystem = new PhysicsSystem(PhysicsSystem.PHYSICS_FAMILY, 0, INTERVAL, world);
         engine.addSystem(physicsSystem);
     }
 

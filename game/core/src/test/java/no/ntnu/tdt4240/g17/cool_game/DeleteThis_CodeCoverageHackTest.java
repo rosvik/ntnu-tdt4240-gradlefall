@@ -1,12 +1,7 @@
 package no.ntnu.tdt4240.g17.cool_game;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-
 import com.libgdx.test.util.GameTest;
 import org.junit.jupiter.api.Test;
-
-import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
-import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.GameView;
 import no.ntnu.tdt4240.g17.cool_game.screens.highscore.HighscoreView;
 import no.ntnu.tdt4240.g17.cool_game.screens.loading.LoadingView;

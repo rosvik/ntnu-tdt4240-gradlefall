@@ -2,6 +2,7 @@ package no.ntnu.tdt4240.g17.cool_game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
@@ -16,6 +17,8 @@ public class MainGame extends ApplicationAdapter {
 
     /** Batch to render. */
     SpriteBatch batch;
+    /** Background image. */
+    private Texture background;
 
     /** Arena. */
     Arena arena;
@@ -29,25 +32,32 @@ public class MainGame extends ApplicationAdapter {
 
     // Projectile.
     Projectile projectile;
+    /** Arena width in tiles. */
+    private float width;
+
+    /** Arena height in tiles. */
+    private float height;
+
 
     @Override
     public final void create() {
+        width = 32f;
+        height = 20f;
+
         batch = new SpriteBatch();
-        // arena = new Arena("map2.tmx", 16f, 32f, 20f, batch);
-        //arena.setBackground("background.png");
         dungeonTilset = new TextureAtlas("./Assets/TextureAtlas/Characters/DungeonTileset.atlas");
         projectiles = new TextureAtlas("Assets/TextureAtlas/Projectiles/Projectiles.atlas");
         character1 = new GameCharacter("knight_f", 100, 100, dungeonTilset, "arrow", projectiles);
         stateTime = 0;
         projectile = new Projectile("arrow", 0, 0, 135, projectiles);
+        arena = new Arena("map2.tmx", 16f, width, height, batch);
+        background = new Texture("background.png");
     }
 
     @Override
     public final void render() {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        /** API. */
 
         /* character. */
         //character1.render(api1.getxValue(), api1.getyValue());
@@ -56,12 +66,15 @@ public class MainGame extends ApplicationAdapter {
 
         batch.begin();
 
-        // Render the arena
-        //arena.render();
+        // Draw the background
+        batch.draw(background, 0f, 0f, width, height);
 
         // Render charcter
         //projectile.draw(batch);
         //character1.draw(batch, stateTime);
+
+        arena.renderArena();
+        arena.renderForeground();
 
         //batch.draw(img, 0, 0);
         batch.end();
