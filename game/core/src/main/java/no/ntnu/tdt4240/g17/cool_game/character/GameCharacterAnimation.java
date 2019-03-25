@@ -95,7 +95,7 @@ public class GameCharacterAnimation {
      * @return the height of the sprite
      */
     public float getHeight() {
-        return this.animation.getKeyFrame(0).getRegionHeight()/TILE_SCALE_CONSTANT;
+        return this.animation.getKeyFrame(0).getRegionHeight() / TILE_SCALE_CONSTANT;
     }
 
     /**
@@ -103,9 +103,9 @@ public class GameCharacterAnimation {
      */
     public float getWidth() {
         if (this.isMovingLeft) {
-            return -this.animation.getKeyFrame(0).getRegionHeight()/TILE_SCALE_CONSTANT;
+            return -this.animation.getKeyFrame(0).getRegionHeight() / TILE_SCALE_CONSTANT;
         }
-        return this.animation.getKeyFrame(0).getRegionHeight()/TILE_SCALE_CONSTANT;
+        return this.animation.getKeyFrame(0).getRegionHeight() / TILE_SCALE_CONSTANT;
     }
 
     /**

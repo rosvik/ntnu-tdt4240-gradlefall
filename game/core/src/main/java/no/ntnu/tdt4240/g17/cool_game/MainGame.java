@@ -48,9 +48,8 @@ public class MainGame extends ApplicationAdapter {
 
         batch = new SpriteBatch();
         dungeonTilset = new TextureAtlas("./Assets/TextureAtlas/Characters/DungeonTileset.atlas");
-        dungeonTilset = new TextureAtlas("Assets/TextureAtlas/Characters/DungeonTileset.txt");
         projectiles = new TextureAtlas("Assets/TextureAtlas/Projectiles/Projectiles.atlas");
-        character1 = new GameCharacter("big_zombie", 10, 10, dungeonTilset, "arrow", projectiles);
+        character1 = new GameCharacter("knight_m", 10, 10, dungeonTilset, "arrow", projectiles);
         stateTime = 0;
         projectile = new Projectile("arrow", 0, 0, 135, projectiles);
         arena = new Arena("map2.tmx", 16f, width, height, batch);
