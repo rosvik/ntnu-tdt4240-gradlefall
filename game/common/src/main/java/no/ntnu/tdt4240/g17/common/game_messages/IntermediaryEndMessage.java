@@ -2,11 +2,10 @@ package no.ntnu.tdt4240.g17.common.game_messages;
 
 import no.ntnu.tdt4240.g17.common.game_helpers.Player;
 
-import java.util.ArrayList;
-import java.util.Dictionary;
+import java.util.List;
 
 public class IntermediaryEndMessage {
-    public ArrayList<Player> players;
+    public List<Player> players;
     public String nextArena;
     public String gameMode;
 

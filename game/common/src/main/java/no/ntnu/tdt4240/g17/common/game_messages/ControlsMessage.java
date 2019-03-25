@@ -4,10 +4,10 @@ public class ControlsMessage {
     public String playerId;
     public float moveSpeed;
     public float moveAngle;
-    public Boolean jump;
-    public Boolean shoot;
+    public boolean jump;
+    public boolean shoot;
     public float shootAngle;
-    public Boolean placeBlock;
+    public boolean placeBlock;
     public float placeBlockAngle;
 
 }
