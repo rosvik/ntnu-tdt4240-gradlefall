@@ -2,8 +2,8 @@ package no.ntnu.tdt4240.g17.cool_game.character;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.libgdx.test.util.GameTest;
+
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
 

@@ -1,9 +1,10 @@
 package no.ntnu.tdt4240.g17.cool_game.character;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
 
 import java.util.Stack;
+
+import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
 
 /**
  * State of a gamecharacter.
