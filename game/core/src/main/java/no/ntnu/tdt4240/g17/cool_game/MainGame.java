@@ -35,7 +35,7 @@ public class MainGame extends ApplicationAdapter {
 
     UserInputButtons userInputButtons;
 
-    MovementFormat firstFinger, secondFinger, movementFormat;
+    MovementFormat movementFormat;
 
     InputToMovementOutput inputToMovementOutput;
 
@@ -55,8 +55,6 @@ public class MainGame extends ApplicationAdapter {
         screenHeigth = Gdx.graphics.getHeight();
         screenWidth = Gdx.graphics.getWidth();
         batch = new SpriteBatch();
-        //arena = new Arena("map2.tmx", 16f, 32f, 20f, batch);
-        //arena.setBackground("background.png");
         atlas = new TextureAtlas("DungeonTileset.atlas");
         character = new GameCharacter("big_zombie", 100,  100, atlas);
         stateTime = 0;
@@ -81,33 +79,12 @@ public class MainGame extends ApplicationAdapter {
         shapeRenderer.rect(userInputButtons.getPlace().x, userInputButtons.getPlace().y, userInputButtons.getPlace().width, userInputButtons.getPlace().height);
         shapeRenderer.end();
         batch.begin();
-
         movementFormat = inputProcessor.processInput(Gdx.input.isTouched(0), Gdx.input.isTouched(1),
                 Gdx.input.isTouched(2), Gdx.input.getX(0), Gdx.input.getY(0),
                 Gdx.input.getX(1), Gdx.input.getY(1), Gdx.input.getX(2), Gdx.input.getY(2));
-        // Render the arena
-        //arena.render();
-        /**
-        if (Gdx.input.isTouched(1) && Gdx.input.isTouched(0)) {
-            firstFinger = userInputButtons.processInput(Gdx.input.getX(0), Gdx.input.getY(0));
-            secondFinger = userInputButtons.processInput(Gdx.input.getX(1), Gdx.input.getY(1));
-            movementFormat = inputToMovementOutput.getOutput(firstFinger, secondFinger);
-        } else if (Gdx.input.isTouched(1)) {
-            firstFinger = userInputButtons.processInput(Gdx.input.getX(1), Gdx.input.getY(1));
-            movementFormat = inputToMovementOutput.getOutput(firstFinger);
-        } else if (Gdx.input.isTouched(0)) {
-            firstFinger = userInputButtons.processInput(Gdx.input.getX(0), Gdx.input.getY(0));
-            movementFormat = inputToMovementOutput.getOutput(firstFinger);
-        } else {
-            firstFinger = new MovementFormat("joystick", new Vector2(0, 0));
-            movementFormat = inputToMovementOutput.getOutput(firstFinger);
-        }*/
         font.draw(batch, "button: " + movementFormat.getButtonsPressed() + ", value: " + movementFormat.getJoystickInput(), 300, 500);
         character.render(200, 500);
         character.draw(batch, stateTime);
-        //batch.draw();
-
-        //batch.draw(img, 0, 0);
         batch.end();
     }
 

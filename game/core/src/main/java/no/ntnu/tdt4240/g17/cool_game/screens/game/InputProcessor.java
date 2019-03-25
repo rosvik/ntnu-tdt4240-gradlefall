@@ -16,11 +16,29 @@ public class InputProcessor {
     UserInputButtons userInputButtons;
     InputToMovementOutput inputToMovementOutput;
 
+
+    /**
+     * Constructor.
+     * @param screenHeight height of the screen
+     * @param screenWidth width of the screen
+     */
     public InputProcessor(final int screenHeight, final int screenWidth) {
         userInputButtons = new UserInputButtons(screenHeight, screenWidth);
         inputToMovementOutput = new InputToMovementOutput();
     }
 
+    /**
+     * @param fingerOnePressed Whether the first finger is touching the screen or not
+     * @param fingerTwoPressed Whether the second finger is touching the screen or not
+     * @param fingerThreePressed Whether the third finger is touching the screen or not
+     * @param fingerOneX x-ccordinate of the first finger
+     * @param fingerOneY y-coordinate of the first finger
+     * @param fingerTwoX x-coordinate of the second finger
+     * @param fingerTwoY y-coordinate of the second finger
+     * @param fingerThreeX x-coordinate of the third finger
+     * @param fingerThreeY y-coordinate of the third finger
+     * @return The server-accepted movementFormat that inputToMovementOutput returns
+     */
     public MovementFormat processInput(final boolean fingerOnePressed, final boolean fingerTwoPressed,
                                        final boolean fingerThreePressed, final double fingerOneX,
                                        final double fingerOneY, final double fingerTwoX, final double fingerTwoY,
