@@ -2,7 +2,12 @@ package no.ntnu.tdt4240.g17.server;
 
 import com.badlogic.gdx.physics.box2d.Box2D;
 
+import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.LoggerContext;
 import lombok.extern.slf4j.Slf4j;
+import no.ntnu.tdt4240.g17.server.availability.FailureListener;
+import no.ntnu.tdt4240.g17.server.network.GameServer;
 
 /**
  * Main class for the server.
@@ -26,5 +31,40 @@ public final class ServerMain {
         // eg. bort number and bind adress (127.0.0.1 or 0.0.0.0).
         // TODO: Start server to listen for incoming clients.
         // TODO: Register for heartbeats/ping?
+        final FailureListener failureListener = new FailureListener() {
+            @Override
+            public void reportFailure(final Severity severity, final Throwable exception) {
+                // FIXME make proper error handling.
+                log.error("OOPS, FAILURE! FIXME: implement failure handling. Severity {}", severity.name(), exception);
+            }
+        };
+
+        // TODO: 3/22/2019 Read from a config file or environment
+        final int tcpPort = 5777;
+        final GameServer gameServer = new GameServer(tcpPort, failureListener);
+
+        final ThreadGroup connectionThreadGroup = new ThreadGroup("Connection");
+        final Thread serverThread = new Thread(connectionThreadGroup, gameServer, "GameServer");
+
+
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                setName("ShutdownHook");
+                log.info("Shutting down.");
+                gameServer.stop();
+                try {
+                    serverThread.join();
+                } catch (InterruptedException ignored) { }
+                log.info("Shut down.");
+                LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+                loggerContext.stop();
+            }
+        });
+
+        log.info("Starting server");
+        serverThread.start();
+
+        log.info("Main thread exiting.");
     }
 }

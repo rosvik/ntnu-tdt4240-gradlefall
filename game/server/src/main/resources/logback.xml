@@ -1,4 +1,4 @@
-<configuration>
+<configuration debug="true">
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
@@ -9,6 +9,9 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
         <file>logs/server.err</file>
         <append>true</append>
         <!-- encoders are assigned the type
@@ -19,10 +22,8 @@
         </encoder>
     </appender>
 
-    <root level="DEBUG">
+    <root level="TRACE">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" level="WARN"/>
     </root>
-    <logger name="no.ntnu" level="WARN">
-        <appender-ref ref="FILE" />
-    </logger>
 </configuration>
