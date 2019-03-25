@@ -1,8 +1,9 @@
 package no.ntnu.tdt4240.g17.cool_game.character;
 
-import java.util.Stack;
-
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
+
+import java.util.Stack;
 
 /**
  * State of a gamecharacter.
@@ -23,13 +24,19 @@ public class GameCharacterState {
      * Constructor.
      * @param xPosisiton = the inital x posistion
      * @param yPosisiton = the inital y posistion'
+     * @param projectileName = the name of projectilesprite in TextureAtlas
+     * @param projectiles = the projectiles TextureAtlas
      */
-    public GameCharacterState(final float xPosisiton, final float yPosisiton) {
+    public GameCharacterState(final float xPosisiton,
+                              final float yPosisiton,
+                              final String projectileName,
+                              final TextureAtlas projectiles
+    ) {
         this.xPosition = xPosisiton;
         this.yPosition = yPosisiton;
         this.lives = 3;
         this.score = 0;
-        this.projectileType = new Projectile();
+        this.projectileType = new Projectile(projectileName, 0, 0, 135, projectiles);
         this.addProjectiles(3);
     }
 

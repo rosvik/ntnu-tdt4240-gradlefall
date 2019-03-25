@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Fri Mar 22 14:54:49 CET 2019
+kryonet-2.22.0-RC1-local.jar>=
+kryonet-2.22.0-RC1-local.pom>=
+kryonet-2.22.0-RC1-local-sources.jar>=
