@@ -24,16 +24,19 @@ public class GameServer implements Runnable {
 
     private final List<PlayerConnection> connections = new ArrayList<>();
     private final Server server;
+    private final MessageHandlerDelegator handlerDelegator;
 
     /**
      * Create a new game server.
-     *
-     * @param tcpPort         TCP port to listen to.
+     *  @param tcpPort         TCP port to listen to.
      * @param failureListener a listener to report failures to.
+     * @param handlerDelegator a delegator that handles messages
      */
-    public GameServer(final int tcpPort, final FailureListener failureListener) {
+    public GameServer(final int tcpPort, final FailureListener failureListener,
+                      final MessageHandlerDelegator handlerDelegator) {
         this.tcpPort = tcpPort;
         this.failureListener = failureListener;
+        this.handlerDelegator = handlerDelegator;
         server = new Server() {
             @Override
             protected Connection newConnection() {
@@ -47,7 +50,7 @@ public class GameServer implements Runnable {
         ServerMinLogBridge.bridgeMinlogToSlf4j();
 
         // the listener will modify #connections and also synchronize on it.
-        server.addListener(new PlayerConnectionListener(connections));
+        server.addListener(new PlayerConnectionListener(connections, handlerDelegator));
 
         try {
             server.bind(tcpPort);

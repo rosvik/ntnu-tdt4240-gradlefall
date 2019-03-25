@@ -13,13 +13,17 @@ import lombok.extern.slf4j.Slf4j;
 class PlayerConnectionListener extends BasePlayerConnectionListener {
 
     private final List<PlayerConnection> connections;
+    private final MessageHandlerDelegator handlerDelegator;
+
 
     /**
      * Create a new listener. New connections are added to connections.
      * @param connections mutable list. Will be synchronized on.
+     * @param handlerDelegator the delegator with registered handlers.
      */
-    PlayerConnectionListener(final List<PlayerConnection> connections) {
+    PlayerConnectionListener(final List<PlayerConnection> connections, final MessageHandlerDelegator handlerDelegator) {
         this.connections = connections;
+        this.handlerDelegator = handlerDelegator;
     }
 
     @Override
@@ -35,7 +39,6 @@ class PlayerConnectionListener extends BasePlayerConnectionListener {
     @Override
     public void received(final PlayerConnection connection, final Object object) {
         // Runs on same thread as Server#update
-        // TODO: 3/22/2019 Implement this
         /*
         Should probably do it like this:
         find if the player is in a game.
@@ -46,6 +49,7 @@ class PlayerConnectionListener extends BasePlayerConnectionListener {
         if entering matchmaking:
             send to matchmaking thread
          */
+        handlerDelegator.handleMessage(connection, object);
     }
 
     @Override

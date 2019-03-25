@@ -126,7 +126,6 @@ project(":server") {
         // This one is made from commit 2ed19b4743667664d15e3778447e579855ba3a65
         // From https://github.com/EsotericSoftware/kryonet.git
         implementation "com.esotericsoftware:kryonet:$kryonetVersion"
-        implementation "com.esotericsoftware:kryonet:$kryonetVersion"
 
         implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"

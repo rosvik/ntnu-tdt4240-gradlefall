@@ -8,6 +8,7 @@ import ch.qos.logback.classic.LoggerContext;
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.server.availability.FailureListener;
 import no.ntnu.tdt4240.g17.server.network.GameServer;
+import no.ntnu.tdt4240.g17.server.network.MessageHandlerDelegator;
 
 /**
  * Main class for the server.
@@ -41,11 +42,13 @@ public final class ServerMain {
 
         // TODO: 3/22/2019 Read from a config file or environment
         final int tcpPort = 5777;
-        final GameServer gameServer = new GameServer(tcpPort, failureListener);
+        final MessageHandlerDelegator handlerDelegator = new MessageHandlerDelegator();
+        final GameServer gameServer = new GameServer(tcpPort, failureListener, handlerDelegator);
 
         final ThreadGroup connectionThreadGroup = new ThreadGroup("Connection");
         final Thread serverThread = new Thread(connectionThreadGroup, gameServer, "GameServer");
 
+        handlerDelegator.registerHandler((connection, message) -> log.info("Got message: {}", message), String.class);
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
