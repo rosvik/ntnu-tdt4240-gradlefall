@@ -4,12 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.MatcherAssert.*;
-import org.hamcrest.Matchers;
-import org.hamcrest.Matchers.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -26,7 +21,7 @@ class PlayerConnectionListenerTest {
     void shouldAddNewConnectionsToList() {
         // Given
         final ArrayList<PlayerConnection> connections = new ArrayList<>();
-        final PlayerConnectionListener connectionListener = new PlayerConnectionListener(connections);
+        final PlayerConnectionListener connectionListener = new PlayerConnectionListener(connections, new MessageHandlerDelegator());
         final PlayerConnection playerConnection = new PlayerConnection();
 
         // When
@@ -42,7 +37,7 @@ class PlayerConnectionListenerTest {
         final PlayerConnection playerConnection = new PlayerConnection();
         final ArrayList<PlayerConnection> connections = new ArrayList<>();
         connections.add(playerConnection);
-        final PlayerConnectionListener connectionListener = new PlayerConnectionListener(connections);
+        final PlayerConnectionListener connectionListener = new PlayerConnectionListener(connections, new MessageHandlerDelegator());
 
         // When
         connectionListener.disconnected(playerConnection);
