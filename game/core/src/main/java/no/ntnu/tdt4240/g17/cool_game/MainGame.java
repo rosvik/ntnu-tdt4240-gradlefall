@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
+import no.ntnu.tdt4240.g17.cool_game.powerup.Powerup;
 import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
 
 /**
@@ -34,6 +35,8 @@ public class MainGame extends ApplicationAdapter {
     // Projectile
     Projectile projectile;
 
+    Powerup powerup;
+
     /** Arena width in tiles.*/
     private float width;
 
@@ -52,6 +55,7 @@ public class MainGame extends ApplicationAdapter {
         character1 = new GameCharacter("knight_m", 10, 10, dungeonTilset, "arrow", projectiles);
         stateTime = 0;
         projectile = new Projectile("arrow", 0, 0, 135, projectiles);
+        powerup = new Powerup("chest_full_open_anim", 10, 10, 90, dungeonTilset);
         arena = new Arena("map2.tmx", 16f, width, height, batch);
         background = new Texture("background.png");
     }
