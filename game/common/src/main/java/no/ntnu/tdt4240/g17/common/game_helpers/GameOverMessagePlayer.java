@@ -6,11 +6,13 @@ package no.ntnu.tdt4240.g17.common.game_helpers;
  * @author Morten 'bujordet' Bujordet
  */
 @SuppressWarnings("CheckStyle")
-public class Player {
+public class GameOverMessagePlayer {
     /** Unique id for the player. */
     public String playerId;
     /** Player chosen name. */
     public String playerName;
-    /** Position of the player. */
-    public Position position;
+    /** The description for each player id's visual appearance. */
+    public Enum playerSkin;
+    /** The score for each player id; String: playerId, Integer: score. */
+    public Integer playerScore;
 }

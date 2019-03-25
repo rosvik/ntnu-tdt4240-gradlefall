@@ -6,9 +6,7 @@ package no.ntnu.tdt4240.g17.common.game_helpers;
  * @author Morten 'bujordet' Bujordet
  */
 @SuppressWarnings("CheckStyle")
-public class Position {
-    /** Position of the player in x-direction. */
-    public float x;
-    /** Position of the player in y-direction. */
-    public float y;
+public class MatchmadeMessagePlayer extends Player {
+    /** The description for each player id's visual appearance. */
+    public Enum playerSkin;
 }
