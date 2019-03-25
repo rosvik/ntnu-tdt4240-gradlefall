@@ -6,7 +6,7 @@ buildscript {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://plugins.gradle.org/m2/" }
         mavenCentral()
-        maven { url file("localMaven") }
+        maven { url "file://" + file('localMaven').absolutePath }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.2'
