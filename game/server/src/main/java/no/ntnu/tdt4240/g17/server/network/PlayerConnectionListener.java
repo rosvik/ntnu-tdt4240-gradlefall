@@ -1,60 +1,66 @@
 package no.ntnu.tdt4240.g17.server.network;
 
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
+import java.util.List;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * Just casts {@link Connection} to {@link PlayerConnection}
- * because kryonet isnt smart enough to provide generic types for its listeners.
+ * Listens to events from player connections on a {@link GameServer}.
  *
  * @author Kristian 'krissrex' Rekstad
  */
-abstract class PlayerConnectionListener extends Listener {
+@Slf4j
+class PlayerConnectionListener extends BasePlayerConnectionListener {
 
-    @Override
-    public final void connected(final Connection connection) {
-        connected((PlayerConnection) connection);
-    }
+    private final List<PlayerConnection> connections;
 
     /**
-     * @param connection the connection.
-     * @see #connected(Connection)
+     * Create a new listener. New connections are added to connections.
+     * @param connections mutable list. Will be synchronized on.
      */
-    public abstract void connected(PlayerConnection connection);
-
-
-    @Override
-    public final void received(final Connection connection, final Object object) {
-        received((PlayerConnection) connection, object);
+    PlayerConnectionListener(final List<PlayerConnection> connections) {
+        this.connections = connections;
     }
 
-    /**
-     * @param connection the connection
-     * @param object the data object
-     * @see #received(Connection, Object)
-     */
-    public abstract void received(PlayerConnection connection, Object object);
-
     @Override
-    public final void idle(final Connection connection) {
-        idle((PlayerConnection) connection);
+    public void connected(final PlayerConnection connection) {
+        // Runs on same thread as Server#update
+        synchronized (connections) {
+            connections.add(connection);
+        }
+        log.debug("Client {} connected. Network RTT: {}", connection.getID(), connection.getReturnTripTime());
+        log.info("Currently have {} connections.", connections.size());
     }
 
-    /**
-     * @param connection the connection
-     * @see #idle(Connection)
-     */
-    public abstract void idle(PlayerConnection connection);
-
     @Override
-    public final void disconnected(final Connection connection) {
-        disconnected((PlayerConnection) connection);
+    public void received(final PlayerConnection connection, final Object object) {
+        // Runs on same thread as Server#update
+        // TODO: 3/22/2019 Implement this
+        /*
+        Should probably do it like this:
+        find if the player is in a game.
+            if so, find the thread that handles the game engine.
+            Send the message to that thread.
+        if not in a game:
+            send to a generic handler/executor for inactive clients
+        if entering matchmaking:
+            send to matchmaking thread
+         */
     }
 
-    /**
-     * @param connection the connection
-     * @see #disconnected(Connection)
-     */
-    public abstract void disconnected(PlayerConnection connection);
+    @Override
+    public void idle(final PlayerConnection connection) {
+    }
 
+    @Override
+    public void disconnected(final PlayerConnection connection) {
+        // unspecified thread
+        // FIXME: 3/22/2019 only remove from connections or similiar if the user intended to disconnect?
+        // Do connection interrupts come here?
+        synchronized (connections) {
+            connections.remove(connection);
+        }
+        log.debug("Client {} disconnected", connection.getID());
+        log.info("Currently have {} connections.", connections.size());
+    }
 }

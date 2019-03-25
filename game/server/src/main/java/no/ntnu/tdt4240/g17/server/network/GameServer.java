@@ -46,47 +46,8 @@ public class GameServer implements Runnable {
     public final void run() {
         ServerMinLogBridge.bridgeMinlogToSlf4j();
 
-        server.addListener(new PlayerConnectionListener() {
-            @Override
-            public void connected(final PlayerConnection connection) {
-                // Runs on same thread as Server#update
-                synchronized (connections) {
-                    connections.add(connection);
-                }
-                log.debug("Client {} connected. Network RTT: {}", connection.getID(), connection.getReturnTripTime());
-            }
-
-            @Override
-            public void received(final PlayerConnection connection, final Object object) {
-                // Runs on same thread as Server#update
-                // TODO: 3/22/2019 Implement this
-                /*
-                Should probably do it like this:
-                find if the player is in a game.
-                    if so, find the thread that handles the game engine.
-                    Send the message to that thread.
-                if not in a game:
-                    send to a generic handler/executor for inactive clients
-                if entering matchmaking:
-                    send to matchmaking thread
-                 */
-            }
-
-            @Override
-            public void idle(final PlayerConnection connection) {
-            }
-
-            @Override
-            public void disconnected(final PlayerConnection connection) {
-                // unspecified thread
-                // FIXME: 3/22/2019 only remove from connections or similiar if the user intended to disconnect?
-                // Do connection interrupts come here?
-                synchronized (connections) {
-                    connections.remove(connection);
-                }
-                log.debug("Client {} disconnected", connection.getID());
-            }
-        });
+        // the listener will modify #connections and also synchronize on it.
+        server.addListener(new PlayerConnectionListener(connections));
 
         try {
             server.bind(tcpPort);
@@ -100,7 +61,7 @@ public class GameServer implements Runnable {
             System.exit(1);
         }
 
-        server.run(); // blocks untill stop==true!
+        server.run(); // blocks until stop==true!
     }
 
     /**
@@ -112,4 +73,5 @@ public class GameServer implements Runnable {
             server.stop();
         }
     }
+
 }
