@@ -16,7 +16,6 @@ public class InputProcessor {
     UserInputButtons userInputButtons;
     InputToMovementOutput inputToMovementOutput;
 
-
     /**
      * Constructor.
      * @param screenHeight height of the screen
@@ -28,46 +27,39 @@ public class InputProcessor {
     }
 
     /**
-     * @param fingerOnePressed Whether the first finger is touching the screen or not
-     * @param fingerTwoPressed Whether the second finger is touching the screen or not
-     * @param fingerThreePressed Whether the third finger is touching the screen or not
-     * @param fingerOneX x-ccordinate of the first finger
-     * @param fingerOneY y-coordinate of the first finger
-     * @param fingerTwoX x-coordinate of the second finger
-     * @param fingerTwoY y-coordinate of the second finger
-     * @param fingerThreeX x-coordinate of the third finger
-     * @param fingerThreeY y-coordinate of the third finger
-     * @return The server-accepted movementFormat that inputToMovementOutput returns
+     *
+     * @param fingerOne TouchInput object representing the first finger touching the screen.
+     * @param fingerTwo TouchInput object representing the second finger touching the screen.
+     * @param fingerThree TouchInput object representing the third finger touching the screen.
+     * @return The server-accepted movementFormat that inputToMovementOutput returns.
      */
-    public MovementFormat processInput(final boolean fingerOnePressed, final boolean fingerTwoPressed,
-                                       final boolean fingerThreePressed, final double fingerOneX,
-                                       final double fingerOneY, final double fingerTwoX, final double fingerTwoY,
-                                       final double fingerThreeX, final double fingerThreeY) {
-        if (fingerOnePressed && fingerTwoPressed && fingerThreePressed) {
-            firstFinger = userInputButtons.processInput(fingerOneX, fingerOneY);
-            secondFinger = userInputButtons.processInput(fingerTwoX, fingerTwoY);
-            thirdFinger = userInputButtons.processInput(fingerThreeX, fingerThreeY);
+    public MovementFormat processInput(final TouchInput fingerOne, final TouchInput fingerTwo,
+                                       final TouchInput fingerThree) {
+        if (fingerOne.isPressed() && fingerTwo.isPressed() && fingerThree.isPressed()) {
+            firstFinger = userInputButtons.processInput(fingerOne.getXPosition(), fingerOne.getYPosition());
+            secondFinger = userInputButtons.processInput(fingerTwo.getXPosition(), fingerTwo.getYPosition());
+            thirdFinger = userInputButtons.processInput(fingerThree.getXPosition(), fingerThree.getYPosition());
             movementOutput = inputToMovementOutput.getOutput(firstFinger, secondFinger, thirdFinger);
-        } else if (fingerOnePressed && fingerTwoPressed) {
-            firstFinger = userInputButtons.processInput(fingerOneX, fingerOneY);
-            secondFinger = userInputButtons.processInput(fingerTwoX, fingerTwoY);
+        } else if (fingerOne.isPressed() && fingerTwo.isPressed()) {
+            firstFinger = userInputButtons.processInput(fingerOne.getXPosition(), fingerOne.getYPosition());
+            secondFinger = userInputButtons.processInput(fingerTwo.getXPosition(), fingerTwo.getYPosition());
             movementOutput = inputToMovementOutput.getOutput(firstFinger, secondFinger);
-        } else if (fingerOnePressed && fingerThreePressed) {
-            firstFinger = userInputButtons.processInput(fingerOneX, fingerOneY);
-            secondFinger = userInputButtons.processInput(fingerThreeX, fingerThreeY);
+        } else if (fingerOne.isPressed() && fingerThree.isPressed()) {
+            firstFinger = userInputButtons.processInput(fingerOne.getXPosition(), fingerOne.getYPosition());
+            secondFinger = userInputButtons.processInput(fingerThree.getXPosition(), fingerThree.getYPosition());
             movementOutput = inputToMovementOutput.getOutput(firstFinger, secondFinger);
-        } else if (fingerTwoPressed && fingerThreePressed) {
-            firstFinger = userInputButtons.processInput(fingerTwoX, fingerTwoY);
-            secondFinger = userInputButtons.processInput(fingerThreeX, fingerThreeY);
+        } else if (fingerTwo.isPressed() && fingerThree.isPressed()) {
+            firstFinger = userInputButtons.processInput(fingerTwo.getXPosition(), fingerTwo.getYPosition());
+            secondFinger = userInputButtons.processInput(fingerThree.getXPosition(), fingerThree.getYPosition());
             movementOutput = inputToMovementOutput.getOutput(firstFinger, secondFinger);
-        } else if (fingerOnePressed) {
-            firstFinger = userInputButtons.processInput(fingerOneX, fingerOneY);
+        } else if (fingerOne.isPressed()) {
+            firstFinger = userInputButtons.processInput(fingerOne.getXPosition(), fingerOne.getYPosition());
             movementOutput = inputToMovementOutput.getOutput(firstFinger);
-        } else if (fingerTwoPressed) {
-            firstFinger = userInputButtons.processInput(fingerTwoX, fingerTwoY);
+        } else if (fingerTwo.isPressed()) {
+            firstFinger = userInputButtons.processInput(fingerTwo.getXPosition(), fingerTwo.getYPosition());
             movementOutput = inputToMovementOutput.getOutput(firstFinger);
-        } else if (fingerThreePressed) {
-            firstFinger = userInputButtons.processInput(fingerThreeX, fingerThreeY);
+        } else if (fingerThree.isPressed()) {
+            firstFinger = userInputButtons.processInput(fingerThree.getXPosition(), fingerThree.getYPosition());
             movementOutput = inputToMovementOutput.getOutput(firstFinger);
         } else {
             firstFinger = new MovementFormat("none pressed", new Vector2(0, 0));

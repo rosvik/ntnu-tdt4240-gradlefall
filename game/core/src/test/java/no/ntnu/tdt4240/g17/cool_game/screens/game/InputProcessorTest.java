@@ -17,10 +17,16 @@ public class InputProcessorTest {
     static int SCREEN_HEIGHT = 576;
     static int SCREEN_WIDTH = 1024;
     static ArrayList output;
+    static TouchInput joystickFinger, jumpFinger, shootFinger, placeFinger, emptyFinger;
 
     @BeforeAll
     static void setUp(){
         inputProcessor = new InputProcessor(SCREEN_HEIGHT, SCREEN_WIDTH);
+        jumpFinger = new TouchInput(true,766,425);
+        joystickFinger = new TouchInput(true,266,416);
+        shootFinger = new TouchInput(true, 764, 525);
+        placeFinger = new TouchInput(true, 944, 520);
+        emptyFinger = new TouchInput(false, 0,0);
         output = new ArrayList<>();
         output.add(0);
         output.add(0);
@@ -42,7 +48,7 @@ public class InputProcessorTest {
         // Given
         output.set(1, 1);
         // When
-        movementOutput = inputProcessor.processInput(true,false,false,766,425,0,0,0,0);
+        movementOutput = inputProcessor.processInput(jumpFinger, emptyFinger, emptyFinger);
         // Then
         assertEquals(movementOutput.getButtonsPressed(), output);
         assertEquals(movementOutput.getJoystickInput(), new Vector2(0, 0));
@@ -53,7 +59,7 @@ public class InputProcessorTest {
         // Given
         output.set(0,1 );
         // When
-        movementOutput = inputProcessor.processInput(false,false,true,0,0,0,0,266,416);
+        movementOutput = inputProcessor.processInput(emptyFinger, emptyFinger, joystickFinger);
         // Then
         assertEquals(movementOutput.getButtonsPressed(), output);
         assertEquals(movementOutput.getJoystickInput(), new Vector2(0, 100));
@@ -65,7 +71,7 @@ public class InputProcessorTest {
         output.set(0, 1);
         output.set(2, 1);
         // When
-        movementOutput = inputProcessor.processInput(true,true,false,266,416,764, 525,0,0);
+        movementOutput = inputProcessor.processInput(joystickFinger, shootFinger, emptyFinger);
         // Then
         assertEquals(movementOutput.getButtonsPressed(), output);
         assertEquals(movementOutput.getJoystickInput(), new Vector2(0, 100));
@@ -77,7 +83,7 @@ public class InputProcessorTest {
         output.set(0, 1);
         output.set(1, 1);
         // When
-        movementOutput = inputProcessor.processInput(true,false,true,266,416,0, 0,766,425);
+        movementOutput = inputProcessor.processInput(joystickFinger, emptyFinger, jumpFinger);
         // Then
         assertEquals(movementOutput.getButtonsPressed(), output);
         assertEquals(movementOutput.getJoystickInput(), new Vector2(0, 100));
@@ -90,7 +96,7 @@ public class InputProcessorTest {
         output.set(2, 1);
         output.set(3, 1);
         // When
-        movementOutput = inputProcessor.processInput(true,true,true,266,416,764, 525,944, 520);
+        movementOutput = inputProcessor.processInput(joystickFinger, shootFinger, placeFinger);
         // Then
         assertEquals(movementOutput.getButtonsPressed(), output);
         assertEquals(movementOutput.getJoystickInput(), new Vector2(0, 100));
@@ -103,7 +109,7 @@ public class InputProcessorTest {
         output.set(2, 1);
         output.set(3, 1);
         // When
-        movementOutput = inputProcessor.processInput(true,true,true,766, 425,764, 525,944, 520);
+        movementOutput = inputProcessor.processInput(jumpFinger, shootFinger, placeFinger);
         // Then
         assertEquals(movementOutput.getButtonsPressed(), output);
         assertEquals(movementOutput.getJoystickInput(), new Vector2(0, 0));

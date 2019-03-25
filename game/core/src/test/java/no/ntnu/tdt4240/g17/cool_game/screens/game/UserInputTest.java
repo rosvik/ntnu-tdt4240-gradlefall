@@ -46,14 +46,16 @@ public class UserInputTest extends ApplicationAdapter {
 
     InputProcessor inputProcessor;
 
+    TouchInput firstFinger, secondFinger, thirdFinger;
+
     @Override
     public final void create() {
         font = new BitmapFont();
         screenHeigth = Gdx.graphics.getHeight();
         screenWidth = Gdx.graphics.getWidth();
         batch = new SpriteBatch();
-        atlas = new TextureAtlas("DungeonTileset.atlas");
-        character = new GameCharacter("big_zombie", 100,  100, atlas);
+        atlas = new TextureAtlas("./Assets/TextureAtlas/Characters/DungeonTileset.atlas");
+        character = new GameCharacter("big_zombie", 100,  100, atlas, "arrow", new TextureAtlas("./Assets/TextureAtlas/Projectiles/Projectiles.atlas"));
         stateTime = 0;
         userInputButtons = new UserInputButtons(screenHeigth, screenWidth);
         inputToMovementOutput = new InputToMovementOutput();
@@ -76,9 +78,10 @@ public class UserInputTest extends ApplicationAdapter {
         shapeRenderer.rect(userInputButtons.getPlace().x, userInputButtons.getPlace().y, userInputButtons.getPlace().width, userInputButtons.getPlace().height);
         shapeRenderer.end();
         batch.begin();
-        movementFormat = inputProcessor.processInput(Gdx.input.isTouched(0), Gdx.input.isTouched(1),
-                Gdx.input.isTouched(2), Gdx.input.getX(0), Gdx.input.getY(0),
-                Gdx.input.getX(1), Gdx.input.getY(1), Gdx.input.getX(2), Gdx.input.getY(2));
+        firstFinger = new TouchInput(Gdx.input.isTouched(0), Gdx.input.getX(0), Gdx.input.getY(0));
+        secondFinger = new TouchInput(Gdx.input.isTouched(1), Gdx.input.getX(1), Gdx.input.getY(1));
+        thirdFinger = new TouchInput(Gdx.input.isTouched(2), Gdx.input.getX(2), Gdx.input.getY(2));
+        movementFormat = inputProcessor.processInput(firstFinger, secondFinger, thirdFinger);
         font.draw(batch, "button: " + movementFormat.getButtonsPressed() + ", value: " + movementFormat.getJoystickInput(), 300, 500);
         character.render(200, 500);
         character.draw(batch, stateTime);
