@@ -11,6 +11,7 @@ public class Projectile {
    private ProjectileState state;
    private TextureAtlas projectiles;
    private TextureRegion projectile;
+   private static final int TILE_SCALE_CONSTANT = 32;
 
     /**
      * @param name = the name of the projectile as it is in projectile.atlas
@@ -75,8 +76,8 @@ public class Projectile {
                 this.state.getyPosition(),
                 0,
                 0,
-                this.state.getWidth(),
-                this.state.getHeight(),
+                this.state.getWidth() / TILE_SCALE_CONSTANT,
+                this.state.getHeight() / TILE_SCALE_CONSTANT,
                 getScale(this.state.getWidth()),
                 getScale(this.state.getHeight()),
                 this.state.getAngle()

@@ -4,8 +4,6 @@ import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class ProjectileStateTest {
     ProjectileState testState = new ProjectileState(50,50, 135, 24,24);
 

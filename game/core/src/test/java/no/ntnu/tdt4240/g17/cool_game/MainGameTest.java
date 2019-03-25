@@ -3,6 +3,8 @@ package no.ntnu.tdt4240.g17.cool_game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.libgdx.test.util.GameTest;
 
+import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
+import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -41,6 +43,8 @@ class MainGameTest extends GameTest {
     void shouldRender() {
         // Given
         mainGame.arena = Mockito.mock(Arena.class);
+        mainGame.character1 = Mockito.mock(GameCharacter.class);
+        mainGame.projectile = Mockito.mock(Projectile.class);
 
         // When
         mainGame.render();
