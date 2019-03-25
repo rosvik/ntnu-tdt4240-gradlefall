@@ -1,7 +1,6 @@
 package no.ntnu.tdt4240.g17.server.game_session;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import lombok.Getter;

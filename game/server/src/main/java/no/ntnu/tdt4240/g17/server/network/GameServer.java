@@ -30,9 +30,10 @@ public class GameServer implements Runnable {
      * Create a new game server.
      *  @param tcpPort         TCP port to listen to.
      * @param failureListener a listener to report failures to.
-     * @param handlerDelegator
+     * @param handlerDelegator a delegator that handles messages
      */
-    public GameServer(final int tcpPort, final FailureListener failureListener, final MessageHandlerDelegator handlerDelegator) {
+    public GameServer(final int tcpPort, final FailureListener failureListener,
+                      final MessageHandlerDelegator handlerDelegator) {
         this.tcpPort = tcpPort;
         this.failureListener = failureListener;
         this.handlerDelegator = handlerDelegator;

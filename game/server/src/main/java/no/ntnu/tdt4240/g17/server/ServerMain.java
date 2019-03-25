@@ -9,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.server.availability.FailureListener;
 import no.ntnu.tdt4240.g17.server.network.GameServer;
 import no.ntnu.tdt4240.g17.server.network.MessageHandlerDelegator;
-import no.ntnu.tdt4240.g17.server.network.PlayerConnection;
-import no.ntnu.tdt4240.g17.server.network.messageHandler.MessageHandler;
 
 /**
  * Main class for the server.
