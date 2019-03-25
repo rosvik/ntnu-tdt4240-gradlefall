@@ -53,7 +53,7 @@ public class InputProcessorTest {
         // Given
         output.set(0,1 );
         // When
-        movementOutput = inputProcessor.processInput(true,false,false,266,416,0,0,0,0);
+        movementOutput = inputProcessor.processInput(false,false,true,0,0,0,0,266,416);
         // Then
         assertEquals(movementOutput.getButtonsPressed(), output);
         assertEquals(movementOutput.getJoystickInput(), new Vector2(0, 100));
@@ -66,6 +66,18 @@ public class InputProcessorTest {
         output.set(2, 1);
         // When
         movementOutput = inputProcessor.processInput(true,true,false,266,416,764, 525,0,0);
+        // Then
+        assertEquals(movementOutput.getButtonsPressed(), output);
+        assertEquals(movementOutput.getJoystickInput(), new Vector2(0, 100));
+    }
+
+    @Test
+    void shouldBeJoystickAndJump() {
+        // Given
+        output.set(0, 1);
+        output.set(1, 1);
+        // When
+        movementOutput = inputProcessor.processInput(true,false,true,266,416,0, 0,766,425);
         // Then
         assertEquals(movementOutput.getButtonsPressed(), output);
         assertEquals(movementOutput.getJoystickInput(), new Vector2(0, 100));

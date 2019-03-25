@@ -105,4 +105,17 @@ public class InputToMovementOutputTest {
         assertEquals(jumpShootPlace.getJoystickInput(), new Vector2(0, 0));
     }
 
+    @Test
+    void shouldBePlaceJoystickJump() {
+        // Given
+        output.set(0, 1);
+        output.set(1, 1);
+        output.set(3, 1);
+        // When
+        MovementFormat placeJoystickJump = inputToMovementOutput.getOutput(placeFinger, joystickFinger, jumpFinger);
+        // Then
+        assertEquals(placeJoystickJump.getButtonsPressed(), output);
+        assertEquals(placeJoystickJump.getJoystickInput(), new Vector2(0, 100));
+    }
+
 }
