@@ -1,10 +1,8 @@
 package no.ntnu.tdt4240.g17.common.game_messages;
 
 import no.ntnu.tdt4240.g17.common.game_helpers.IntermediaryStartMessagePlayer;
-import no.ntnu.tdt4240.g17.common.game_helpers.Player;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Morten 'bujordet' Bujordet on 3/25/2019.
