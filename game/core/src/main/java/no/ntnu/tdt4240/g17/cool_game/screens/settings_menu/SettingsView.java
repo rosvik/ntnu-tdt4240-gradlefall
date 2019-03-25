@@ -3,6 +3,8 @@ package no.ntnu.tdt4240.g17.cool_game.screens.settings_menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
@@ -23,7 +26,10 @@ import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
  */
 public class SettingsView implements Screen {
 
-    private static final int TOP_SPAN = 10;
+    /**
+     * tables vertical span.
+     */
+    private static final int TOP_SPAN = 20;
 
     private Navigator navigator;
     private SettingsController settingsController;
@@ -36,6 +42,8 @@ public class SettingsView implements Screen {
     private Label soundOnOffLabel;
 
     private Stage stage;
+    private SpriteBatch batch;
+    private Texture texture;
 
 
     /**
@@ -45,6 +53,7 @@ public class SettingsView implements Screen {
      */
     public SettingsView(final Navigator navigator, final SettingsController settingsController,
                         final SettingsModel settingsModel) {
+        stage = new Stage(new ScreenViewport());    //moved from showmethod
         this.navigator = navigator;
         this.settingsModel = settingsModel;
         this.settingsController = settingsController;
@@ -55,14 +64,18 @@ public class SettingsView implements Screen {
      */
     @Override
     public void show() {
-        stage = new Stage(new ScreenViewport());
+        //spritebatches
+        batch = new SpriteBatch();
+        texture = new Texture(Gdx.files.internal("background.png"));
 
         stage.clear();
         Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();
         table.setFillParent(true);
+        table.setDebug(true);
         stage.addActor(table);
+
 
         Skin skin = new Skin(Gdx.files.internal("skin/neon-ui.json"));
         setUpUiComponents(table, skin);
@@ -71,8 +84,9 @@ public class SettingsView implements Screen {
 
     /**
      * Create ui components and add them to the table.
+     *
      * @param table components are added to this
-     * @param skin the visual appearance of all components
+     * @param skin  the visual appearance of all components
      */
     private void setUpUiComponents(final Table table, final Skin skin) {
         //volumbutton
@@ -82,6 +96,8 @@ public class SettingsView implements Screen {
             settingsController.changeMusicVolume(musicVolumeSlider.getValue());
             return true;
         });
+
+        musicVolumeSlider.getStyle().knob.setMinHeight(20f);
 
         // sound volume
         final Slider soundVolumeSlider = new Slider(0f, 1f, 0.1f, false, skin);
@@ -110,7 +126,6 @@ public class SettingsView implements Screen {
             return false;
         });
 
-
         // return to main screen button
         final TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ChangeListener() {
@@ -125,22 +140,63 @@ public class SettingsView implements Screen {
         volumeSoundLabel = new Label("Sound Volume", skin);
         musicOnOffLabel = new Label("Music", skin);
         soundOnOffLabel = new Label("Sound Effect", skin);
+        //adds buttons to table, + fixing size on cells and spacing the table
+        float spacing = 20f * Gdx.graphics.getDensity();
+        float buttonHeight = 48f * Gdx.graphics.getDensity();
+        float buttonWidth = 144f * Gdx.graphics.getDensity();
 
-        table.add(titleLabel).colspan(2);
-        table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);
+        //set textsize in labels
+        float textSize = 4f;
+        float smallerTextSize = 3f;
+        titleLabel.setFontScale(textSize);
+        volumeMusicLabel.setFontScale(smallerTextSize);
+        volumeSoundLabel.setFontScale(smallerTextSize);
+        musicOnOffLabel.setFontScale(smallerTextSize);
+        soundOnOffLabel.setFontScale(smallerTextSize);
+        backButton.getLabel().setFontScale(smallerTextSize);
+
+
+        table.add(titleLabel).colspan(2)
+                .padBottom(spacing);
+
+        /*table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);*/
+        table.row();
         table.add(volumeMusicLabel).left();
-        table.add(musicVolumeSlider);
-        table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);
+        table.add(musicVolumeSlider)
+                .padTop(50f)         //quickfix for centering the box
+                .padBottom(spacing);
+
+        /*table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);*/
+        table.row();
         table.add(musicOnOffLabel).left();
-        table.add(musicCheckbox);
-        table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);
+        table.add(musicCheckbox)
+                /*.padTop(50f)         //quickfix for centering the box
+                .padBottom(spacing);*/
+                .size(200, 200);
+        musicCheckbox.getImage().setScaling(Scaling.fit);
+        musicCheckbox.getImageCell().size(32 * Gdx.graphics.getDensity());
+
+        /*table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);*/
+        table.row();
         table.add(volumeSoundLabel).left();
-        table.add(soundVolumeSlider);
-        table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);
+        table.add(soundVolumeSlider)
+                .padTop(50f)         //quickfix for centering the box
+                .padBottom(spacing);
+
+        /*table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);*/
+        table.row();
         table.add(soundOnOffLabel).left();
-        table.add(soundEffectsCheckbox);
-        table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);
-        table.add(backButton).colspan(2);
+        table.add(soundEffectsCheckbox)
+                .size(200, 200);
+        //sizing of checkbox
+        soundEffectsCheckbox.getImage().setScaling(Scaling.fit);
+        soundEffectsCheckbox.getImageCell().size(32 * Gdx.graphics.getDensity());
+
+        //colspan fixes indentation
+        table.row();
+        table.add(backButton).colspan(2)
+                .prefHeight(buttonHeight)
+                .prefWidth(buttonWidth);
     }
 
     /**
@@ -151,6 +207,10 @@ public class SettingsView implements Screen {
         // clear the screen ready for next set of images to be drawn
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.begin();
+        batch.draw(texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();
 
         // tell our stage to do actions and draw itself
         stage.act(Gdx.graphics.getDeltaTime());

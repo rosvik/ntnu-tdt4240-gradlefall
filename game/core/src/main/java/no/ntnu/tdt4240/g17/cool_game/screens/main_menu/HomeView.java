@@ -1,8 +1,11 @@
 package no.ntnu.tdt4240.g17.cool_game.screens.main_menu;
 
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -11,11 +14,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  */
-public class HomeView implements Screen {
+@Data @Slf4j
+public class HomeView extends ApplicationAdapter implements Screen {
 
     /**
      * how big part of the screen.
@@ -24,7 +30,7 @@ public class HomeView implements Screen {
     /**
      * ROW.
      */
-    public static final int ROW = 10;
+    public static final int ROW = 20;
 
     private HomeController homeController;
 
@@ -32,6 +38,9 @@ public class HomeView implements Screen {
      * stageclass.
      */
     private Stage stage;
+
+    private SpriteBatch batch;
+    private Texture texture;
 
     /**
      * @param homeController needs to take in homecontroler.
@@ -45,14 +54,17 @@ public class HomeView implements Screen {
     }
 
     /**
-     * bs javac.
+     * eq to create method.
      */
     @Override
     public void show() {
+        //spritebatches
+        batch = new SpriteBatch();
+        texture = new Texture(Gdx.files.internal("background.png"));
         // Create a table that fills the screen. Everything else will go inside this table.
         Table table = new Table();
         table.setFillParent(true);
-        table.setDebug(true);
+        table.setDebug(true);         //shows border line.
         stage.addActor(table);
 
         //create buttons with skin
@@ -61,12 +73,31 @@ public class HomeView implements Screen {
         TextButton settings = new TextButton("SETTINGS", skin);
         TextButton quit = new TextButton("QUIT", skin);
 
-        //adds buttons to table
-        table.add(play).fillX().uniformX();
-        table.row().pad(ROW, 0, ROW, 0);
-        table.add(settings).fillX().uniformX();
+        //set textsize in button
+        float textSize = 4f;
+        play.getLabel().setFontScale(textSize);
+        settings.getLabel().setFontScale(textSize);
+        quit.getLabel().setFontScale(textSize);
+
+        //adds buttons to table, + fixing size on cells and spacing the table
+        float spacing = 20f * Gdx.graphics.getDensity();
+        float buttonHeight = 64f * Gdx.graphics.getDensity();
+        float buttonWidth = 192f * Gdx.graphics.getDensity();
+
+        table.add(play)
+                .prefHeight(buttonHeight)
+                .prefWidth(buttonWidth)
+                .padBottom(spacing);
         table.row();
-        table.add(quit).fillX().uniformX();
+        table.add(settings)
+                .prefHeight(buttonHeight)
+                .prefWidth(buttonWidth)
+                .padBottom(spacing);
+        table.row();
+        table.add(quit)
+                .prefHeight(buttonHeight)
+                .prefWidth(buttonWidth);
+
 
         //creates button listeners,
         // action for settings
@@ -78,7 +109,6 @@ public class HomeView implements Screen {
         });
 
 
-
         // action for exit
         quit.addListener(new ChangeListener() {
             @Override
@@ -86,6 +116,9 @@ public class HomeView implements Screen {
                 homeController.quit();
             }
         });
+
+        table.layout();
+        log.info("Table width {}", table.getWidth());
     }
 
     /**
@@ -94,7 +127,13 @@ public class HomeView implements Screen {
     @Override
     public void render(final float delta) {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);   //clears the screen
+
+        batch.begin();
+        batch.draw(texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();
+
+        //the buttons
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / FRACTIONSCREEN));
         stage.draw();
     }
