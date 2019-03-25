@@ -1,12 +1,11 @@
 buildscript {
     repositories {
         mavenLocal()
-        jcenter()
         google()
+        jcenter()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://plugins.gradle.org/m2/" }
         mavenCentral()
-        maven { url "file://" + file('localMaven').absolutePath }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.2'
@@ -14,10 +13,7 @@ buildscript {
         classpath 'org.jacoco:org.jacoco.core:0.8.0'
     }
 }
-
 description = "Very cool game, totally not towerfall"
-
-
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
@@ -37,6 +33,7 @@ allprojects {
 
     repositories {
         mavenLocal()
+        maven { url "${rootDir}/localMaven" }
         jcenter()
         google()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
@@ -51,8 +48,6 @@ allprojects {
         jacoco.includeNoLocationClasses = true
     }
 }
-
-
 project(":desktop") {
     description = "Desktop client"
     apply plugin: "java"
@@ -67,7 +62,6 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
 }
-
 project(":android") {
     description = "Android client"
     apply plugin: "android"
@@ -99,7 +93,6 @@ project(":android") {
         implementation "com.badlogicgames.ashley:ashley:$ashleyVersion"
     }
 }
-
 project(":core") {
     description = "Common code for clients"
     apply plugin: "java-library"
@@ -121,7 +114,6 @@ project(":core") {
         testImplementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
     }
 }
-
 project(":server") {
     description = "Main game server"
     apply plugin: 'java'
@@ -133,6 +125,7 @@ project(":server") {
         // This one is made from commit 2ed19b4743667664d15e3778447e579855ba3a65
         // From https://github.com/EsotericSoftware/kryonet.git
         implementation "com.esotericsoftware:kryonet:$kryonetVersion"
+        implementation "com.esotericsoftware:kryonet:$kryonetVersion"
 
         implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
@@ -141,8 +134,20 @@ project(":server") {
         testImplementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     }
-}
 
+    task printDeps {
+        doLast {
+            println "Dependencies:"
+            configurations.each{
+                try {
+                    println(it.name + ">>>>>>>")
+                    it.files.each{ println it }
+                } catch (err) {}
+            }
+            //configurations[':server:compile'].files.each { println it }
+        }
+    }
+}
 project(":common") {
     description = "Code that is common for both client and server"
 
@@ -152,8 +157,6 @@ project(":common") {
     }
 
 }
-
-
 subprojects {
     sourceSets {
         main.java.srcDirs = ['src/main/java']
@@ -179,8 +182,7 @@ subprojects {
         implementation 'junit:junit:4.12'
     }
 }
-
-configure(subprojects.findAll {it.name != "android"}) {
+configure(subprojects.findAll { it.name != "android" }) {
     // Some things just don't work in an android module.
     // Enable such things here.
 
@@ -222,7 +224,8 @@ configure(subprojects.findAll {it.name != "android"}) {
         }
     }
 }
-
 tasks.eclipse.doLast {
     delete ".project"
+}
+dependencies {
 }
