@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
@@ -26,13 +27,14 @@ public class MainGame extends ApplicationAdapter {
     /** GameCharacter. */
     GameCharacter character1;
 
-    /* Textureatlas. */
+    /** Textureatlas. */
     TextureAtlas dungeonTilset;
     TextureAtlas projectiles;
 
-    // Projectile.
+    // Projectile
     Projectile projectile;
-    /** Arena width in tiles. */
+
+    /** Arena width in tiles.*/
     private float width;
 
     /** Arena height in tiles. */
@@ -46,8 +48,9 @@ public class MainGame extends ApplicationAdapter {
 
         batch = new SpriteBatch();
         dungeonTilset = new TextureAtlas("./Assets/TextureAtlas/Characters/DungeonTileset.atlas");
+        dungeonTilset = new TextureAtlas("Assets/TextureAtlas/Characters/DungeonTileset.txt");
         projectiles = new TextureAtlas("Assets/TextureAtlas/Projectiles/Projectiles.atlas");
-        character1 = new GameCharacter("knight_f", 100, 100, dungeonTilset, "arrow", projectiles);
+        character1 = new GameCharacter("big_zombie", 10, 10, dungeonTilset, "arrow", projectiles);
         stateTime = 0;
         projectile = new Projectile("arrow", 0, 0, 135, projectiles);
         arena = new Arena("map2.tmx", 16f, width, height, batch);
@@ -60,24 +63,23 @@ public class MainGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         /* character. */
-        //character1.render(api1.getxValue(), api1.getyValue());
-        //projectile.render(Gdx.input.getX(), -Gdx.input.getY() + 570);
-        //projectile.render(arrowApi.getxValue(), arrowApi.getyValue());
+        character1.render(10, 10);
+        projectile.render(9, 10);
 
         batch.begin();
+        arena.renderArena();
 
         // Draw the background
         batch.draw(background, 0f, 0f, width, height);
 
-        // Render charcter
-        //projectile.draw(batch);
-        //character1.draw(batch, stateTime);
-
+        // Render character and projectile.
         arena.renderArena();
-        arena.renderForeground();
+        projectile.draw(batch);
+        character1.draw(batch, stateTime);
 
-        //batch.draw(img, 0, 0);
+        arena.renderForeground();
         batch.end();
+
         stateTime += Gdx.graphics.getDeltaTime();
     }
 

@@ -13,13 +13,13 @@ class GameCharacterStateTest extends GameTest {
 
     @Test
     void testGetyPosistion() {
-        Assert.assertEquals(0,this.testState.getyPosition());
+        Assert.assertTrue(0  == this.testState.getyPosition());
         //A public void method annotated with @Test will be executed as a test case.
     }
 
     @Test
     void testGetxPosistion() {
-        Assert.assertEquals(0,this.testState.getxPosition());
+        Assert.assertTrue(0 == this.testState.getxPosition());
         //A public void method annotated with @Test will be executed as a test case.
     }
 
@@ -27,12 +27,12 @@ class GameCharacterStateTest extends GameTest {
     void testSetters() {
         this.testState.setxPosition(10);
         this.testState.setyPosition(10);
-        Assert.assertEquals(10,this.testState.getxPosition());
-        Assert.assertEquals(10,this.testState.getyPosition());
+        Assert.assertTrue(10 == this.testState.getxPosition());
+        Assert.assertTrue(10 == this.testState.getyPosition());
 
         this.testState.setPosition(50,50);
-        Assert.assertEquals(50,this.testState.getxPosition());
-        Assert.assertEquals(50,this.testState.getyPosition());
+        Assert.assertTrue(50 == this.testState.getxPosition());
+        Assert.assertTrue(50 == this.testState.getyPosition());
     }
 
     @Test

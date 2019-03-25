@@ -52,11 +52,11 @@ class GameCharacterAnimationTest extends GameTest {
 
     @Test
     void getHeight() {
-        Assert.assertTrue(this.testAnimation.getFrame(0).getRegionHeight() == this.testAnimation.getHeight());
-    }
+        Assert.assertTrue(this.testAnimation.getFrame(0).getRegionHeight()/16 == this.testAnimation.getHeight());
+}
 
     @Test
     void getWidth() {
-        Assert.assertTrue(20 == this.testAnimation.getWidth());
+        Assert.assertTrue(20/16 == this.testAnimation.getWidth());
     }
 }

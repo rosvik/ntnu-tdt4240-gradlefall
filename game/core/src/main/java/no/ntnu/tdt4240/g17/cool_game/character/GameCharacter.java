@@ -30,8 +30,8 @@ public class GameCharacter {
      */
     public GameCharacter(
             final String name,
-            final int xPosition,
-            final int yPosition,
+            final float xPosition,
+            final float yPosition,
             final TextureAtlas atlas,
             final String projectileName,
             final TextureAtlas projectiles
@@ -53,7 +53,7 @@ public class GameCharacter {
      * @param newX = the new x posistion
      * @param newY = the new y posistion
      */
-    public void render(final int newX, final int newY) {
+    public void render(final float newX, final float newY) {
         if (newY > this.state.getyPosition()) {
             this.animation.jump();
         } else if (newY  < this.state.getyPosition()) {
