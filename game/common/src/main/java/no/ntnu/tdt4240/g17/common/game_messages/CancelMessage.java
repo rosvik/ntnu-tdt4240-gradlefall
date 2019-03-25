@@ -5,7 +5,7 @@ package no.ntnu.tdt4240.g17.common.game_messages;
  *
  * @author Morten 'bujordet' Bujordet
  */
-@SuppressWarnings("CheckStyle")
+@SuppressWarnings("VisibilityModifier")
 public class CancelMessage {
     /** Unique id for the player. */
     public String playerId;

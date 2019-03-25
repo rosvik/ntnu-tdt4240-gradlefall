@@ -3,7 +3,12 @@ package no.ntnu.tdt4240.g17.common.game_helpers;
 
 import java.util.List;
 
-@SuppressWarnings("CheckStyle")
+/**
+ * Created by Morten 'bujordet' Bujordet on 3/15/2019.
+ *
+ * @author Morten 'bujordet' Bujordet
+ */
+@SuppressWarnings("VisibilityModifier")
 public class UpdateMessagePlayer extends Player {
     /** Aiming direction. */
     public Float aimingAngle;
@@ -13,6 +18,6 @@ public class UpdateMessagePlayer extends Player {
     public Integer blockAmmoCount;
     /** The aliveness of the Player. */
     public Boolean aliveState;
-    /** All active powerups for all player ids: String: playerId, List: List of powerups */
+    /** All active powerups for all player ids: String: playerId, List: List of powerups. */
     public List<Powerup> activePowerups;
 }

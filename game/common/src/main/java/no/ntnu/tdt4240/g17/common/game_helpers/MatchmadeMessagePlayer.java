@@ -5,7 +5,7 @@ package no.ntnu.tdt4240.g17.common.game_helpers;
  *
  * @author Morten 'bujordet' Bujordet
  */
-@SuppressWarnings("CheckStyle")
+@SuppressWarnings("VisibilityModifier")
 public class MatchmadeMessagePlayer extends Player {
     /** The description for each player id's visual appearance. */
     public Enum playerSkin;

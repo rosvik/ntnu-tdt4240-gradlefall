@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author Morten 'bujordet' Bujordet
  */
-@SuppressWarnings("CheckStyle")
+@SuppressWarnings("VisibilityModifier")
 public class MatchmadeMessage {
     /** List of players containing playerName, playerId, position and playerSkin. */
     public List<MatchmadeMessagePlayer> players;

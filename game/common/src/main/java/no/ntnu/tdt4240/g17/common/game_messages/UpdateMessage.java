@@ -13,15 +13,18 @@ import java.util.List;
  *
  * @author Morten 'bujordet' Bujordet
  */
-@SuppressWarnings("CheckStyle")
+@SuppressWarnings("VisibilityModifier")
 public class UpdateMessage {
-    /** The information about the player state */
+    /** The information about the player state. */
     public List<UpdateMessagePlayer> updatePlayers;
     /** Sounds to trigger this game tick. */
     public Enum sound;
-    /** List of all effects, projectiles, blocks and powerups */
-    public List<Effect> effects;
-    public List<Projectile> projectiles;
-    public List<Block> blocks;
+    /** List of all game powerups. */
     public List<Powerup> powerups;
+    /** List of all game blocks. */
+    public List<Block> blocks;
+    /** List of all game projectiles. */
+    public List<Projectile> projectiles;
+    /** List of all game effects. */
+    public List<Effect> effects;
 }

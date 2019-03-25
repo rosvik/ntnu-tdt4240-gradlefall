@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author Morten 'bujordet' Bujordet
  */
-@SuppressWarnings("CheckStyle")
+@SuppressWarnings("VisibilityModifier")
 public class IntermediaryEndMessage {
     /** List of players containing playerName, playerId and position. */
     public List<Player> players;

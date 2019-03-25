@@ -5,7 +5,7 @@ package no.ntnu.tdt4240.g17.common.game_helpers;
  *
  * @author Morten 'bujordet' Bujordet
  */
-@SuppressWarnings("CheckStyle")
+@SuppressWarnings("VisibilityModifier")
 public class Projectile {
     /** Id of the projectile. */
     public String projectileId;
