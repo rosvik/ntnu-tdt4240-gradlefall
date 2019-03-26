@@ -12,7 +12,7 @@ public class GameOverMessagePlayer {
     /** Player chosen name. */
     public String playerName;
     /** The description for each player id's visual appearance. */
-    public Enum playerSkin;
+    public PlayerSkin playerSkin;
     /** The score for each player id; String: playerId, Integer: score. */
-    public Integer playerScore;
+    public int playerScore;
 }
