@@ -40,7 +40,7 @@ public class GameServer implements Runnable {
         server = new Server() {
             @Override
             protected Connection newConnection() {
-                return super.newConnection();
+                return new PlayerConnection();
             }
         };
     }
