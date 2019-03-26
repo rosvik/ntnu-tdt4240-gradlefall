@@ -1,10 +1,10 @@
 package no.ntnu.tdt4240.g17.common.game_messages;
 
-import no.ntnu.tdt4240.g17.common.game_helpers.Block;
-import no.ntnu.tdt4240.g17.common.game_helpers.Effect;
-import no.ntnu.tdt4240.g17.common.game_helpers.Powerup;
-import no.ntnu.tdt4240.g17.common.game_helpers.Projectile;
-import no.ntnu.tdt4240.g17.common.game_helpers.UpdateMessagePlayer;
+import no.ntnu.tdt4240.g17.common.game_messages.data.Block;
+import no.ntnu.tdt4240.g17.common.game_messages.data.Effect;
+import no.ntnu.tdt4240.g17.common.game_messages.data.Powerup;
+import no.ntnu.tdt4240.g17.common.game_messages.data.Projectile;
+import no.ntnu.tdt4240.g17.common.game_messages.data.UpdateMessagePlayer;
 
 import java.util.List;
 

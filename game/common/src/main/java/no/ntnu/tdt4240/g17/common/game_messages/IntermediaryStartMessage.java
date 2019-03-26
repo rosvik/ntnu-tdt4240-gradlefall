@@ -1,6 +1,6 @@
 package no.ntnu.tdt4240.g17.common.game_messages;
 
-import no.ntnu.tdt4240.g17.common.game_helpers.IntermediaryStartMessagePlayer;
+import no.ntnu.tdt4240.g17.common.game_messages.data.IntermediaryStartMessagePlayer;
 
 import java.util.List;
 

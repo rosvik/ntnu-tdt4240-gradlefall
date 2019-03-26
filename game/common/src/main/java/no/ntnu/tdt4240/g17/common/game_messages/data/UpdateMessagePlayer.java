@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.g17.common.game_helpers;
+package no.ntnu.tdt4240.g17.common.game_messages.data;
 
 
 import java.util.List;

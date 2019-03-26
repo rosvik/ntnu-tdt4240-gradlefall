@@ -1,6 +1,6 @@
 package no.ntnu.tdt4240.g17.common.game_messages;
 
-import no.ntnu.tdt4240.g17.common.game_helpers.GameOverMessagePlayer;
+import no.ntnu.tdt4240.g17.common.game_messages.data.GameOverMessagePlayer;
 
 import java.util.List;
 
