@@ -8,5 +8,5 @@ package no.ntnu.tdt4240.g17.common.game_messages.data;
 @SuppressWarnings("VisibilityModifier")
 public class IntermediaryStartMessagePlayer extends Player {
     /** The scores for the player. */
-    public Integer playerScore;
+    public int playerScore;
 }

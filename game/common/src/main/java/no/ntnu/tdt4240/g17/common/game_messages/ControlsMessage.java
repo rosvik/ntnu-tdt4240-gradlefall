@@ -1,8 +1,11 @@
 package no.ntnu.tdt4240.g17.common.game_messages;
 
 /**
- * Created by Morten 'bujordet' Bujordet on 3/25/2019.
+ * Notify the server of user input.
+ * <br/><br/>
  *
+ * Message <code>[CT] Controls</code>.
+ * Sent from Client in Game screen, when playing.
  * @author Morten 'bujordet' Bujordet
  */
 @SuppressWarnings("VisibilityModifier")

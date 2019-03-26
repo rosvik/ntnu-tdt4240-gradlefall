@@ -1,7 +1,12 @@
 package no.ntnu.tdt4240.g17.common.game_messages;
 
 /**
- * Created by Morten 'bujordet' Bujordet on 3/25/2019.
+ * Notify the server that the user should be
+ * removed from matchmaking.
+ * <br/><br/>
+ *
+ * Message <code>[C] Cancel</code>.
+ * Sent from Client when in matchmaking queue screen.
  *
  * @author Morten 'bujordet' Bujordet
  */
