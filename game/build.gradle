@@ -104,7 +104,8 @@ project(":core") {
         implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         implementation "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
+        implementation "com.badlogicgames.ashley:ashley:$ashleyVersion"
+        implementation "com.esotericsoftware:kryonet:$kryonetVersion"
 
         testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
 
