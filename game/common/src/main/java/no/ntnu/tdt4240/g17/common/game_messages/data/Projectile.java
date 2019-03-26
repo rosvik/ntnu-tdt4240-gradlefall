@@ -1,7 +1,7 @@
 package no.ntnu.tdt4240.g17.common.game_messages.data;
 
 /**
- * Created by Morten 'bujordet' Bujordet on 3/25/2019.
+ * A fired projectile.
  *
  * @author Morten 'bujordet' Bujordet
  */
@@ -12,7 +12,7 @@ public class Projectile {
     /** Position of the projectile. */
     public Position projectilePosition;
     /** Type of projectile. */
-    public Enum projectileType;
+    public ProjectileType projectileType;
     /** Angle of the projectile. */
-    public Float projectileAngle;
+    public float projectileAngle;
 }
