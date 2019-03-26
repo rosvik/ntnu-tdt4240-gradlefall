@@ -25,7 +25,7 @@ import no.ntnu.tdt4240.g17.common.game_messages.data.UpdateMessagePlayer;
 @SuppressWarnings("VisibilityModifier")
 public class UpdateMessage {
     /** The information about the player state. */
-    public List<UpdateMessagePlayer> updatePlayers;
+    public List<UpdateMessagePlayer> players;
     /** Sounds to trigger this game tick. */
     public List<SoundEffect> sounds;
     /** List of all game powerups. */

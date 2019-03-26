@@ -10,7 +10,7 @@ public class Effect {
     /** Id of the effect. */
     public String effectId;
     /** Type of effect. */
-    public Enum effectType;
+    public EffectType effectType;
     /** Position of the effect. */
     public Position effectPosition;
 }

@@ -11,13 +11,13 @@ import java.util.List;
 @SuppressWarnings("VisibilityModifier")
 public class UpdateMessagePlayer extends Player {
     /** Aiming direction. */
-    public Float aimingAngle;
+    public float aimingAngle;
     /** The projectile ammunition count of the Player. */
-    public Integer projectileAmmoCount;
+    public int projectileAmmoCount;
     /** The block ammunition count of the Player. */
-    public Integer blockAmmoCount;
+    public int blockAmmoCount;
     /** The aliveness of the Player. */
-    public Boolean aliveState;
+    public boolean isAlive;
     /** All active powerups for all player ids: String: playerId, List: List of powerups. */
     public List<Powerup> activePowerups;
 }
