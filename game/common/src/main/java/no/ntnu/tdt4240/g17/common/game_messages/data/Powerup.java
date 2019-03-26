@@ -10,7 +10,7 @@ public class Powerup {
     /** Id of the effect. */
     public String powerupId;
     /** Type of effect. */
-    public Enum powerupType;
+    public PowerupType powerupType;
     /** Position of the effect. */
     public Position powerupPosition;
 }

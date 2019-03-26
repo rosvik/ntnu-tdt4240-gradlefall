@@ -1,15 +1,24 @@
 package no.ntnu.tdt4240.g17.common.game_messages;
 
+import java.util.List;
+
 import no.ntnu.tdt4240.g17.common.game_messages.data.Block;
 import no.ntnu.tdt4240.g17.common.game_messages.data.Effect;
 import no.ntnu.tdt4240.g17.common.game_messages.data.Powerup;
 import no.ntnu.tdt4240.g17.common.game_messages.data.Projectile;
+import no.ntnu.tdt4240.g17.common.game_messages.data.SoundEffect;
 import no.ntnu.tdt4240.g17.common.game_messages.data.UpdateMessagePlayer;
 
-import java.util.List;
-
 /**
- * Created by Morten 'bujordet' Bujordet on 3/15/2019.
+ * <p>This synchronizes game state from server to client.
+ * The most important message.
+ * Tells the client where everything is positioned
+ * and what sounds to play etc.
+ * </p>
+ * <br/><br/>
+ *
+ * Message <code>[U] Update</code>.
+ * Sent from Server in game screen, when Client is playing.
  *
  * @author Morten 'bujordet' Bujordet
  */
@@ -18,7 +27,7 @@ public class UpdateMessage {
     /** The information about the player state. */
     public List<UpdateMessagePlayer> updatePlayers;
     /** Sounds to trigger this game tick. */
-    public Enum sound;
+    public List<SoundEffect> sounds;
     /** List of all game powerups. */
     public List<Powerup> powerups;
     /** List of all game blocks. */
