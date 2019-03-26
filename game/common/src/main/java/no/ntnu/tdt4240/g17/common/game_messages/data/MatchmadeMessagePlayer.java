@@ -8,5 +8,5 @@ package no.ntnu.tdt4240.g17.common.game_messages.data;
 @SuppressWarnings("VisibilityModifier")
 public class MatchmadeMessagePlayer extends Player {
     /** The description for each player id's visual appearance. */
-    public Enum playerSkin;
+    public PlayerSkin playerSkin;
 }
