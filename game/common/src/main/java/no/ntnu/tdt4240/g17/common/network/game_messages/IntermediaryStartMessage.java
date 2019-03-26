@@ -1,8 +1,8 @@
-package no.ntnu.tdt4240.g17.common.game_messages;
+package no.ntnu.tdt4240.g17.common.network.game_messages;
 
-import no.ntnu.tdt4240.g17.common.game_messages.data.Arena;
-import no.ntnu.tdt4240.g17.common.game_messages.data.GameMode;
-import no.ntnu.tdt4240.g17.common.game_messages.data.IntermediaryStartMessagePlayer;
+import no.ntnu.tdt4240.g17.common.network.game_messages.data.Arena;
+import no.ntnu.tdt4240.g17.common.network.game_messages.data.GameMode;
+import no.ntnu.tdt4240.g17.common.network.game_messages.data.IntermediaryStartMessagePlayer;
 
 import java.util.List;
 

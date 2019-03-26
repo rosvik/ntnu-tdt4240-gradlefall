@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.g17.common.game_messages.data;
+package no.ntnu.tdt4240.g17.common.network.game_messages.data;
 
 /**
  * The skin a player will use.

@@ -1,10 +1,10 @@
-package no.ntnu.tdt4240.g17.common.game_messages;
+package no.ntnu.tdt4240.g17.common.network.game_messages;
 
 import java.util.List;
 
-import no.ntnu.tdt4240.g17.common.game_messages.data.Arena;
-import no.ntnu.tdt4240.g17.common.game_messages.data.GameMode;
-import no.ntnu.tdt4240.g17.common.game_messages.data.Player;
+import no.ntnu.tdt4240.g17.common.network.game_messages.data.Arena;
+import no.ntnu.tdt4240.g17.common.network.game_messages.data.GameMode;
+import no.ntnu.tdt4240.g17.common.network.game_messages.data.Player;
 
 /**
  * Lets the server tell clients to start the next round.

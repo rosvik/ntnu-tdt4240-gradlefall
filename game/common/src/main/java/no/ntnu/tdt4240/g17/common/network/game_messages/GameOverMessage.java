@@ -1,9 +1,9 @@
-package no.ntnu.tdt4240.g17.common.game_messages;
+package no.ntnu.tdt4240.g17.common.network.game_messages;
 
 import java.util.List;
 
-import no.ntnu.tdt4240.g17.common.game_messages.data.GameMode;
-import no.ntnu.tdt4240.g17.common.game_messages.data.GameOverMessagePlayer;
+import no.ntnu.tdt4240.g17.common.network.game_messages.data.GameMode;
+import no.ntnu.tdt4240.g17.common.network.game_messages.data.GameOverMessagePlayer;
 
 /**
  * Tell the client that the game has ended

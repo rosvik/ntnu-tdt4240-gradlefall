@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.g17.common.game_messages;
+package no.ntnu.tdt4240.g17.common.network.game_messages;
 
 /**
  * Notify the server that the user should be
