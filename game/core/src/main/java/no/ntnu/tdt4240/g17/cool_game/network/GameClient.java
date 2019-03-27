@@ -20,26 +20,30 @@ public class GameClient {
      * Create new game client.
      */
     public GameClient(final int tcpPort) {
-        this.tcpPort = 5777;
+        this.tcpPort = tcpPort;
         this.client = new Client();
+        client.start();
     }
 
     /**
      * Start the server.
      */
     public final void run() {
-        client.start();
-        try {
-            client.connect(3000, "localhost", tcpPort);
-        } catch (IOException e) {
-            log.error("Unable to connect to {}", tcpPort, e);
-            // FIXME: 3/22/2019 Retry after some time?
-            // No option for graceful degradation here.
-            // TODO: 3/22/2019 Notify some service that we failed?
-            final RuntimeException exception = new RuntimeException("Unable to bind to port " + tcpPort, e);
-            System.exit(1);
+        boolean failed = true;
+        long waitTime = 400;
+        while (failed) {
+            try {
+                client.connect(5000, "localhost", tcpPort);
+                failed = false;
+            } catch (IOException e) {
+                log.error("Unable to connect to {}", tcpPort, e);
+                try {
+                    Thread.sleep(waitTime);
+                } catch (InterruptedException ex) {
+                    log.error("Thread {} waiting", ex);
+                }
+            }
         }
-        client.sendTCP("PING");
         client.run();
     }
 
