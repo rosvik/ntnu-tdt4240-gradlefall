@@ -4,59 +4,47 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import no.ntnu.tdt4240.g17.cool_game.projectile.ProjectileState;
-
 /**
  * A Power-up.
  */
 public class Powerup {
     private PowerupState state;
     private TextureAtlas dungeonTileset;
-    private TextureRegion projectile;
+    private TextureRegion powerup;
     private static final int TILE_SCALE_CONSTANT = 32;
+    private static int movement;
 
     /**
-     * @param name = the name of the projectile as it is in projectile.atlas
-     * @param xPosition = start x position to projectile
-     * @param yPosition = start y position to projectile
-     * @param baseAngle = the angle of the projectile in projectile.atlas
-     * @param projectilesTexture = the textureatlas where the projectile sprite is.
+     * @param name = the name of the powerup as it is in the TextureAtlas
+     * @param xPosition = start x position to powerup
+     * @param yPosition = start y position to powerup
+     * @param powerupTexture = the TextureAtlas where the powerup sprite is.
      */
     public Powerup(final String name,
                       final int xPosition,
                       final int yPosition,
-                      final float baseAngle,
-                      final TextureAtlas projectilesTexture) {
-        this.dungeonTileset = projectilesTexture;
-        float height = dungeonTileset.findRegion(name).getTexture().getHeight();
-        float width = dungeonTileset.findRegion(name).getTexture().getWidth();
-        this.state = new PowerupState(xPosition, yPosition, baseAngle, height, width);
-        this.projectile = dungeonTileset.findRegion(name);
+                      final TextureAtlas powerupTexture) {
+        this.dungeonTileset = powerupTexture;
+        float height = dungeonTileset.findRegion(name).getRegionHeight();
+        float width = dungeonTileset.findRegion(name).getRegionWidth();
+        this.state = new PowerupState(xPosition, yPosition, height, width);
+        this.powerup = dungeonTileset.findRegion(name);
     }
 
     /**
      * Render the character.
      * Changes the position and animation.
-     * @param newX = the new x position
-     * @param newY = the new y position
      */
-    public void render(final float newX, final float newY) {
-        float newDirectionAngle = new Float(
-                Math.atan2(newY - this.state.getyPosition(), newX - this.state.getxPosition())  * 180.0d / Math.PI);
-        this.render(newX, newY, newDirectionAngle);
-    }
-
-    /**
-     * Render the character.
-     * Changes the position and animation.
-     * @param newX = the new x position
-     * @param newY = the new y position
-     * @param newDirectionAngle = the new direction
-     */
-    public void render(final float newX, final float newY, final float newDirectionAngle) {
-        this.state.setDirectionAngle(newDirectionAngle);
-        this.state.setxPosition(newX);
-        this.state.setyPosition(newY);
+    public void render() {
+        if (movement % 80 < 20) {
+            this.state.setyPosition(this.state.getyPosition() + 0.007f);
+            movement++;
+        } else if (movement % 80 < 40) {
+            this.state.setyPosition(this.state.getyPosition() - 0.007f);
+            movement++;
+        } else {
+            movement++;
+        }
     }
 
     /**
@@ -73,16 +61,11 @@ public class Powerup {
      * @param batch = function will draw the current frame to this spritebatch.
      */
     public void draw(final SpriteBatch batch) {
-        batch.draw(projectile,
+        batch.draw(powerup,
                 this.state.getxPosition(),
                 this.state.getyPosition(),
-                0,
-                0,
-                this.state.getWidth() / TILE_SCALE_CONSTANT,
-                this.state.getHeight() / TILE_SCALE_CONSTANT,
-                getScale(this.state.getWidth()),
-                getScale(this.state.getHeight()),
-                this.state.getAngle()
+               0.7f,
+                0.7f
         );
     }
 

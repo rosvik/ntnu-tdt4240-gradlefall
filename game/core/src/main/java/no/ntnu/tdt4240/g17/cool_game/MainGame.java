@@ -35,6 +35,7 @@ public class MainGame extends ApplicationAdapter {
     // Projectile
     Projectile projectile;
 
+    // Powerup
     Powerup powerup;
 
     /** Arena width in tiles.*/
@@ -55,7 +56,7 @@ public class MainGame extends ApplicationAdapter {
         character1 = new GameCharacter("knight_m", 10, 10, dungeonTilset, "arrow", projectiles);
         stateTime = 0;
         projectile = new Projectile("arrow", 0, 0, 135, projectiles);
-        powerup = new Powerup("chest_full_open_anim", 10, 10, 90, dungeonTilset);
+        powerup = new Powerup("chest_empty_open_anim", 18, 7, dungeonTilset);
         arena = new Arena("map2.tmx", 16f, width, height, batch);
         background = new Texture("background.png");
     }
@@ -68,6 +69,7 @@ public class MainGame extends ApplicationAdapter {
         /* character. */
         character1.render(10, 10);
         projectile.render(9, 10);
+        powerup.render();
 
         batch.begin();
         arena.renderArena();
@@ -79,6 +81,7 @@ public class MainGame extends ApplicationAdapter {
         arena.renderArena();
         projectile.draw(batch);
         character1.draw(batch, stateTime);
+        powerup.draw(batch);
 
         arena.renderForeground();
         batch.end();
