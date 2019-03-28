@@ -31,7 +31,7 @@ public class Powerup {
     }
 
     /**
-     * Render the character.
+     * Render the powerup.
      * Changes the position and animation.
      */
     public void render() {

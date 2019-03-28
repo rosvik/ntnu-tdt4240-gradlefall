@@ -12,8 +12,8 @@ public class PowerupState {
 
 
     /**
-     * @param xPosition = start x position to projectile
-     * @param yPosition = start y position to projectile
+     * @param xPosition = start x position of the powerup
+     * @param yPosition = start y position of the powerup
      * @param height = the height of the sprite
      * @param width = the width of the sprite
      */
@@ -28,7 +28,7 @@ public class PowerupState {
     }
 
     /**
-     * @return the projectiles x position
+     * @return the powerups x position
      */
     public float getxPosition() {
         return xPosition;
@@ -42,7 +42,7 @@ public class PowerupState {
     }
 
     /**
-     * @return the projectiles y position
+     * @return the powerups y position
      */
     public float getyPosition() {
         return yPosition;
@@ -56,14 +56,14 @@ public class PowerupState {
     }
 
     /**
-     * @return the height of the projectile
+     * @return the height of the powerup
      */
     public float getHeight() {
         return height;
     }
 
     /**
-     * @return the width of the projectile
+     * @return the width of the powerup
      */
     public float getWidth() {
         return width;
