@@ -29,7 +29,6 @@
   Finally, it is worth reading the documentation.
 
 -->
-
 <module name="Checker">
     <!--
         If you set the basedir property below, then all reported file
@@ -38,7 +37,6 @@
 
         <property name="basedir" value="${basedir}"/>
     -->
-
     <property name="fileExtensions" value="java, properties, xml"/>
 
     <!-- Checks that a package-info.java file exists for each package.     -->
@@ -70,6 +68,8 @@
        <property name="message" value="Line has trailing spaces."/>
     </module>
 
+    <module name="SuppressWarningsFilter" />
+
     <!-- Checks for Headers                                -->
     <!-- See http://checkstyle.sourceforge.net/config_header.html   -->
     <!-- <module name="Header"> -->
@@ -78,7 +78,6 @@
     <!-- </module> -->
 
     <module name="TreeWalker">
-
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sourceforge.net/config_javadoc.html -->
         <module name="JavadocMethod"/>
@@ -179,6 +178,7 @@
             <property name="severity" value="warning"/>
         </module>
         <module name="UpperEll"/>
+        <module name="SuppressWarningsHolder" />
 
     </module>
 
