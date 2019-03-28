@@ -11,7 +11,6 @@ public class Powerup {
     private PowerupState state;
     private TextureAtlas dungeonTileset;
     private TextureRegion powerup;
-    private static final int TILE_SCALE_CONSTANT = 32;
     private static int movement;
 
     /**
