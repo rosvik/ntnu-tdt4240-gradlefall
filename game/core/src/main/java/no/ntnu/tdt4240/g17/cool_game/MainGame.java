@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
 import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.GameView;
 
 /**
  * Main game class.
@@ -40,45 +41,20 @@ public class MainGame extends ApplicationAdapter {
     /** Arena height in tiles. */
     private float height;
 
+    /** Screens. */
+    private GameView gameView;
+
 
     @Override
     public final void create() {
-        width = 32f;
-        height = 20f;
+        gameView = new GameView();
+        gameView.show();
 
-        batch = new SpriteBatch();
-        dungeonTilset = new TextureAtlas("./Assets/TextureAtlas/Characters/DungeonTileset.atlas");
-        projectiles = new TextureAtlas("Assets/TextureAtlas/Projectiles/Projectiles.atlas");
-        character1 = new GameCharacter("knight_m", 10, 10, dungeonTilset, "arrow", projectiles);
-        stateTime = 0;
-        projectile = new Projectile("arrow", 0, 0, 135, projectiles);
-        arena = new Arena("map2.tmx", 16f, width, height, batch);
-        background = new Texture("background.png");
     }
 
     @Override
     public final void render() {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        /* character. */
-        character1.render(10, 10);
-        projectile.render(9, 10);
-
-        batch.begin();
-        arena.renderArena();
-
-        // Draw the background
-        batch.draw(background, 0f, 0f, width, height);
-
-        // Render character and projectile.
-        arena.renderArena();
-        projectile.draw(batch);
-        character1.draw(batch, stateTime);
-
-        arena.renderForeground();
-        batch.end();
-
+        gameView.render(stateTime);
         stateTime += Gdx.graphics.getDeltaTime();
     }
 

@@ -12,6 +12,7 @@ public class Projectile {
    private TextureAtlas projectiles;
    private TextureRegion projectile;
    private static final int TILE_SCALE_CONSTANT = 32;
+   private float direction;
 
     /**
      * @param name = the name of the projectile as it is in projectile.atlas
@@ -19,17 +20,20 @@ public class Projectile {
      * @param yPosition = start y position to projectile
      * @param baseAngle = the angle of the projectile in projectile.atlas
      * @param projectilesTexture = the textureatlas where the projectile sprite is.
+     * @param direction =.
      */
    public Projectile(final String name,
-                     final int xPosition,
-                     final int yPosition,
+                     final float xPosition,
+                     final float yPosition,
                      final float baseAngle,
+                     final float direction,
                      final TextureAtlas projectilesTexture) {
        this.projectiles = projectilesTexture;
        float height = projectiles.findRegion(name).getTexture().getHeight();
        float width = projectiles.findRegion(name).getTexture().getWidth();
-       this.state = new ProjectileState(xPosition, yPosition, baseAngle, height, width);
+       this.state = new ProjectileState(xPosition, yPosition + 0.5f, baseAngle, height, width);
        this.projectile = projectiles.findRegion(name);
+       this.direction = direction;
    }
 
     /**
@@ -55,6 +59,13 @@ public class Projectile {
         this.state.setDirectionAngle(newDirectionAngle);
         this.state.setxPosition(newX);
         this.state.setyPosition(newY);
+    }
+
+    public void testRender() {
+        this.state.setDirectionAngle(direction);
+        float xVelocity =  new Float(Math.cos(Math.toRadians(direction))) * 0.3f;
+        float yVelocity = new Float(Math.sin(Math.toRadians(direction))) * 0.3f;
+        this.render(this.state.getxPosition() + xVelocity, this.state.getyPosition() + yVelocity)   ;
     }
 
     /**

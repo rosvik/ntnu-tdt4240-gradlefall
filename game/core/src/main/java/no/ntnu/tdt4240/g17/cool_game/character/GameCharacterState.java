@@ -11,34 +11,23 @@ import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
  * - posistion
  * - number of lives
  * - character score
- * - number of projectiles
  */
 public class GameCharacterState {
     private float xPosition;
     private float yPosition;
     private int lives;
     private int score;
-    private Projectile projectileType;
-    private Stack<Projectile> projectiles = new Stack<>();
 
     /**
      * Constructor.
      * @param xPosisiton = the inital x posistion
      * @param yPosisiton = the inital y posistion'
-     * @param projectileName = the name of projectilesprite in TextureAtlas
-     * @param projectiles = the projectiles TextureAtlas
      */
-    public GameCharacterState(final float xPosisiton,
-                              final float yPosisiton,
-                              final String projectileName,
-                              final TextureAtlas projectiles
-    ) {
+    public GameCharacterState(final float xPosisiton, final float yPosisiton) {
         this.xPosition = xPosisiton;
         this.yPosition = yPosisiton;
         this.lives = 3;
         this.score = 0;
-        this.projectileType = new Projectile(projectileName, 0, 0, 135, projectiles);
-        this.addProjectiles(3);
     }
 
     /**
@@ -119,31 +108,5 @@ public class GameCharacterState {
      */
     public void increaseScore(final int increment) {
         this.score += increment;
-    }
-
-    /**
-     * Shoot.
-     * TODO Projectile.shoot or something
-     */
-    public void shoot() {
-        if (!this.projectiles.empty()) {
-            this.projectiles.pop();
-        }
-    }
-
-    /**
-     * @param numberOfProjectiles = how many projectiles to add
-     */
-    public void addProjectiles(final int numberOfProjectiles) {
-        for (int i = 1; i <= numberOfProjectiles; i++) {
-            this.projectiles.add(this.projectileType);
-        }
-    }
-
-    /**
-     * @return number of projectiles
-     */
-    public int getNumberOfProjectiles() {
-        return this.projectiles.size();
     }
 }
