@@ -16,7 +16,7 @@ import no.ntnu.tdt4240.g17.common.network.game_messages.data.Projectile;
 import no.ntnu.tdt4240.g17.common.network.game_messages.data.UpdateMessagePlayer;
 
 /**
- * Created by Johannes Tomren Røsvik (@rosvik) on 3/11/2019.
+ * Created by Johannes Tomren Røsvik (@rosvik) on 4/1/2019.
  *
  * @author Johannes Tomren Røsvik (@rosvik)
  */
@@ -26,7 +26,7 @@ public class ClientData {
     private List<Projectile> projectiles;
     private Arena arena;
 
-    private List<Player> IntermediaryEndPlayers;
+    private List<Player> intermediaryEndPlayers;
     private List<UpdateMessagePlayer> updatePlayers;
     private List<MatchmadeMessagePlayer> matchmadePlayers;
     private List<GameOverMessagePlayer> gameOverPlayers;
@@ -40,7 +40,7 @@ public class ClientData {
      *
      * @param message The message received from the server
      */
-    public void receive(Object message) {
+    public void receive(final Object message) {
         if (message instanceof MatchmadeMessage) {
             MatchmadeMessage matchmadeMessage = ((MatchmadeMessage) message);
 
@@ -60,7 +60,7 @@ public class ClientData {
 
             gameMode = intermediaryEndMessage.gameMode;
             arena = intermediaryEndMessage.nextArena;
-            IntermediaryEndPlayers = intermediaryEndMessage.players;
+            intermediaryEndPlayers = intermediaryEndMessage.players;
         }
 
         if (message instanceof GameOverMessage) {
@@ -75,12 +75,12 @@ public class ClientData {
     /**
      * Get a player with a given ID.
      *
-     * @param ID The ID of the player
+     * @param id The ID of the player
      * @return UpdateMessagePlayer The player with the given ID or null
      */
-    public UpdateMessagePlayer getPlayerById(String ID) {
+    public UpdateMessagePlayer getPlayerById(final String id) {
         for (UpdateMessagePlayer updatePlayer : updatePlayers) {
-            if (updatePlayer.playerId.equals(ID)) {
+            if (updatePlayer.playerId.equals(id)) {
                 return updatePlayer;
             }
         }
