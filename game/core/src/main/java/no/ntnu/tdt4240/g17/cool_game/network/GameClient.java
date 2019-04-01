@@ -53,4 +53,8 @@ public class GameClient {
     public void stop() {
         client.stop();
     }
+
+    public static void main(String[] args) {
+        GameClient gameClient = new GameClient(5777);
+    }
 }
