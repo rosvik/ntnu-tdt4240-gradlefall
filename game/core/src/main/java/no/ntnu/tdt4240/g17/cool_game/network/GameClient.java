@@ -7,13 +7,8 @@ import com.esotericsoftware.kryonet.Listener;
 
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.common.network.MessageClassLister;
-import no.ntnu.tdt4240.g17.common.network.game_messages.MatchmadeMessage;
-import no.ntnu.tdt4240.g17.common.network.game_messages.PlayMessage;
-import no.ntnu.tdt4240.g17.common.network.game_messages.UpdateMessage;
-import no.ntnu.tdt4240.g17.common.network.game_messages.data.UpdateMessagePlayer;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Handles connections and communication with servers.
@@ -26,17 +21,18 @@ public class GameClient {
 
     /**
      * @param tcpPort TCP Port to listen to.
+     * @param clientData The data class to save information to.
      * Create new game client.
      */
-    public GameClient(final int tcpPort, ClientData clientData) {
+    public GameClient(final int tcpPort, final ClientData clientData) {
         this.tcpPort = tcpPort;
         this.client = new Client();
         MessageClassLister.getMessageClasses().forEach(client.getKryo()::register);
 
-        client.addListener(new Listener(){
+        client.addListener(new Listener() {
             @Override
-            public void received(Connection connection, Object message) {
-                clientData.recieve(message);
+            public void received(final Connection connection, final Object message) {
+                clientData.receive(message);
             }
         });
     }
@@ -70,11 +66,5 @@ public class GameClient {
      */
     public void stop() {
         client.stop();
-    }
-
-    public static void main(String[] args) {
-        ClientData clientData = new ClientData();
-        GameClient gameClient = new GameClient(5777, clientData);
-//        gameClient.run();
     }
 }
