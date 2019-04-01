@@ -1,12 +1,14 @@
 package no.ntnu.tdt4240.g17.cool_game;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+
 import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
+import no.ntnu.tdt4240.g17.cool_game.powerup.Powerup;
 import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.GameView;
 
@@ -33,6 +35,9 @@ public class MainGame extends ApplicationAdapter {
 
     // Projectile
     Projectile projectile;
+
+    // Powerup
+    Powerup powerup;
 
     /** Arena width in tiles.*/
     private float width;
