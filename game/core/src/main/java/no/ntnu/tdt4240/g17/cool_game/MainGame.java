@@ -1,11 +1,12 @@
 package no.ntnu.tdt4240.g17.cool_game;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+
 import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
 import no.ntnu.tdt4240.g17.cool_game.projectile.Projectile;
@@ -47,7 +48,7 @@ public class MainGame extends ApplicationAdapter {
         height = 20f;
 
         batch = new SpriteBatch();
-        dungeonTilset = new TextureAtlas("./Assets/TextureAtlas/Characters/DungeonTileset.atlas");
+        dungeonTilset = new TextureAtlas("Assets/TextureAtlas/Characters/DungeonTileset.atlas");
         projectiles = new TextureAtlas("Assets/TextureAtlas/Projectiles/Projectiles.atlas");
         character1 = new GameCharacter("knight_m", 10, 10, dungeonTilset, "arrow", projectiles);
         stateTime = 0;
