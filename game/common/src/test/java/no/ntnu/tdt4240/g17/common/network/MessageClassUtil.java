@@ -41,8 +41,12 @@ public class MessageClassUtil {
             final ArrayList<File> files = new ArrayList<>();
             while (resources.hasMoreElements()) {
                 final URL resource = resources.nextElement();
-                files.add(new File(resource.getFile()));
-                log.debug("Found file: {}", resource.getFile());
+                final File file = new File(resource.getFile());
+                if (!resource.getFile().contains("java/test")) {
+                    // Exclude test sources
+                    files.add(file);
+                    log.debug("Found file: {}", resource.getFile());
+                }
             }
             log.debug("Done scanning {}. Found {}", url, files);
 

@@ -5,13 +5,10 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
-import no.ntnu.tdt4240.g17.common.network.game_messages.data.Arena;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
@@ -49,8 +46,6 @@ class MessageClassListerTest {
         );*/
 
         assertThat(classes, is(not(empty())));
-        assertThat(classes, hasSize(knownMessageClasses.size()));
-        assertThat(classes, hasItem(Arena.class));
         assertThat(classes, containsInAnyOrder(knownMessageClasses.toArray()));
     }
 }
