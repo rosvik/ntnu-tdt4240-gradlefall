@@ -1,5 +1,6 @@
 package no.ntnu.tdt4240.g17.server.network;
 
+import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
+import no.ntnu.tdt4240.g17.common.network.MessageClassLister;
 import no.ntnu.tdt4240.g17.server.availability.FailureListener;
 
 /**
@@ -43,6 +45,11 @@ public class GameServer implements Runnable {
                 return new PlayerConnection();
             }
         };
+
+        final Kryo kryo = server.getKryo();
+        final List<Class> messageClasses = MessageClassLister.getMessageClasses();
+        messageClasses.forEach(kryo::register);
+        log.debug("Registered {} classes in kryo", messageClasses.size());
     }
 
     @Override
