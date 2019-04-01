@@ -47,9 +47,8 @@ public class MainGame extends ApplicationAdapter {
 
     @Override
     public final void create() {
-        gameView = new GameView();
+        gameView = new GameView(4, new SpriteBatch());
         gameView.show();
-
     }
 
     @Override

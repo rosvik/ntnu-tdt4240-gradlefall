@@ -1,5 +1,6 @@
 package no.ntnu.tdt4240.g17.cool_game;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.libgdx.test.util.GameTest;
 import org.junit.jupiter.api.Test;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.GameView;
@@ -28,7 +29,7 @@ public class DeleteThis_CodeCoverageHackTest {
      */
     @Test
     void jacocoCodeCoverageHack() {
-        new GameView();
+        new GameView(0, new SpriteBatch());
         new HighscoreView();
         new LoadingView();
         new MainView();

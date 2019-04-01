@@ -29,7 +29,6 @@ public class ServerSystem extends EntitySystem {
         character = ComponentMapper.getFor(PlayerComponent.class);
         posistion = ComponentMapper.getFor(ServerComponent.class);
         projectile = ComponentMapper.getFor(ProjectileComponent.class);
-
     }
 
     /**

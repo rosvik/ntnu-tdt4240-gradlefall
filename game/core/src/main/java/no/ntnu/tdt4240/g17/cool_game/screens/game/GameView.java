@@ -18,6 +18,7 @@ import no.ntnu.tdt4240.g17.cool_game.screens.game.player.PlayerComponent;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.player.ProjectileComponent;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.server.ServerSystem;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.server.ServerComponent;
+import java.util.ArrayList;
 
 /**
  * The MVC View for an active game.
@@ -27,6 +28,8 @@ public class GameView implements Screen {
 
     /** Batch to render. */
     SpriteBatch batch;
+    /** Number of players. */
+    private int numberOfPlayers;
     /** Arena. */
     private Arena arena;
     /** Arena width in tiles.*/
@@ -38,18 +41,31 @@ public class GameView implements Screen {
     /** Textureatlas. */
     private TextureAtlas dungeonTilset;
     private TextureAtlas projectiles;
+    /** Characters. */
+    private ArrayList<String> characters = new ArrayList();
+    /** Components. */
     private ControllerServerComponent controllerServerComponent;
+    /** Engine */
     private Engine engine;
     /** Entities. */
+    private ArrayList<Entity> players;
     private Entity player1;
     private Entity player2;
     private Entity player3;
     private Entity player4;
     private Entity controller;
     /** Asset manager. */
-    private AssetManager assetManager;
+    AssetManager assetManager;
     private Boolean loadingComplete;
     private HeadsUpDisplay headsUpDisplay;
+    static String dungeonTileset = "Assets/TextureAtlas/Characters/DungeonTileset.atlas";
+    static String projectileTileset = "Assets/TextureAtlas/Projectiles/Projectiles.atlas";
+
+
+    public GameView(final int numberOfPlayers, final SpriteBatch batch) {
+        this.numberOfPlayers = numberOfPlayers;
+        this.batch = batch;
+    }
 
     /**
      * TODO: PATCH til server
@@ -64,24 +80,24 @@ public class GameView implements Screen {
         engine = new Engine();
         width = 32f;
         height = 20f;
-        batch = new SpriteBatch();
         loadingComplete = false;
         controllerServerComponent = new ControllerServerComponent();
+        players = new ArrayList<>();
+
+        characters.add("knight_m");
+        characters.add("wizzard_f");
+        characters.add("big_zombie");
+        characters.add("necromancer");
         // Creates entities
-        player1 = new Entity();
-        player2 = new Entity();
-        player3 = new Entity();
-        player4 = new Entity();
+        for (int i = 0; i < numberOfPlayers; i++) {
+            players.add(new Entity());
+            engine.addEntity(players.get(i));
+        }
         controller = new Entity();
-        //Add entities to engine
-        engine.addEntity(player1);
-        engine.addEntity(player2);
-        engine.addEntity(player3);
-        engine.addEntity(player4);
         engine.addEntity(controller);
         engine.addSystem(new ControllerSystem());
         engine.addSystem(new ServerSystem());
-        //Load assets
+        // Load assets
         loadAssets();
     }
 
@@ -91,8 +107,8 @@ public class GameView implements Screen {
     private void loadAssets() {
         arena = new Arena("map2.tmx", 16f, width, height, batch);
         background = new Texture("background.png");
-        assetManager.load("Assets/TextureAtlas/Characters/DungeonTileset.atlas", TextureAtlas.class);
-        assetManager.load("Assets/TextureAtlas/Projectiles/Projectiles.atlas", TextureAtlas.class);
+        assetManager.load(dungeonTileset, TextureAtlas.class);
+        assetManager.load(projectileTileset, TextureAtlas.class);
         System.out.println("LOADING ASSETS... " + assetManager.getProgress());
         setAssets();
     }
@@ -102,27 +118,24 @@ public class GameView implements Screen {
      */
     private void setAssets() {
         if (assetManager.isFinished()) {
-            dungeonTilset = assetManager.get("Assets/TextureAtlas/Characters/DungeonTileset.atlas");
-            projectiles = assetManager.get("Assets/TextureAtlas/Projectiles/Projectiles.atlas");
-            //Add playerComponent
-            player1.add(new PlayerComponent(0, 15, 10, "wizzard_f", dungeonTilset));
-            player2.add(new PlayerComponent(1, 50, 10, "knight_m",  dungeonTilset));
-            player3.add(new PlayerComponent(3, 15, 2, "big_zombie", dungeonTilset));
-            player4.add(new PlayerComponent(4, 10, 10, "necromancer", dungeonTilset));
-            //Add serverPosistion
-            player1.add(new ServerComponent(new TestMovementAPI(), null));
-            player2.add(new ServerComponent(new TestMovementAPI(), null));
-            player3.add(new ServerComponent(new TestMovementAPI(), null));
-            player4.add(new ServerComponent(null, controllerServerComponent));
-            //Add projectiles
-            player1.add(new ProjectileComponent("arrow", projectiles, 135));
-            player2.add(new ProjectileComponent("arrow", projectiles, 135));
-            player3.add(new ProjectileComponent("arrow", projectiles, 135));
-            player4.add(new ProjectileComponent("arrow", projectiles, 135));
-            //player4.add(new ProjectileComponent(3, "sword", projectiles, 270));
-            //Add controllerComponent
-            player4.add(ControllerComponent.getInstance());
-            //Add Components to controller
+            dungeonTilset = assetManager.get(dungeonTileset);
+            projectiles = assetManager.get(projectileTileset);
+            for (int i = 0; i < players.size(); i++) {
+                // Add player component
+                players.get(i).add(new PlayerComponent(0, 15, 10, characters.get(i % 4), dungeonTilset));
+                // Add projectile component
+                players.get(i).add(new ProjectileComponent("arrow", projectiles, 135));
+                //players.get(i).add(new ProjectileComponent("sword", projectiles, 270));
+                // Add server component
+                if (i != 0) {
+                    players.get(i).add(new ServerComponent(new TestMovementAPI(), null));
+                } else {
+                    players.get(i).add(new ServerComponent(null, controllerServerComponent));
+                }
+            }
+            // Add controllerComponent.
+            players.get(0).add(ControllerComponent.getInstance());
+            // Add Components to controller
             controller.add(ControllerComponent.getInstance());
             controller.add(controllerServerComponent);
             headsUpDisplay = new HeadsUpDisplay(dungeonTilset, projectiles);
@@ -149,21 +162,16 @@ public class GameView implements Screen {
             // Render Arena
             arena.renderArena();
 
-            // Draw all players
-            player1.getComponent(PlayerComponent.class).getCharacter().draw(batch, delta);
-            player2.getComponent(PlayerComponent.class).getCharacter().draw(batch, delta);
-            player3.getComponent(PlayerComponent.class).getCharacter().draw(batch, delta);
-            player4.getComponent(PlayerComponent.class).getCharacter().draw(batch, delta);
-            // Draw all projectiles
-            player1.getComponent(ProjectileComponent.class).drawProjectiles(batch);
-            player2.getComponent(ProjectileComponent.class).drawProjectiles(batch);
-            player3.getComponent(ProjectileComponent.class).drawProjectiles(batch);
-            player4.getComponent(ProjectileComponent.class).drawProjectiles(batch);
+            // Draw all players and projectiles
+            for (int i = 0; i < players.size(); i++) {
+                players.get(i).getComponent(PlayerComponent.class).getCharacter().draw(batch, delta);
+                players.get(i).getComponent(ProjectileComponent.class).drawProjectiles(batch);
+            }
             // Draw the foreground
             arena.renderForeground();
             headsUpDisplay.draw(batch,
-                    player1.getComponent(PlayerComponent.class).getCharacter().getState().getLives(),
-                    player4.getComponent(ProjectileComponent.class).getNumberOfProectiles(),
+                    players.get(0).getComponent(PlayerComponent.class).getCharacter().getState().getLives(),
+                    players.get(0).getComponent(ProjectileComponent.class).getNumberOfProectiles(),
                     0);
             batch.end();
             engine.update(delta);
