@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g17.cool_game.network;
 
 import com.esotericsoftware.kryonet.Client;
 import lombok.extern.slf4j.Slf4j;
+import no.ntnu.tdt4240.g17.common.network.MessageClassLister;
 
 import java.io.IOException;
 
@@ -22,6 +23,7 @@ public class GameClient {
     public GameClient(final int tcpPort) {
         this.tcpPort = tcpPort;
         this.client = new Client();
+        MessageClassLister.getMessageClasses().forEach(client.getKryo()::register);
         client.start();
     }
 
@@ -39,6 +41,7 @@ public class GameClient {
                 log.error("Unable to connect to {}", tcpPort, e);
                 try {
                     Thread.sleep(waitTime);
+                    waitTime *= 1.2;
                 } catch (InterruptedException ex) {
                     log.error("Thread {} waiting", ex);
                 }
@@ -56,5 +59,6 @@ public class GameClient {
 
     public static void main(String[] args) {
         GameClient gameClient = new GameClient(5777);
+        gameClient.run();
     }
 }
