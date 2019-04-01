@@ -26,7 +26,7 @@ import no.ntnu.tdt4240.g17.cool_game.screens.game.server.ServerComponent;
 public class GameView implements Screen {
 
     /** Batch to render. */
-    private SpriteBatch batch;
+    SpriteBatch batch;
     /** Arena. */
     private Arena arena;
     /** Arena width in tiles.*/
@@ -94,13 +94,13 @@ public class GameView implements Screen {
         assetManager.load("Assets/TextureAtlas/Characters/DungeonTileset.atlas", TextureAtlas.class);
         assetManager.load("Assets/TextureAtlas/Projectiles/Projectiles.atlas", TextureAtlas.class);
         System.out.println("LOADING ASSETS... " + assetManager.getProgress());
-        getAssets();
+        setAssets();
     }
 
     /**
      * Add assets to components when assetManager is finished loading.
      */
-    private void getAssets() {
+    private void setAssets() {
         if (assetManager.isFinished()) {
             dungeonTilset = assetManager.get("Assets/TextureAtlas/Characters/DungeonTileset.atlas");
             projectiles = assetManager.get("Assets/TextureAtlas/Projectiles/Projectiles.atlas");
@@ -170,7 +170,7 @@ public class GameView implements Screen {
         } else {
             Gdx.gl.glClearColor(1, 0, 1, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            getAssets();
+            setAssets();
         }
     }
 

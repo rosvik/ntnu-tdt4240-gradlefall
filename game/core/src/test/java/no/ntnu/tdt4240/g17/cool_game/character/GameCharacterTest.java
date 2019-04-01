@@ -11,9 +11,8 @@ class GameCharacterTest  extends GameTest {
             "wizzard_m",
             100,
             100,
-            new TextureAtlas("TextureAtlas/Characters/DungeonTileset.atlas"),
-            "arrow",
-            projectiles);
+            new TextureAtlas("TextureAtlas/Characters/DungeonTileset.atlas")
+    );
 
     @Test
     void render() {

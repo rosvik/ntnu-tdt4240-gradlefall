@@ -27,7 +27,7 @@ public class HeadsUpDisplay {
      * @param numeberOfLives = current number of lives
      * @param numerOfProjectiles = current number of projectiles
      * @param playerScore = current score.
-     *                    Todo: add score support
+     *                    todo: add score support
      */
     public void draw(
             final SpriteBatch batch,

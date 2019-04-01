@@ -31,7 +31,7 @@ public class Projectile {
        this.projectiles = projectilesTexture;
        float height = projectiles.findRegion(name).getTexture().getHeight();
        float width = projectiles.findRegion(name).getTexture().getWidth();
-       this.state = new ProjectileState(xPosition, yPosition + 0.5f, baseAngle, height, width);
+       this.state = new ProjectileState(xPosition, yPosition, baseAngle, height, width);
        this.projectile = projectiles.findRegion(name);
        this.direction = direction;
    }

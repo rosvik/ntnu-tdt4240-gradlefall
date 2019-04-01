@@ -26,8 +26,6 @@ public class ServerSystem extends EntitySystem {
      */
     public ServerSystem() {
         family = Family.all(PlayerComponent.class).get();
-        System.out.println("CONSTRUCTOR " +  family.getIndex());
-
         character = ComponentMapper.getFor(PlayerComponent.class);
         posistion = ComponentMapper.getFor(ServerComponent.class);
         projectile = ComponentMapper.getFor(ProjectileComponent.class);
@@ -56,7 +54,6 @@ public class ServerSystem extends EntitySystem {
     @Override
     public final void addedToEngine(final Engine engine) {
         entitiesToUpdate = engine.getEntitiesFor(family);
-        System.out.println("enteties" + entitiesToUpdate);
     }
 
     @Override
