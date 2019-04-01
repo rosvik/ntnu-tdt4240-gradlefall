@@ -45,7 +45,7 @@ public class GameView implements Screen {
     private ArrayList<String> characters = new ArrayList();
     /** Components. */
     private ControllerServerComponent controllerServerComponent;
-    /** Engine */
+    /** Engine. */
     private Engine engine;
     /** Entities. */
     private ArrayList<Entity> players;
@@ -61,7 +61,11 @@ public class GameView implements Screen {
     static String dungeonTileset = "Assets/TextureAtlas/Characters/DungeonTileset.atlas";
     static String projectileTileset = "Assets/TextureAtlas/Projectiles/Projectiles.atlas";
 
-
+    /**
+     * Constructor for game view.
+     * @param numberOfPlayers = the number of players in game
+     * @param batch = The batch that everything will render on.
+     */
     public GameView(final int numberOfPlayers, final SpriteBatch batch) {
         this.numberOfPlayers = numberOfPlayers;
         this.batch = batch;

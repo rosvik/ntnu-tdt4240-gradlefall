@@ -61,11 +61,14 @@ public class Projectile {
         this.state.setyPosition(newY);
     }
 
+    /**
+     * ONLY USED FOR LOCAL GAMING. WILL BE DELETED.
+     */
     public void testRender() {
         this.state.setDirectionAngle(direction);
         float xVelocity =  new Float(Math.cos(Math.toRadians(direction))) * 0.3f;
         float yVelocity = new Float(Math.sin(Math.toRadians(direction))) * 0.3f;
-        this.render(this.state.getxPosition() + xVelocity, this.state.getyPosition() + yVelocity)   ;
+        this.render(this.state.getxPosition() + xVelocity, this.state.getyPosition() + yVelocity);
     }
 
     /**
