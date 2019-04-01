@@ -1,5 +1,6 @@
 package no.ntnu.tdt4240.g17.server.network;
 
+import com.badlogic.gdx.utils.Disposable;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
@@ -20,7 +21,7 @@ import no.ntnu.tdt4240.g17.server.availability.FailureListener;
  * @author Kristian 'krissrex' Rekstad
  */
 @Slf4j
-public class GameServer implements Runnable {
+public class GameServer implements Runnable, Disposable {
     private final int tcpPort;
     private final FailureListener failureListener;
 
@@ -84,4 +85,11 @@ public class GameServer implements Runnable {
         }
     }
 
+    /** Disposes server resoures. */
+    @Override
+    public void dispose() {
+        try {
+            server.dispose();
+        } catch (IOException ignored) { }
+    }
 }
