@@ -1,6 +1,5 @@
 package no.ntnu.tdt4240.g17.cool_game.network;
 
-
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -59,6 +58,15 @@ public class GameClient {
             }
         }
         client.run();
+    }
+
+    /**
+     * Send a message to the server.
+     *
+     * @param message The message object.
+     */
+    void send(Object message) {
+        client.sendTCP(message);
     }
 
     /**
