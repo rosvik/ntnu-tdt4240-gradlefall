@@ -7,13 +7,8 @@ import com.esotericsoftware.kryonet.Listener;
 
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.common.network.MessageClassLister;
-import no.ntnu.tdt4240.g17.common.network.game_messages.MatchmadeMessage;
-import no.ntnu.tdt4240.g17.common.network.game_messages.PlayMessage;
-import no.ntnu.tdt4240.g17.common.network.game_messages.UpdateMessage;
-import no.ntnu.tdt4240.g17.common.network.game_messages.data.UpdateMessagePlayer;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Handles connections and communication with servers.
@@ -36,7 +31,7 @@ public class GameClient {
         client.addListener(new Listener(){
             @Override
             public void received(Connection connection, Object message) {
-                clientData.recieve(message);
+                clientData.receive(message);
             }
         });
     }
