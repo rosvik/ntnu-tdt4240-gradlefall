@@ -22,6 +22,5 @@ public class DeleteThis_CodeCoverageHackTest {
      */
     @Test
     void jacocoCodeCoverageHack() {
-        new Projectile();
     }
 }

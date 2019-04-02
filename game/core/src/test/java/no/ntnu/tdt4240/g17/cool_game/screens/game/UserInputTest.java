@@ -1,65 +1,95 @@
 package no.ntnu.tdt4240.g17.cool_game.screens.game;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
-/**
- * By running this class you are able to visibly see the UI controls and test if input gives the expected output
- */
+import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
+import no.ntnu.tdt4240.g17.cool_game.character.InputToMovementOutput;
+import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
 
-public final class UserInputTest extends ApplicationAdapter {
+/**
+ * Main game class.
+ */
+public class UserInputTest extends ApplicationAdapter {
+    /** Batch to render. */
     SpriteBatch batch;
-    BitmapFont font;
+
+    /** Arena. */
+    Arena arena;
+
+    TextureAtlas atlas;
+
+    GameCharacter character;
+
+    float stateTime;
+
+    UserInputButtons userInputButtons;
+
+    MovementFormat movementFormat;
+
+    InputToMovementOutput inputToMovementOutput;
+
+    Vector2 oldPosition;
+
+    int screenHeigth, screenWidth;
+
     ShapeRenderer shapeRenderer;
-    UserInputButtons ib;
-    MovementOutput output;
+
+    BitmapFont font;
+
+    InputProcessor inputProcessor;
+
+    TouchInput firstFinger, secondFinger, thirdFinger;
 
     @Override
-    public void create() {
+    public final void create() {
+        font = new BitmapFont();
+        screenHeigth = Gdx.graphics.getHeight();
+        screenWidth = Gdx.graphics.getWidth();
         batch = new SpriteBatch();
-        font  = new BitmapFont();
+        atlas = new TextureAtlas("./Assets/TextureAtlas/Characters/DungeonTileset.atlas");
+        character = new GameCharacter("big_zombie", 100,  100, atlas, "arrow", new TextureAtlas("./Assets/TextureAtlas/Projectiles/Projectiles.atlas"));
+        stateTime = 0;
+        userInputButtons = new UserInputButtons(screenHeigth, screenWidth);
+        inputToMovementOutput = new InputToMovementOutput();
+        oldPosition = new Vector2(screenWidth / 2, screenHeigth / 2);
         shapeRenderer = new ShapeRenderer();
-        ib = new UserInputButtons(Gdx.graphics.getHeight(), Gdx.graphics.getWidth());
-        output = new MovementOutput("", new Vector2(0, 0));
+        inputProcessor = new InputProcessor(screenHeigth, screenWidth);
     }
 
     @Override
-    public void render() {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+    public final void render() {
+        stateTime += Gdx.graphics.getDeltaTime();
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glLineWidth(2);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.rect(ib.getJoystickBox().x, ib.getJoystickBox().y, ib.getJoystickBox().width, ib.getJoystickBox().height);
-        shapeRenderer.arc(ib.getJoystick().x, ib.getJoystick().y, ib.getJoystick().radius, 0, 360);
         shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(ib.getButtonBox().x, ib.getButtonBox().y, ib.getButtonBox().width, ib.getButtonBox().height);
-        shapeRenderer.end();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.GREEN);
-        shapeRenderer.rect(ib.getJump().x, ib.getJump().y, ib.getJump().width, ib.getJump().height);
-        shapeRenderer.setColor(Color.YELLOW);
-        shapeRenderer.rect(ib.getShoot().x, ib.getShoot().y, ib.getShoot().width, ib.getShoot().height);
-        shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.rect(ib.getPlace().x, ib.getPlace().y, ib.getPlace().width, ib.getPlace().height);
+        shapeRenderer.arc(userInputButtons.getJoystick().x, userInputButtons.getJoystick().y, userInputButtons.getJoystick().radius, 0, 360);
+        shapeRenderer.line(0, screenHeigth / 2, screenWidth, screenHeigth / 2);
+        shapeRenderer.rect(userInputButtons.getJump().x, userInputButtons.getJump().y, userInputButtons.getJump().width, userInputButtons.getJump().height);
+        shapeRenderer.rect(userInputButtons.getShoot().x, userInputButtons.getShoot().y, userInputButtons.getShoot().width, userInputButtons.getShoot().height);
+        shapeRenderer.rect(userInputButtons.getPlace().x, userInputButtons.getPlace().y, userInputButtons.getPlace().width, userInputButtons.getPlace().height);
         shapeRenderer.end();
         batch.begin();
-        font.draw(batch, "x: " + Integer.toString(Gdx.input.getX()) + ", y: " + Integer.toString(Gdx.input.getY()), 10, 20);
-        font.draw(batch, "Angle, Magnitude: " + output.getJoystickOutput() + ", Button: " + output.getButtonOutput(), 500, 400);
-        if (Gdx.input.isTouched()) {
-            output = ib.processInput(Gdx.input.getX(), Gdx.input.getY());
-        }
+        firstFinger = new TouchInput(Gdx.input.isTouched(0), Gdx.input.getX(0), Gdx.input.getY(0));
+        secondFinger = new TouchInput(Gdx.input.isTouched(1), Gdx.input.getX(1), Gdx.input.getY(1));
+        thirdFinger = new TouchInput(Gdx.input.isTouched(2), Gdx.input.getX(2), Gdx.input.getY(2));
+        movementFormat = inputProcessor.processInput(firstFinger, secondFinger, thirdFinger);
+        font.draw(batch, "button: " + movementFormat.getButtonsPressed() + ", value: " + movementFormat.getJoystickInput(), 300, 500);
+        character.render(200, 500);
+        character.draw(batch, stateTime);
         batch.end();
     }
 
     @Override
-    public void dispose() {
+    public final void dispose() {
         batch.dispose();
     }
 }
-

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
- * Character animation.
+ * Characters animation.
  */
 public class GameCharacterAnimation {
 
@@ -16,6 +16,7 @@ public class GameCharacterAnimation {
     private final Animation<TextureRegion> fallingAnimation;
     private static final float FRAME_DURATION = 1 / 8f;
     private boolean isMovingLeft;
+    private static final int TILE_SCALE_CONSTANT = 16;
 
     /**
      * Consturctor.
@@ -94,7 +95,7 @@ public class GameCharacterAnimation {
      * @return the height of the sprite
      */
     public float getHeight() {
-        return this.animation.getKeyFrame(0).getRegionHeight();
+        return this.animation.getKeyFrame(0).getRegionHeight() / TILE_SCALE_CONSTANT;
     }
 
     /**
@@ -102,9 +103,9 @@ public class GameCharacterAnimation {
      */
     public float getWidth() {
         if (this.isMovingLeft) {
-            return -this.animation.getKeyFrame(0).getRegionHeight();
+            return -this.animation.getKeyFrame(0).getRegionHeight() / TILE_SCALE_CONSTANT;
         }
-        return this.animation.getKeyFrame(0).getRegionHeight();
+        return this.animation.getKeyFrame(0).getRegionHeight() / TILE_SCALE_CONSTANT;
     }
 
     /**

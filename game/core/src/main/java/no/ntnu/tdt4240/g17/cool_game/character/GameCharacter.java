@@ -24,15 +24,18 @@ public class GameCharacter {
      * @param name = character name, must be the same as the character animation in DungeonTileset.atlas.
      * @param xPosition = The initial starting x position for the character
      * @param yPosition = The initial starting y position for the character
-     * @param atlas = TextureA  tlas whit animation sprites
+     * @param atlas = TextureAtlas with animation sprites
+     * @param projectileName .
+     * @param projectiles .
      */
-    public GameCharacter(final String name, final int xPosition, final int yPosition, final TextureAtlas atlas) {
-        this.state = new GameCharacterState(xPosition, yPosition);
+    public GameCharacter(final String name, final float xPosition, final float yPosition, final TextureAtlas atlas,
+                         final String projectileName, final TextureAtlas projectiles) {
+        this.state = new GameCharacterState(xPosition, yPosition, projectileName, projectiles);
         this.animation = new GameCharacterAnimation(name, atlas);
     }
 
     /**
-     * @return the caracters animation
+     * @return the characters animation
      */
     public GameCharacterAnimation getAnimation() {
         return this.animation;
@@ -44,7 +47,7 @@ public class GameCharacter {
      * @param newX = the new x posistion
      * @param newY = the new y posistion
      */
-    public void render(final int newX, final int newY) {
+    public void render(final float newX, final float newY) {
         if (newY > this.state.getyPosition()) {
             this.animation.jump();
         } else if (newY  < this.state.getyPosition()) {
@@ -67,8 +70,8 @@ public class GameCharacter {
     public void draw(final SpriteBatch batch, final float stateTime) {
         TextureRegion characterTextureRegion = this.animation.getFrame(stateTime);
         batch.draw(characterTextureRegion,
-                this.state.getyPosition(),
                 this.state.getxPosition(),
+                this.state.getyPosition(),
                 this.animation.getWidth(),
                 this.animation.getHeight());
     }

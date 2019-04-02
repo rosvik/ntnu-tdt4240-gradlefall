@@ -5,12 +5,9 @@ import com.libgdx.test.util.GameTest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests the main game class.

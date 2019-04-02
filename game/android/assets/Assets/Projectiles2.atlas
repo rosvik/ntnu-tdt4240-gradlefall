@@ -1,0 +1,19 @@
+Projectiles2.png
+size: 46, 48
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+arrow
+  rotate: false
+  xy: 0, 0
+  size: 34, 34
+  orig: 34, 34
+  offset: 0, 0
+  index: 93
+fireball
+  rotate: false
+  xy: 34, 0
+  size: 12, 48
+  orig: 12, 48
+  offset: 0, 0
+  index: 1

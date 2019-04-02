@@ -1,2 +1,8 @@
 include ':server', ':common'
 include 'desktop', 'android', 'core'
+
+sourceControl {
+    gitRepository("https://github.com/EsotericSoftware/kryonet.git") {
+        producesModule("kryonet:kryonet")
+    }
+}

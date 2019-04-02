@@ -42,13 +42,12 @@ public class PhysicsSystem extends IntervalSystem {
 
     /**
      * Create a new Physics system for an {@link com.badlogic.ashley.core.Engine}.
-     *
-     * @param family   the family to work with. Use {@link #PHYSICS_FAMILY}
+     *  @param family   the family to work with. Use {@link #PHYSICS_FAMILY}
+     * @param priority the priority of the system in {@link Engine}.
      * @param intervalSeconds how often to update the physics at minimum in seconds.
-     * @param priority the priority of the system in {@link com.badlogic.ashley.core.Engine}.
      * @param world    {@link com.badlogic.gdx.physics.box2d.Box2D} world.
      */
-    public PhysicsSystem(final Family family, final float intervalSeconds, final int priority, final World world) {
+    public PhysicsSystem(final Family family, final int priority, final float intervalSeconds, final World world) {
         super(intervalSeconds, priority);
         this.intervalSeconds = intervalSeconds;
         this.family = family;
