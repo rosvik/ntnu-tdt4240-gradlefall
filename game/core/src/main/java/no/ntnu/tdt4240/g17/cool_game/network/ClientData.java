@@ -34,7 +34,6 @@ public class ClientData {
     private GameMode gameMode;
     private List<String> winnerIds;
 
-
     /**
      * Handle a message from the server and save it.
      *

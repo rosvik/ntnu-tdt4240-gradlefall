@@ -7,8 +7,8 @@ import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 
+// WILL BE DELETED
 class ProjectileComponentTest extends GameTest {
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("./TextureAtlas/Projectiles/Projectiles.atlas"));
     ProjectileComponent projectileComponent = new ProjectileComponent("arrow",atlas,135);

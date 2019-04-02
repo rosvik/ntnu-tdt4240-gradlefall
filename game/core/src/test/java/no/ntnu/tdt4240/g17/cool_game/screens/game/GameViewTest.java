@@ -12,9 +12,9 @@ class GameViewTest extends GameTest {
 
     @BeforeEach
     void setUp() {
-        view = new GameView(1, Mockito.mock(SpriteBatch.class));
-        view.dungeonTileset = Gdx.files.internal("./TextureAtlas/Characters/DungeonTileset.atlas").toString();
-        view.projectileTileset = Gdx.files.internal("./TextureAtlas/Projectiles/Projectiles.atlas").toString();
+        view = new GameView(Mockito.mock(SpriteBatch.class));
+        view.dungeonTilesetPath = Gdx.files.internal("./TextureAtlas/Characters/DungeonTileset.atlas").toString();
+        view.projectileTilesetPath = Gdx.files.internal("./TextureAtlas/Projectiles/Projectiles.atlas").toString();
         view.show();
     }
 

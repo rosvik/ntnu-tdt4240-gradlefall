@@ -6,6 +6,8 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.Engine;
+import no.ntnu.tdt4240.g17.common.network.game_messages.ControlsMessage;
+import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
 
 import java.util.Collections;
 
@@ -18,6 +20,8 @@ public class ControllerSystem extends EntitySystem {
     private ComponentMapper<ControllerComponent> controller;
     private ComponentMapper<ControllerServerComponent> controllerServer;
     private Iterable<Entity> entitiesToUpdate = Collections.emptyList();
+    private GameClient gameClient;
+    private ControlsMessage controlMessage;
 
     /**
      * Constructor.
@@ -27,6 +31,7 @@ public class ControllerSystem extends EntitySystem {
         family = Family.all(ControllerComponent.class, ControllerServerComponent.class).get();
         controller = ComponentMapper.getFor(ControllerComponent.class);
         controllerServer = ComponentMapper.getFor(ControllerServerComponent.class);
+        controlMessage = new ControlsMessage();
     }
 
     /**
@@ -37,9 +42,9 @@ public class ControllerSystem extends EntitySystem {
     public void update(final float deltaTime) {
         for (Entity entity : entitiesToUpdate) {
             ControllerComponent entityController = controller.get(entity);
-            ControllerServerComponent entityServer = controllerServer.get(entity);
+            //ControllerServerComponent entityServer = controllerServer.get(entity);
             entityController.update();
-            entityServer.update(entityController.getMovementFormat());
+            //entityServer.update(entityController.getMovementFormat());
         }
     }
 

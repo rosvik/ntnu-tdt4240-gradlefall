@@ -9,15 +9,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import no.ntnu.tdt4240.g17.cool_game.character.TestMovementAPI;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.ControllerServerComponent;
+import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.ControllerComponent;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.ControllerSystem;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.player.PlayerComponent;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.player.ProjectileComponent;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.server.ServerSystem;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.server.ServerComponent;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.player.PlayerSystem;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.projectile.ProjectileComponent;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.projectile.ProjectileSystem;
+
 import java.util.ArrayList;
 
 /**
@@ -28,8 +28,6 @@ public class GameView implements Screen {
 
     /** Batch to render. */
     SpriteBatch batch;
-    /** Number of players. */
-    private int numberOfPlayers;
     /** Arena. */
     private Arena arena;
     /** Arena width in tiles.*/
@@ -40,43 +38,35 @@ public class GameView implements Screen {
     private Texture background;
     /** Textureatlas. */
     private TextureAtlas dungeonTilset;
-    private TextureAtlas projectiles;
+    private TextureAtlas projectilesTileset;
     /** Characters. */
     private ArrayList<String> characters = new ArrayList();
-    /** Components. */
-    private ControllerServerComponent controllerServerComponent;
     /** Engine. */
     private Engine engine;
     /** Entities. */
     private ArrayList<Entity> players;
-    private Entity player1;
-    private Entity player2;
-    private Entity player3;
-    private Entity player4;
+    private ArrayList<Entity> projectiles;
     private Entity controller;
     /** Asset manager. */
     AssetManager assetManager;
     private Boolean loadingComplete;
     private HeadsUpDisplay headsUpDisplay;
-    static String dungeonTileset = "Assets/TextureAtlas/Characters/DungeonTileset.atlas";
-    static String projectileTileset = "Assets/TextureAtlas/Projectiles/Projectiles.atlas";
+    /** Tilset path. */
+    static String dungeonTilesetPath = "Assets/TextureAtlas/Characters/DungeonTileset.atlas";
+    static String projectileTilesetPath = "Assets/TextureAtlas/Projectiles/Projectiles.atlas";
+    private ClientData clientData;
 
     /**
      * Constructor for game view.
-     * @param numberOfPlayers = the number of players in game
      * @param batch = The batch that everything will render on.
      */
-    public GameView(final int numberOfPlayers, final SpriteBatch batch) {
-        this.numberOfPlayers = numberOfPlayers;
+    public GameView(final SpriteBatch batch) {
         this.batch = batch;
     }
 
     /**
-     * TODO: PATCH til server
-     * TODO: GET fra server
-     * TODO: Testing
-     * TODO: JAVADOC
-     * TODO: Checkstyle.
+     * Creates items in screen.
+     * todo: Add projectile render support
      */
     @Override
     public void show() {
@@ -85,22 +75,18 @@ public class GameView implements Screen {
         width = 32f;
         height = 20f;
         loadingComplete = false;
-        controllerServerComponent = new ControllerServerComponent();
         players = new ArrayList<>();
+        clientData = new ClientData();
 
         characters.add("knight_m");
         characters.add("wizzard_f");
         characters.add("big_zombie");
         characters.add("necromancer");
-        // Creates entities
-        for (int i = 0; i < numberOfPlayers; i++) {
-            players.add(new Entity());
-            engine.addEntity(players.get(i));
-        }
         controller = new Entity();
         engine.addEntity(controller);
         engine.addSystem(new ControllerSystem());
-        engine.addSystem(new ServerSystem());
+        engine.addSystem(new PlayerSystem());
+        engine.addSystem(new ProjectileSystem());
         // Load assets
         loadAssets();
     }
@@ -111,42 +97,92 @@ public class GameView implements Screen {
     private void loadAssets() {
         arena = new Arena("map2.tmx", 16f, width, height, batch);
         background = new Texture("background.png");
-        assetManager.load(dungeonTileset, TextureAtlas.class);
-        assetManager.load(projectileTileset, TextureAtlas.class);
+        assetManager.load(dungeonTilesetPath, TextureAtlas.class);
+        assetManager.load(projectileTilesetPath, TextureAtlas.class);
         System.out.println("LOADING ASSETS... " + assetManager.getProgress());
         setAssets();
+    }
+
+    /**
+     * If clientdata contains more projectile than screen,
+     * screen creates a new entity (projectile) and append it to engine.
+     * If cliendata conatins fewere projectiles than screen,
+     * screen removes the entity froms screen and engine
+     */
+    private void updateProjectiles() {
+        if (clientData.getProjectiles().size() > projectiles.size()) {
+            for (int i = 0; i < clientData.getProjectiles().size(); i++) {
+                boolean isInList = false;
+                for (int j = 0; j < projectiles.size(); j++) {
+                    Entity entity = projectiles.get(j);
+                    String projectileComponentId = entity.getComponent(ProjectileComponent.class).getProjectileId();
+                    if (clientData.getProjectiles().get(i).projectileId.equals(projectileComponentId)) {
+                        isInList = true;
+                        break;
+                    }
+                }
+                if (!isInList) {
+                    Entity newProjectile = new Entity();
+                    engine.addEntity(newProjectile);
+                    newProjectile.add(new ProjectileComponent(
+                            clientData.getProjectiles().get(i).projectileId,
+                            clientData.getProjectiles().get(i).projectilePosition,
+                            "arrow",
+                            135,
+                            projectilesTileset));
+                    projectiles.add(newProjectile);
+                    if (clientData.getProjectiles().size() == projectiles.size()) {
+                        break;
+                    }
+                }
+            }
+        } else if (clientData.getProjectiles().size() < projectiles.size()) {
+            for (int i = 0; i < projectiles.size(); i++) {
+                boolean isInList = false;
+                String id = projectiles.get(i).getComponent(ProjectileComponent.class).getProjectileId();
+                for (int j = 0; j < clientData.getProjectiles().size(); j++) {
+                   if (clientData.getProjectiles().get(j).projectileId.equals(id)) {
+                       isInList = true;
+                       break;
+                   }
+                }
+                if (!isInList) {
+                    engine.removeEntity(projectiles.get(i));
+                    projectiles.remove(i);
+                    if (clientData.getProjectiles().size() == projectiles.size()) {
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     /**
      * Add assets to components when assetManager is finished loading.
      */
     private void setAssets() {
-        if (assetManager.isFinished()) {
-            dungeonTilset = assetManager.get(dungeonTileset);
-            projectiles = assetManager.get(projectileTileset);
-            for (int i = 0; i < players.size(); i++) {
+        if (assetManager.isFinished() && clientData.getMatchmadePlayers() != null) {
+            dungeonTilset = assetManager.get(dungeonTilesetPath);
+            projectilesTileset = assetManager.get(projectileTilesetPath);
+            for (int i = 0; i < clientData.getMatchmadePlayers().size(); i++) {
+                players.add(new Entity());
+                engine.addEntity(players.get(i));
                 // Add player component
-                players.get(i).add(new PlayerComponent(0, 15, 10, characters.get(i % 4), dungeonTilset));
-                // Add projectile component
-                players.get(i).add(new ProjectileComponent("arrow", projectiles, 135));
-                //players.get(i).add(new ProjectileComponent("sword", projectiles, 270));
-                // Add server component
-                if (i != 0) {
-                    players.get(i).add(new ServerComponent(new TestMovementAPI(), null));
-                } else {
-                    players.get(i).add(new ServerComponent(null, controllerServerComponent));
-                }
+                players.get(i).add(
+                        new PlayerComponent(clientData.getMatchmadePlayers().get(i).playerId,
+                                clientData.getMatchmadePlayers().get(i).position,
+                                characters.get(i % 4),
+                                dungeonTilset));
             }
-            // Add controllerComponent.
-            players.get(0).add(ControllerComponent.getInstance());
             // Add Components to controller
             controller.add(ControllerComponent.getInstance());
-            controller.add(controllerServerComponent);
-            headsUpDisplay = new HeadsUpDisplay(dungeonTilset, projectiles);
+            headsUpDisplay = new HeadsUpDisplay(dungeonTilset, projectilesTileset);
             loadingComplete = true;
             System.out.println("LOADING COMPLETE");
         }
     }
+
+
 
     /**
      * Renders the game view.
@@ -155,27 +191,31 @@ public class GameView implements Screen {
     @Override
     public void render(final float delta) {
         if (assetManager.update() && loadingComplete) {
+            if (projectiles.size() != clientData.getProjectiles().size()) {
+                updateProjectiles();
+            }
             Gdx.gl.glClearColor(1, 1, 1, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             batch.begin();
             arena.renderArena();
-
             // Draw the background
             batch.draw(background, 0f, 0f, width, height);
-
             // Render Arena
             arena.renderArena();
-
-            // Draw all players and projectiles
-            for (int i = 0; i < players.size(); i++) {
+            // Draw all players
+            for (int i = 0; i < clientData.getUpdatePlayers().size(); i++) {
                 players.get(i).getComponent(PlayerComponent.class).getCharacter().draw(batch, delta);
-                players.get(i).getComponent(ProjectileComponent.class).drawProjectiles(batch);
+            }
+            // Draw all projectiles
+            for (int i = 0; i < projectiles.size(); i++) {
+                projectiles.get(i).getComponent(ProjectileComponent.class).draw(batch);
             }
             // Draw the foreground
             arena.renderForeground();
+            //todo: Assign hud to player
             headsUpDisplay.draw(batch,
-                    players.get(0).getComponent(PlayerComponent.class).getCharacter().getState().getLives(),
-                    players.get(0).getComponent(ProjectileComponent.class).getNumberOfProectiles(),
+                    3, //players.get(0).getComponent(PlayerComponent.class).getCharacter().getState().getLives(),
+                    5, //players.get(0).getComponent(ProjectileComponent.class).getNumberOfProectiles(),
                     0);
             batch.end();
             engine.update(delta);

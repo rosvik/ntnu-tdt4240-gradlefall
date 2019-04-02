@@ -15,6 +15,7 @@ public class ControllerServerComponent implements Component {
 
     /**
      * Constructor.
+     * DONT USE
      */
     public ControllerServerComponent() {
         this.x = 10;
