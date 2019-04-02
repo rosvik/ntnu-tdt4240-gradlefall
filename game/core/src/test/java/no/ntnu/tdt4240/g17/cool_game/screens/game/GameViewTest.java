@@ -42,4 +42,14 @@ class GameViewTest extends GameTest {
     void dispose(){
         view.dispose();
     }
+
+    @Test
+    void hide(){
+        view.hide();
+    }
+
+    @Test
+    void updateProjectiles(){
+        view.updateProjectiles();
+    }
 }

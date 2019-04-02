@@ -29,7 +29,6 @@ public class DeleteThis_CodeCoverageHackTest {
      */
     @Test
     void jacocoCodeCoverageHack() {
-        new GameView(0, new SpriteBatch());
         new HighscoreView();
         new LoadingView();
         new MainView();

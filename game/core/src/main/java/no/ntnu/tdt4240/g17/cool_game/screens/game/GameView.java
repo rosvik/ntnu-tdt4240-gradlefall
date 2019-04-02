@@ -109,7 +109,7 @@ public class GameView implements Screen {
      * If cliendata conatins fewere projectiles than screen,
      * screen removes the entity froms screen and engine
      */
-    private void updateProjectiles() {
+    public void updateProjectiles() {
         if (clientData.getProjectiles().size() > projectiles.size()) {
             for (int i = 0; i < clientData.getProjectiles().size(); i++) {
                 boolean isInList = false;
