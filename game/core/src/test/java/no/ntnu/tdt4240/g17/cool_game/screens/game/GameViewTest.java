@@ -47,9 +47,4 @@ class GameViewTest extends GameTest {
     void hide(){
         view.hide();
     }
-
-    @Test
-    void updateProjectiles(){
-        view.updateProjectiles();
-    }
 }
