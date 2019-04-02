@@ -79,12 +79,36 @@ public class ClientData {
      * @return UpdateMessagePlayer The player with the given ID or null
      */
     public UpdateMessagePlayer getPlayerById(final String id) {
-        if (updatePlayers == null) { return null; }
+        if (updatePlayers == null) {
+            return null;
+        }
+
         for (UpdateMessagePlayer updatePlayer : updatePlayers) {
             if (updatePlayer.playerId.equals(id)) {
                 return updatePlayer;
             }
         }
+
+        return null;
+    }
+
+    /**
+     * Get a player with a given ID.
+     *
+     * @param id The ID of the player
+     * @return UpdateMessagePlayer The player with the given ID or null
+     */
+    public Projectile getProjectileById(final String id) {
+        if (projectiles == null) {
+            return null;
+        }
+
+        for (Projectile projectile : projectiles) {
+            if (projectile.projectileId.equals(id)) {
+                return projectile;
+            }
+        }
+
         return null;
     }
 }

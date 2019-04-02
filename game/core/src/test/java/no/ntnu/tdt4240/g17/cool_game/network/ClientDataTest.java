@@ -12,6 +12,7 @@ import no.ntnu.tdt4240.g17.common.network.game_messages.GameOverMessage;
 import no.ntnu.tdt4240.g17.common.network.game_messages.IntermediaryEndMessage;
 import no.ntnu.tdt4240.g17.common.network.game_messages.MatchmadeMessage;
 import no.ntnu.tdt4240.g17.common.network.game_messages.UpdateMessage;
+import no.ntnu.tdt4240.g17.common.network.game_messages.data.Projectile;
 import no.ntnu.tdt4240.g17.common.network.game_messages.data.UpdateMessagePlayer;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,7 +60,7 @@ class ClientDataTest {
     void getPlayerById() {
 
         // Null when empty
-        assertNull(clientData.getPlayerById("empty"));
+        assertNull(clientData.getPlayerById("Empty"));
 
         UpdateMessage updateMessage = new UpdateMessage();
         UpdateMessagePlayer updateMessagePlayer = new UpdateMessagePlayer();
@@ -74,6 +75,28 @@ class ClientDataTest {
         assertThat(clientData.getPlayerById("ABC"), isA(UpdateMessagePlayer.class));
 
         // Null with wrong ID
-        assertNull(clientData.getPlayerById("Nonexistent"));
+        assertNull(clientData.getPlayerById("NonExistent"));
+    }
+
+    @Test
+    void getProjectileById() {
+
+        // Null when empty
+        assertNull(clientData.getProjectileById("Empty"));
+
+        UpdateMessage updateMessage = new UpdateMessage();
+        Projectile projectile = new Projectile();
+        List<Projectile> updateMessageProjectiles = new ArrayList<>();
+
+        projectile.projectileId = "ABC";
+        updateMessageProjectiles.add(projectile);
+        updateMessage.projectiles = updateMessageProjectiles;
+        clientData.receive(updateMessage);
+
+        // Valid call
+        assertThat(clientData.getProjectileById("ABC"), isA(Projectile.class));
+
+        // Null with wrong ID
+        assertNull(clientData.getProjectileById("NonExistent"));
     }
 }
