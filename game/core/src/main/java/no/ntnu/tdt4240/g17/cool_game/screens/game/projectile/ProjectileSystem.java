@@ -34,15 +34,16 @@ public class ProjectileSystem extends EntitySystem {
 
     /**
      * Renders each object.
+     * Calls clientData and get projectile by the entity Id.
      * @param deltaTime = time since start.
      */
     @Override
     public void update(final float deltaTime) {
         for (Entity entity : entitiesToUpdate) {
             ProjectileComponent entityProjectile = projectile.get(entity);
-            float x = 0; // clientData.getProjectileById(entityProjectile.getProjectileId).position.x;
-            float y = 0; // clientData.getProjectileById(entityProjectile.getProjectileId).position.y;
-            float angle = 0; // clientData.getProjectileById(entityProjectile.getProjectileId).angle;
+            float x = clientData.getProjectileById(entityProjectile.getProjectileId()).projectilePosition.x;
+            float y = clientData.getProjectileById(entityProjectile.getProjectileId()).projectilePosition.y;
+            float angle = clientData.getProjectileById(entityProjectile.getProjectileId()).projectileAngle;
             entityProjectile.render(x, y, angle);
         }
     }
