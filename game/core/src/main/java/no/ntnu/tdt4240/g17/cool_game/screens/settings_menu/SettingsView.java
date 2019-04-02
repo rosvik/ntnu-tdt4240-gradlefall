@@ -97,7 +97,6 @@ public class SettingsView implements Screen {
             return true;
         });
 
-        musicVolumeSlider.getStyle().knob.setMinHeight(20f);
 
         // sound volume
         final Slider soundVolumeSlider = new Slider(0f, 1f, 0.1f, false, skin);
@@ -155,46 +154,60 @@ public class SettingsView implements Screen {
         soundOnOffLabel.setFontScale(smallerTextSize);
         backButton.getLabel().setFontScale(smallerTextSize);
 
-
+        //TITLE
         table.add(titleLabel).colspan(2)
                 .padBottom(spacing);
 
+
+        //music slider
         /*table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);*/
         table.row();
         table.add(volumeMusicLabel).left();
+        table.add(); //add for extra column spacing
         table.add(musicVolumeSlider)
-                .padTop(50f)         //quickfix for centering the box
-                .padBottom(spacing);
+                /*.padTop(50f)         //quickfix for centering the box
+                .padBottom(spacing);*/
+                .size(200, 100);
 
+        //MUSICLABEL and checkbox
         /*table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);*/
         table.row();
         table.add(musicOnOffLabel).left();
+        table.add(); //add for extra column spacing
         table.add(musicCheckbox)
                 /*.padTop(50f)         //quickfix for centering the box
                 .padBottom(spacing);*/
-                .size(200, 200);
+                .size(100, 100);
         musicCheckbox.getImage().setScaling(Scaling.fit);
         musicCheckbox.getImageCell().size(32 * Gdx.graphics.getDensity());
 
+        //sound slider
         /*table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);*/
         table.row();
         table.add(volumeSoundLabel).left();
+        table.add(); //add for extra column spacing
         table.add(soundVolumeSlider)
-                .padTop(50f)         //quickfix for centering the box
-                .padBottom(spacing);
+                /*.padTop(50f)         //quickfix for centering the box
+                .padBottom(spacing)*/
+                .size(200, 100);
+        soundVolumeSlider.getStyle().knob.setMinWidth(40);
+        soundVolumeSlider.getStyle().knob.setMinHeight(40);
 
+        //SOUNDLABEL and checkbox.
         /*table.row().pad(TOP_SPAN, 0, 0, TOP_SPAN);*/
         table.row();
         table.add(soundOnOffLabel).left();
+        table.add(); //add for extra column spacing
         table.add(soundEffectsCheckbox)
-                .size(200, 200);
+                .size(100, 100);
         //sizing of checkbox
         soundEffectsCheckbox.getImage().setScaling(Scaling.fit);
         soundEffectsCheckbox.getImageCell().size(32 * Gdx.graphics.getDensity());
 
+        //backbutton
         //colspan fixes indentation
         table.row();
-        table.add(backButton).colspan(2)
+        table.add(backButton).colspan(3)
                 .prefHeight(buttonHeight)
                 .prefWidth(buttonWidth);
     }

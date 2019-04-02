@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g17.cool_game.screens.main_menu;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,7 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 /**
  *
  */
-@Data @Slf4j
+@Data
+@Slf4j
 public class HomeView extends ApplicationAdapter implements Screen {
 
     /**
@@ -41,6 +43,11 @@ public class HomeView extends ApplicationAdapter implements Screen {
 
     private SpriteBatch batch;
     private Texture texture;
+
+    /**
+     * music.
+     */
+    private Music music;
 
     /**
      * @param homeController needs to take in homecontroler.
@@ -119,6 +126,13 @@ public class HomeView extends ApplicationAdapter implements Screen {
 
         table.layout();
         log.info("Table width {}", table.getWidth());
+
+
+        music = Gdx.audio.newMusic(Gdx.files.internal("Tune1.mp3"));
+        music.setLooping(true);
+        music.setVolume(0.3f);
+        music.play();
+        //homeController.startMusic();
     }
 
     /**
@@ -167,6 +181,8 @@ public class HomeView extends ApplicationAdapter implements Screen {
      */
     @Override
     public void dispose() {
+
         stage.dispose();
+        music.dispose();
     }
 }

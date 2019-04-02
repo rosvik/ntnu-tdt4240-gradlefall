@@ -1,6 +1,7 @@
 package no.ntnu.tdt4240.g17.cool_game.screens.main_menu;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 
 import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
 
@@ -13,11 +14,23 @@ public class HomeController {
 
     /**
      * Create a new HomeController for a {@link HomeView}.
+     *
      * @param navigator navigator class
      */
     public HomeController(final Navigator navigator) {
         this.parent = navigator;
     }
+
+    /**
+     * starts music.
+     */
+    /*public void startMusic() {
+        Music music;
+        music = Gdx.audio.newMusic(Gdx.files.internal("Tune1.mp3"));
+        music.setLooping(true);
+        music.setVolume(0.3f);
+        music.play();
+    }*/
 
     /**
      * exits the program.
