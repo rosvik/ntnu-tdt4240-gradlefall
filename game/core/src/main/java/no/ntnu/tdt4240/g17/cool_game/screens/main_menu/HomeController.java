@@ -1,7 +1,6 @@
 package no.ntnu.tdt4240.g17.cool_game.screens.main_menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 
 import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
 
