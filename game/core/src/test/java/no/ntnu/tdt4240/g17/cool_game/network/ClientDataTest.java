@@ -3,7 +3,6 @@ package no.ntnu.tdt4240.g17.cool_game.network;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Null;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +18,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+/**
+ * Created by Johannes Tomren Røsvik (@rosvik) on 4/2/2019.
+ *
+ * @author Johannes Tomren Røsvik (@rosvik)
+ */
 class ClientDataTest {
 
-    ClientData clientData;
+    private ClientData clientData;
 
     @BeforeEach
     void init() {
