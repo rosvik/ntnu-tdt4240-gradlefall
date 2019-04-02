@@ -79,6 +79,7 @@ public class ClientData {
      * @return UpdateMessagePlayer The player with the given ID or null
      */
     public UpdateMessagePlayer getPlayerById(final String id) {
+        if (updatePlayers == null) { return null; }
         for (UpdateMessagePlayer updatePlayer : updatePlayers) {
             if (updatePlayer.playerId.equals(id)) {
                 return updatePlayer;
