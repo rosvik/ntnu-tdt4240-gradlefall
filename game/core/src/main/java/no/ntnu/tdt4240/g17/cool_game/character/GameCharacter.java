@@ -25,17 +25,21 @@ public class GameCharacter {
      * @param xPosition = The initial starting x position for the character
      * @param yPosition = The initial starting y position for the character
      * @param atlas = TextureAtlas with animation sprites
-     * @param projectileName .
-     * @param projectiles .
      */
-    public GameCharacter(final String name, final float xPosition, final float yPosition, final TextureAtlas atlas,
-                         final String projectileName, final TextureAtlas projectiles) {
-        this.state = new GameCharacterState(xPosition, yPosition, projectileName, projectiles);
+    public GameCharacter(final String name, final float xPosition, final float yPosition, final TextureAtlas atlas) {
+        this.state = new GameCharacterState(xPosition, yPosition);
         this.animation = new GameCharacterAnimation(name, atlas);
     }
 
     /**
-     * @return the characters animation
+     * @return the character state.
+     */
+    public GameCharacterState getState() {
+        return state;
+    }
+
+    /**
+     * @return the caracters animation
      */
     public GameCharacterAnimation getAnimation() {
         return this.animation;
@@ -59,6 +63,7 @@ public class GameCharacter {
         } else {
             this.animation.idle();
         }
+
         this.state.setxPosition(newX);
         this.state.setyPosition(newY);
     }

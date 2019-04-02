@@ -54,10 +54,10 @@ public class UserInputButtons {
         double relativeY = this.screenHeight - y;
         if (buttonBox.contains((float) x, (float) relativeY)) {
             return new MovementFormat(calculateButtonInput((float) x, (float) relativeY), new Vector2(0, 0));
-        } else if (joystickBox.contains((float) x, (float) relativeY)) {
+        } else  {
             return new MovementFormat("joystick", calculateJoystickInput(x, y));
         }
-        return new MovementFormat("No overlap", new Vector2(0, 0));
+        //return new MovementFormat("No overlap", new Vector2(0, 0));
     }
 
     /**

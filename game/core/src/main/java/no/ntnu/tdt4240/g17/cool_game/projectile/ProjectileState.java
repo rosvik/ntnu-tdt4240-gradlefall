@@ -22,8 +22,8 @@ public class ProjectileState {
      * @param height = the height of the sprite
      * @param width = the width of the sprite
      */
-    public ProjectileState(final int xPosition,
-                           final int yPosition,
+    public ProjectileState(final float xPosition,
+                           final float yPosition,
                            final float baseAngle,
                            final float height,
                            final float width) {

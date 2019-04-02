@@ -38,8 +38,6 @@ class MainGameTest extends GameTest {
     void shouldRender() {
         // Given
         mainGame.arena = Mockito.mock(Arena.class);
-        mainGame.character1 = Mockito.mock(GameCharacter.class);
-        mainGame.projectile = Mockito.mock(Projectile.class);
 
         // When
         mainGame.render();
