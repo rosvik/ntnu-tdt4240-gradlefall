@@ -7,7 +7,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
@@ -58,8 +57,6 @@ public class GameView implements Screen {
     static String dungeonTilesetPath = "Assets/TextureAtlas/Characters/DungeonTileset.atlas";
     static String projectileTilesetPath = "Assets/TextureAtlas/Projectiles/Projectiles.atlas";
     private ClientData clientData;
-    /** Font. */
-    private BitmapFont font;
     /**
      * Constructor for game view.
      * @param batch = The batch that everything will render on.
@@ -81,8 +78,6 @@ public class GameView implements Screen {
         loadingComplete = false;
         players = new ArrayList<>();
         clientData = new ClientData();
-        font = new BitmapFont();
-
         characters.add("knight_m");
         characters.add("wizzard_f");
         characters.add("big_zombie");
