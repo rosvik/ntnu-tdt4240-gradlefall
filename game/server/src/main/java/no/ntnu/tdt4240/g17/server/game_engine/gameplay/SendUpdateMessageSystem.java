@@ -23,6 +23,7 @@ import no.ntnu.tdt4240.g17.server.network.PlayerConnection;
 @Slf4j
 public final class SendUpdateMessageSystem extends IntervalSystem {
 
+    /** The family for entities this system will use. */
     public static final Family FAMILY = Family.all(
             NetworkedPlayerComponent.class
     ).get();
@@ -30,6 +31,11 @@ public final class SendUpdateMessageSystem extends IntervalSystem {
 
     private ImmutableArray<Entity> entities;
 
+    /** Create a new system that sends messages at the given interval
+     * @param interval how often the messages are sent
+     * @param priority system priority. Lower comes first
+     * @param family the family for entities. use {@link #FAMILY}.
+     */
     public SendUpdateMessageSystem(final int priority, final float interval, final Family family) {
         super(interval, priority);
         this.family = family;
