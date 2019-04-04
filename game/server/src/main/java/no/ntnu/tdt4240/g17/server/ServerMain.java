@@ -6,20 +6,28 @@ import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.LoggerContext;
 import lombok.extern.slf4j.Slf4j;
+import no.ntnu.tdt4240.g17.common.network.game_messages.PlayMessage;
 import no.ntnu.tdt4240.g17.server.availability.FailureListener;
+import no.ntnu.tdt4240.g17.server.match_making.CreateSessionOnMatchmadeListener;
+import no.ntnu.tdt4240.g17.server.match_making.MatchMakingQueue;
 import no.ntnu.tdt4240.g17.server.network.GameServer;
 import no.ntnu.tdt4240.g17.server.network.MessageHandlerDelegator;
+import no.ntnu.tdt4240.g17.server.network.PlayerState;
 
 /**
  * Main class for the server.
  */
 @Slf4j
 public final class ServerMain {
-    /** Hidden constructor for utility classes. */
-    private ServerMain() { }
+    /**
+     * Hidden constructor for utility classes.
+     */
+    private ServerMain() {
+    }
 
     /**
      * Starts the server.
+     *
      * @param args command line arguments
      */
     public static void main(final String[] args) {
@@ -50,6 +58,15 @@ public final class ServerMain {
 
         handlerDelegator.registerHandler((connection, message) -> log.info("Got message: {}", message), String.class);
 
+        final MatchMakingQueue matchmakingQueue = new MatchMakingQueue(new CreateSessionOnMatchmadeListener());
+
+        handlerDelegator.registerHandler(((connection, message) -> {
+            log.info("Player {} wants to play", connection.getId());
+            log.warn("Making a session with only 1 player!");
+            connection.setState(PlayerState.IN_MATCHMAKING);
+            matchmakingQueue.add(connection);
+        }), PlayMessage.class);
+
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
@@ -58,7 +75,8 @@ public final class ServerMain {
                 gameServer.stop();
                 try {
                     serverThread.join();
-                } catch (InterruptedException ignored) { }
+                } catch (InterruptedException ignored) {
+                }
                 log.info("Shut down.");
                 LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
                 loggerContext.stop();
@@ -66,8 +84,10 @@ public final class ServerMain {
         });
 
         log.info("Starting server");
+        serverThread.setDaemon(false);
         serverThread.start();
 
         log.info("Main thread exiting.");
     }
+
 }
