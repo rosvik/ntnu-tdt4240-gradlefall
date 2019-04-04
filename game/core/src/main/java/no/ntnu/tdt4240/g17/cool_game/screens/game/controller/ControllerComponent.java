@@ -31,7 +31,8 @@ public final class ControllerComponent implements Component {
     private ControllerComponent() {
         screenHeigth = Gdx.graphics.getHeight();
         screenWidth = Gdx.graphics.getWidth();
-        gameClient = new GameClient(577, new ClientData());
+        int tcpPort = 577;
+        gameClient = new GameClient(tcpPort, new ClientData());
         inputProcessor = new InputProcessor(screenHeigth, screenWidth);
         message = new ControlsMessage();
     }
@@ -67,6 +68,6 @@ public final class ControllerComponent implements Component {
         message.moveSpeed = movementFormat.getJoystickInput().y;
         message.placeBlock = false;
         message.placeBlockAngle =  movementFormat.getJoystickInput().x;
-        //gameClient.send(message);
+        gameClient.send(message);
     }
 }
