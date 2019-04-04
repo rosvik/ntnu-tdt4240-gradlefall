@@ -2,14 +2,21 @@ package no.ntnu.tdt4240.g17.server.game_engine;
 
 import com.badlogic.ashley.core.Engine;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Created by Kristian 'krissrex' Rekstad on 3/11/2019.
  *
  * @author Kristian 'krissrex' Rekstad
  */
-public class GameEngine {
+public class GameEngine implements Runnable {
 
     private final Engine ecsEngine;
+
+    /** If the game is over or not. */
+    @Getter @Setter
+    private boolean isGameOver = false;
 
     /**
      * Create a new GameEngine for a session.
@@ -23,7 +30,13 @@ public class GameEngine {
     /**
      * Run the engine.
      */
+    @Override
     public void run() {
-        //TODO
+        long lastUpdate = System.currentTimeMillis();
+        while (!isGameOver) {
+            final long now = System.currentTimeMillis();
+            ecsEngine.update(now - lastUpdate);
+            lastUpdate = now;
+        }
     }
 }
