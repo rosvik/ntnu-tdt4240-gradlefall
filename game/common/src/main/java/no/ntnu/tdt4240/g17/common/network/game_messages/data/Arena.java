@@ -7,5 +7,5 @@ package no.ntnu.tdt4240.g17.common.network.game_messages.data;
  */
 public enum Arena {
     /** */
-    ARENA_1
+    ARENA_2
 }
