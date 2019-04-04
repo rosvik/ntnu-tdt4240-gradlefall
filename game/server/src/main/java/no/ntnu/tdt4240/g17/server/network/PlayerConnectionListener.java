@@ -1,6 +1,7 @@
 package no.ntnu.tdt4240.g17.server.network;
 
 import java.util.List;
+import java.util.UUID;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,6 +29,8 @@ class PlayerConnectionListener extends BasePlayerConnectionListener {
 
     @Override
     public void connected(final PlayerConnection connection) {
+        connection.setId(UUID.randomUUID().toString());
+        connection.setState(PlayerState.UNKNOWN);
         // Runs on same thread as Server#update
         synchronized (connections) {
             connections.add(connection);
