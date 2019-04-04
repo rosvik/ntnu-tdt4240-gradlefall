@@ -2,7 +2,6 @@ package no.ntnu.tdt4240.g17.cool_game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-
 import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
 
 /**

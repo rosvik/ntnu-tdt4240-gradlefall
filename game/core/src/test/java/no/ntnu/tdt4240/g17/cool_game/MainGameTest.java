@@ -26,14 +26,12 @@ class MainGameTest extends GameTest {
     @BeforeEach
     void setUp() {
         mainGame = new MainGame();
-        mainGame.batch = Mockito.mock(SpriteBatch.class);
     }
 
     @Test
     void createShouldNotThrow() {
         assertThrows(IllegalArgumentException.class, mainGame::create, "SpriteBatch must be mocked and will throw in tests");
     }
-
 
     @Test
     void disposeShouldNotThrow() {

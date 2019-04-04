@@ -55,7 +55,7 @@ public class UserInputTest extends ApplicationAdapter {
         screenWidth = Gdx.graphics.getWidth();
         batch = new SpriteBatch();
         atlas = new TextureAtlas("./Assets/TextureAtlas/Characters/DungeonTileset.atlas");
-        character = new GameCharacter("big_zombie", 100,  100, atlas, "arrow", new TextureAtlas("./Assets/TextureAtlas/Projectiles/Projectiles.atlas"));
+        character = new GameCharacter("big_zombie", 100,  100, atlas);
         stateTime = 0;
         userInputButtons = new UserInputButtons(screenHeigth, screenWidth);
         inputToMovementOutput = new InputToMovementOutput();
