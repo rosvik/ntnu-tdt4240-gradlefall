@@ -36,6 +36,8 @@ public class GameView implements Screen {
     private float height;
     /** Background image. */
     private Texture background;
+    /** Loading image. */
+    private Texture loading;
     /** Textureatlas. */
     private TextureAtlas dungeonTilset;
     private TextureAtlas projectilesTileset;
@@ -55,7 +57,6 @@ public class GameView implements Screen {
     static String dungeonTilesetPath = "Assets/TextureAtlas/Characters/DungeonTileset.atlas";
     static String projectileTilesetPath = "Assets/TextureAtlas/Projectiles/Projectiles.atlas";
     private ClientData clientData;
-
     /**
      * Constructor for game view.
      * @param batch = The batch that everything will render on.
@@ -77,7 +78,6 @@ public class GameView implements Screen {
         loadingComplete = false;
         players = new ArrayList<>();
         clientData = new ClientData();
-
         characters.add("knight_m");
         characters.add("wizzard_f");
         characters.add("big_zombie");
@@ -97,9 +97,10 @@ public class GameView implements Screen {
     private void loadAssets() {
         arena = new Arena("map2.tmx", 16f, width, height, batch);
         background = new Texture("background.png");
+        loading = new Texture("Loading.png");
         assetManager.load(dungeonTilesetPath, TextureAtlas.class);
         assetManager.load(projectileTilesetPath, TextureAtlas.class);
-        System.out.println("LOADING ASSETS... " + assetManager.getProgress());
+        System.out.println("LOADING ASSETS... ");
         setAssets();
     }
 
@@ -220,8 +221,11 @@ public class GameView implements Screen {
             batch.end();
             engine.update(delta);
         } else {
-            Gdx.gl.glClearColor(1, 0, 1, 1);
+            Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            batch.begin();
+            batch.draw(loading, 0f, 0f, width, height);
+            batch.end();
             setAssets();
         }
     }
