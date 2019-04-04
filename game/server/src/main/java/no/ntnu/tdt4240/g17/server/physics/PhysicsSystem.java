@@ -59,7 +59,7 @@ public class PhysicsSystem extends IntervalSystem {
         final long before = System.currentTimeMillis();
         world.step(intervalSeconds, velocityIterations, positionIterations);
         final long time = System.currentTimeMillis() - before;
-        log.trace("Physics update took {} ms", time);
+        //log.trace("Physics update took {} ms", time);
         // Can reduce iterations if time is too long
 
         for (Entity entity : entitiesToUpdate) {
