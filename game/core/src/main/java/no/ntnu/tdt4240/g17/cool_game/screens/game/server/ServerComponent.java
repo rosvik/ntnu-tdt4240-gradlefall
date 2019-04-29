@@ -12,22 +12,24 @@ public class ServerComponent implements Component {
 
     private TestMovementAPI api;
     private ControllerServerComponent controllerServerComponent;
-    private float x;
-    private float y;
-    private boolean shoot;
-    private float angle;
-    private boolean prevShootValue = false;
+    float x;
+    float y;
+    boolean shoot;
+    float angle;
+    boolean prevShootValue = false;
+    private int playerId;
 
     /**
      * Constructor.
      * @param testMovementAPI = Local server
      * @param controllerServerComponent = local controller server
      */
-    public ServerComponent(
+    public ServerComponent(final int ID,
             final TestMovementAPI testMovementAPI,
             final ControllerServerComponent controllerServerComponent) {
         x = 0;
         y = 0;
+        playerId = ID;
         api = testMovementAPI;
         this.controllerServerComponent = controllerServerComponent;
     }

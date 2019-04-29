@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import no.ntnu.tdt4240.g17.common.game_messages.GameOverMessage;
+import no.ntnu.tdt4240.g17.common.game_messages.IntermediaryEndMessage;
+import no.ntnu.tdt4240.g17.common.game_messages.UpdateMessage;
 import no.ntnu.tdt4240.g17.cool_game.character.TestMovementAPI;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.ControllerServerComponent;
@@ -49,10 +52,6 @@ public class GameView implements Screen {
     private Engine engine;
     /** Entities. */
     private ArrayList<Entity> players;
-    private Entity player1;
-    private Entity player2;
-    private Entity player3;
-    private Entity player4;
     private Entity controller;
     /** Asset manager. */
     AssetManager assetManager;
@@ -86,6 +85,7 @@ public class GameView implements Screen {
         height = 20f;
         loadingComplete = false;
         controllerServerComponent = new ControllerServerComponent();
+
         players = new ArrayList<>();
 
         characters.add("knight_m");
@@ -132,9 +132,9 @@ public class GameView implements Screen {
                 //players.get(i).add(new ProjectileComponent("sword", projectiles, 270));
                 // Add server component
                 if (i != 0) {
-                    players.get(i).add(new ServerComponent(new TestMovementAPI(), null));
+                    players.get(i).add(new ServerComponent(i, new TestMovementAPI(), null));
                 } else {
-                    players.get(i).add(new ServerComponent(null, controllerServerComponent));
+                    players.get(i).add(new ServerComponent(i, null, controllerServerComponent));
                 }
             }
             // Add controllerComponent.
@@ -148,6 +148,23 @@ public class GameView implements Screen {
         }
     }
 
+    public void receiveUpdateMessage(UpdateMessage message) {
+
+    }
+
+    public void receiveGameOverMessage(GameOverMessage message) {
+
+    }
+
+    public void receiveIntermedaryEndMessage(IntermediaryEndMessage message) {
+
+    }
+
+    public void receiveMatchedMadeMessage(UpdateMessage message) {
+
+    }
+
+
     /**
      * Renders the game view.
      * @param delta = time since start.
@@ -155,6 +172,7 @@ public class GameView implements Screen {
     @Override
     public void render(final float delta) {
         if (assetManager.update() && loadingComplete) {
+            //System.out.println("RENDER");
             Gdx.gl.glClearColor(1, 1, 1, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             batch.begin();
