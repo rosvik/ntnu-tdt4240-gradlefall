@@ -13,6 +13,10 @@ import com.badlogic.gdx.math.Vector2;
 import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
 import no.ntnu.tdt4240.g17.cool_game.character.InputToMovementOutput;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.InputProcessor;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.MovementFormat;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.TouchInput;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.UserInputButtons;
 
 /**
  * Main game class.

@@ -1,16 +1,12 @@
 package no.ntnu.tdt4240.g17.cool_game.screens.game.controller;
 
 import com.badlogic.gdx.math.Vector2;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.MovementFormat;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerServerComponentTest {
     ControllerServerComponent csc = new ControllerServerComponent();

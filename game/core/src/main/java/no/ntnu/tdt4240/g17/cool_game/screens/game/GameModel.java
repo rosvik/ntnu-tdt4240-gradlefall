@@ -10,12 +10,8 @@ import lombok.Getter;
 import no.ntnu.tdt4240.g17.common.network.game_messages.data.Position;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
 import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.ControllerComponent;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.ControllerSystem;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.player.PlayerComponent;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.player.PlayerSystem;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.projectile.ProjectileComponent;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.projectile.ProjectileSystem;
 
 import java.util.ArrayList;
 
@@ -42,7 +38,6 @@ public class GameModel {
     /** Entities. */
     private ArrayList<Entity> players;
     private ArrayList<Entity> projectiles;
-    private Entity controller;
     /** Asset manager. */
     AssetManager assetManager;
     /** Tilset path. */
@@ -63,10 +58,7 @@ public class GameModel {
         characters.add("wizzard_f");
         characters.add("big_zombie");
         characters.add("necromancer");
-        //controller = new Entity();
-        //engine.addEntity(controller);
-        //engine.addSystem(new ControllerSystem());
-        //engine.addSystem(new PlayerSystem());
+        engine.addSystem(new PlayerSystem());
         //engine.addSystem(new ProjectileSystem());
         this.batch = batch;
         loadAssets();
@@ -114,8 +106,6 @@ public class GameModel {
                                 characters.get(i % 4),
                                 dungeonTilset));
             }
-            // Add Components to controller
-            //controller.add(ControllerComponent.getInstance());
             System.out.println("LOADING COMPLETE");
         }
         System.out.println("PROGRESS: " + assetManager.getProgress());
@@ -126,6 +116,5 @@ public class GameModel {
             players.get(i).getComponent(PlayerComponent.class).getCharacter().draw(batch, deltaTime);
         }
     }
-
 
 }

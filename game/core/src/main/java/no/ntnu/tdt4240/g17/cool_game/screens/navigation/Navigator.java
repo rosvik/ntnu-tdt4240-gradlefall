@@ -68,8 +68,7 @@ public class Navigator implements Disposable {
      */
     public void initialize() {
         HomeView homeView = new HomeView(new HomeController(this));
-        GameView gameView = new GameView(new SpriteBatch());
-        setScreen(gameView);
+        setScreen(homeView);
     }
 
     /**

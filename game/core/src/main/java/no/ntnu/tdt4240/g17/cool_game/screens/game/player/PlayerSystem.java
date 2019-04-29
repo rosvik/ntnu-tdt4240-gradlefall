@@ -36,8 +36,8 @@ public class PlayerSystem extends EntitySystem {
     public void update(final float deltaTime) {
         for (Entity entity : entitiesToUpdate) {
             PlayerComponent entityCharacter = character.get(entity);
-            float x = clientData.getPlayerById(entityCharacter.getPlayerId()).position.x;
-            float y = clientData.getPlayerById(entityCharacter.getPlayerId()).position.y;
+            float x = entityCharacter.getCharacter().getState().getxPosition() + 0.01f;//clientData.getPlayerById(entityCharacter.getPlayerId()).position.x;
+            float y = 10;//entityCharacter.getCharacter().getState().getyPosition() + 0.01f;//clientData.getPlayerById(entityCharacter.getPlayerId()).position.y;
             entityCharacter.getCharacter().render(x, y);
         }
     }

@@ -10,14 +10,17 @@ import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
 public class MainGame extends ApplicationAdapter {
 
     private Navigator navigator;
+    private float deltaTime;
     @Override
     public final void create() {
         navigator = new Navigator();
+        deltaTime = 0f;
     }
 
     @Override
     public final void render() {
-        navigator.getScreen().render(Gdx.graphics.getDeltaTime());
+        navigator.getScreen().render(deltaTime);
+        deltaTime = deltaTime + Gdx.graphics.getDeltaTime();
     }
 
     @Override

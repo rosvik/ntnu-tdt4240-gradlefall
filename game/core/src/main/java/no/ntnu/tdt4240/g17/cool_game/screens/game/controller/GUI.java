@@ -16,7 +16,7 @@ import no.ntnu.tdt4240.g17.cool_game.screens.game.TouchInput;
  * @author Håvard 'havfar' Farestveit
  */
 @Getter
-public final class ControllerComponent implements Component {
+public final class ControllerComponent {
     private InputProcessor inputProcessor;
     private TouchInput firstFinger, secondFinger, thirdFinger;
     private MovementFormat movementFormat;

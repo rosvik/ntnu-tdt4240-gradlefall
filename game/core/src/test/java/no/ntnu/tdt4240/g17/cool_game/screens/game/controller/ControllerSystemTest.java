@@ -16,7 +16,7 @@ class ControllerSystemTest extends GameTest {
         controller = new Entity();
         engine = new Engine();
         engine.addEntity(controller);
-        controller.add(ControllerComponent.getInstance());
+        controller.add(GUI.getInstance());
         controller.add(new ControllerServerComponent());
         cs = new ControllerSystem();
         engine.addSystem(cs);

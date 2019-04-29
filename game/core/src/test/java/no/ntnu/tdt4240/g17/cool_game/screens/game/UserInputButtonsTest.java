@@ -2,6 +2,8 @@ package no.ntnu.tdt4240.g17.cool_game.screens.game;
 
 import com.badlogic.gdx.math.Vector2;
 
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.MovementFormat;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.UserInputButtons;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

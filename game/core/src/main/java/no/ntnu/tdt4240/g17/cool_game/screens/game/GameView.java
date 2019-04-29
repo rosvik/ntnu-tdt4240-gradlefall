@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.GUI;
 
 /**
  * The MVC View for an active game.
@@ -29,14 +30,14 @@ public class GameView implements Screen {
     public void show() {
         arena = new Arena("map2.tmx", 16f, 32, 20, batch);
         model = new GameModel(batch);
-        //hud = new HeadsUpDisplay(model.getDungeonTilset(), model.getProjectilesTileset());
+        hud = new HeadsUpDisplay(model.getDungeonTilset(), model.getProjectilesTileset());
     }
 
 
 
     @Override
     public void render(final float delta) {
-        //if (assetManager.update() && loadingComplete) {
+        // if (model.assetManager.update() && model.getClientData().getMatchmadePlayers().size() == 4) {
         if (model.assetManager.update()) {
             Gdx.gl.glClearColor(1, 1, 1, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -45,9 +46,10 @@ public class GameView implements Screen {
             arena.renderArena();
             model.renderPlayers(delta);
             arena.renderForeground();
-            //hud.draw(batch,3,10,0);
+            hud.draw(batch,3,10,0);
             model.getEngine().update(delta);
             batch.end();
+            GUI.getInstance().update();
         } else {
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

@@ -2,7 +2,7 @@ package no.ntnu.tdt4240.g17.cool_game.character;
 
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.MovementFormat;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.MovementFormat;
 
 /**
  * Class that translates touch input to data that is sent to physics engine.
