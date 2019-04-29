@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 
 import lombok.Data;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.GameView;
 import no.ntnu.tdt4240.g17.cool_game.screens.main_menu.HomeController;
 import no.ntnu.tdt4240.g17.cool_game.screens.main_menu.HomeView;
 import no.ntnu.tdt4240.g17.cool_game.screens.settings_menu.SettingsController;
@@ -29,7 +30,11 @@ public class Navigator implements Disposable {
         /**
          * Settings screen.
          */
-        SETTING
+        SETTING,
+        /**
+         * Game screen.
+         */
+        GAME
     }
 
     /**
@@ -40,6 +45,11 @@ public class Navigator implements Disposable {
      * Settings refers to static variable to be used later on.
      */
     public static final int SETTING = 1;
+
+    /**
+     * Game refers to static variable to be used later.
+     */
+    public static final int GAME = 2;
 
     private com.badlogic.gdx.Screen screen;
 
@@ -72,6 +82,15 @@ public class Navigator implements Disposable {
                         new SettingsController(settingsModel), settingsModel);
                 this.setScreen(settingsView);
                 break;
+
+            case GAME:
+                GameView gameView = new GameView();
+                /**
+                 * uncomment this when gameview is done. TODO: Håvard Farestveit
+                 */
+                //this.setScreen(gameView);
+                break;
+
             default:
             case HOME:
                 HomeView homeView = new HomeView(new HomeController(this));

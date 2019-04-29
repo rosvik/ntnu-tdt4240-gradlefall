@@ -26,7 +26,7 @@ class MainGameTest extends GameTest {
     @BeforeEach
     void setUp() {
         mainGame = new MainGame();
-        mainGame.batch = Mockito.mock(SpriteBatch.class);
+        //mainGame.batch = Mockito.mock(SpriteBatch.class);
     }
 
     @Test
