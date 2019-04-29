@@ -21,8 +21,8 @@ public class ControllerSystem extends EntitySystem {
      * Family = all entities with a controller and server connection
      */
     public ControllerSystem() {
-        family = Family.all(ControllerComponent.class, ControllerServerComponent.class).get();
-        controller = ComponentMapper.getFor(ControllerComponent.class);
+        //family = Family.all(ControllerComponent.class, ControllerServerComponent.class).get();
+        //controller = ComponentMapper.getFor(ControllerComponent.class);
     }
 
     /**

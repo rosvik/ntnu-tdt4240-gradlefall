@@ -2,6 +2,7 @@ package no.ntnu.tdt4240.g17.cool_game.screens.navigation;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 
 
@@ -67,13 +68,15 @@ public class Navigator implements Disposable {
      */
     public void initialize() {
         HomeView homeView = new HomeView(new HomeController(this));
-        setScreen(homeView);
+        GameView gameView = new GameView(new SpriteBatch());
+        setScreen(gameView);
     }
 
     /**
      * @param screenIndex is screenIndex. method changes view.
      */
     public void changeView(final Screen screenIndex) {
+        System.out.println(screenIndex);
 
         switch (screenIndex) {
             case SETTING:
@@ -84,11 +87,12 @@ public class Navigator implements Disposable {
                 break;
 
             case GAME:
-                GameView gameView = new GameView();
+                GameView gameView = new GameView(new SpriteBatch());
+                System.out.println("GAME");
                 /**
                  * uncomment this when gameview is done. TODO: Håvard Farestveit
                  */
-                //this.setScreen(gameView);
+                this.setScreen(gameView);
                 break;
 
             default:
