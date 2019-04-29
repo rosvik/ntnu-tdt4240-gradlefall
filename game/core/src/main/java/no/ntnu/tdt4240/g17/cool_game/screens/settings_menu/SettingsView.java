@@ -73,7 +73,7 @@ public class SettingsView implements Screen {
 
         Table table = new Table();
         table.setFillParent(true);
-        table.setDebug(true);
+        //table.setDebug(true);
         stage.addActor(table);
 
 
