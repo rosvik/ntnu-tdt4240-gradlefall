@@ -2,9 +2,6 @@ package no.ntnu.tdt4240.g17.server;
 
 import com.badlogic.gdx.physics.box2d.Box2D;
 
-import org.slf4j.LoggerFactory;
-
-import ch.qos.logback.classic.LoggerContext;
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.common.network.game_messages.PlayMessage;
 import no.ntnu.tdt4240.g17.server.availability.FailureListener;
@@ -38,14 +35,10 @@ public final class ServerMain {
 
         // TODO: read server parameters from .properties file or environment.
         // eg. bort number and bind adress (127.0.0.1 or 0.0.0.0).
-        // TODO: Start server to listen for incoming clients.
         // TODO: Register for heartbeats/ping?
-        final FailureListener failureListener = new FailureListener() {
-            @Override
-            public void reportFailure(final Severity severity, final Throwable exception) {
-                // FIXME make proper error handling.
-                log.error("OOPS, FAILURE! FIXME: implement failure handling. Severity {}", severity.name(), exception);
-            }
+        final FailureListener failureListener = (severity, exception) -> {
+            // FIXME make proper error handling.
+            log.error("OOPS, FAILURE! FIXME: implement failure handling. Severity {}", severity.name(), exception);
         };
 
         // TODO: 3/22/2019 Read from a config file or environment
@@ -67,21 +60,8 @@ public final class ServerMain {
             matchmakingQueue.add(connection);
         }), PlayMessage.class);
 
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                setName("ShutdownHook");
-                log.info("Shutting down.");
-                gameServer.stop();
-                try {
-                    serverThread.join();
-                } catch (InterruptedException ignored) {
-                }
-                log.info("Shut down.");
-                LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-                loggerContext.stop();
-            }
-        });
+        final ShutdownProcedureThread shutdownThread = new ShutdownProcedureThread(gameServer, serverThread);
+        shutdownThread.installAsShutdownHook();
 
         log.info("Starting server");
         serverThread.setDaemon(false);
