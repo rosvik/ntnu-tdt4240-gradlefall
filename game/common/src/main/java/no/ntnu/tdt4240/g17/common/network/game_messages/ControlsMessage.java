@@ -1,5 +1,7 @@
 package no.ntnu.tdt4240.g17.common.network.game_messages;
 
+import lombok.ToString;
+
 /**
  * Notify the server of user input.
  * <br/><br/>
@@ -9,6 +11,7 @@ package no.ntnu.tdt4240.g17.common.network.game_messages;
  * @author Morten 'bujordet' Bujordet
  */
 @SuppressWarnings("VisibilityModifier")
+@ToString
 public class ControlsMessage {
     /** Unique id for the player. */
     public String playerId;
