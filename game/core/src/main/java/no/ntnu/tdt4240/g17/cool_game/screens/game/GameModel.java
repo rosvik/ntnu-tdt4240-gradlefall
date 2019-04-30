@@ -10,14 +10,18 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import java.util.ArrayList;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.common.network.game_messages.data.Position;
+import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
 import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.player.PlayerComponent;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.player.PlayerSystem;
 
+/** Model for the GameView. */
 @Getter
-public class GameModel {
+@Slf4j
+public final class GameModel {
 
     /** Arena. */
     private Arena arena;
@@ -47,9 +51,9 @@ public class GameModel {
     static String loadingImgPath = "Loading.png";
     static String backgroundImgPath = "background.png";
     private ClientData clientData;
-    private SpriteBatch batch;
 
-    public GameModel(final SpriteBatch batch) {
+    /** Create a new instance of the model. */
+    public GameModel() {
         assetManager = new AssetManager();
         engine = new Engine();
         engine.removeAllEntities();
@@ -61,7 +65,6 @@ public class GameModel {
         characters.add("necromancer");
         engine.addSystem(new PlayerSystem());
         //engine.addSystem(new ProjectileSystem());
-        this.batch = batch;
         loadAssets();
     }
 
@@ -73,15 +76,14 @@ public class GameModel {
         assetManager.load("Loading.png", Texture.class);
         assetManager.load(dungeonTilesetPath, TextureAtlas.class);
         assetManager.load(projectileTilesetPath, TextureAtlas.class);
-        System.out.println("LOADING ASSETS.. ");
-        setAssets();
+        blockUntilLoadingComplete();
     }
 
     /**
      * Add assets to components when assetManager is finished loading.
      */
-    public void setAssets() {
-        System.out.println("LOADING ASSETS...");
+    public void blockUntilLoadingComplete() {
+        log.debug("Loading assets...");
         assetManager.finishLoading();
         if (assetManager.update()) {
             //&& clientData.getMatchmadePlayers() != null) {
@@ -106,14 +108,20 @@ public class GameModel {
                                 characters.get(i % 4),
                                 dungeonTilset));
             }
-            System.out.println("LOADING COMPLETE");
+            log.debug("Asset loading complete!");
         }
-        System.out.println("PROGRESS: " + assetManager.getProgress());
+        log.trace("Asset loading progress: {}", assetManager.getProgress());
     }
 
-    public void renderPlayers(final float deltaTime) {
-        for (int i = 0; i < players.size(); i++) {
-            players.get(i).getComponent(PlayerComponent.class).getCharacter().draw(batch, deltaTime);
+    /** Update animations and render all players onto the batch.
+     * @param deltaTime advance animations by this many seconds
+     * @param batch sprites are rendered to this batch.
+     */
+    public void renderPlayers(final float deltaTime, final SpriteBatch batch) {
+        for (final Entity player : players) {
+            final GameCharacter character = PlayerComponent.MAPPER.get(player).getCharacter();
+            character.update(deltaTime);
+            character.draw(batch);
         }
     }
 

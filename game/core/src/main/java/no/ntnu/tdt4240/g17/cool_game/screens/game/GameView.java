@@ -5,7 +5,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.util.function.Consumer;
+
 import lombok.extern.slf4j.Slf4j;
+import no.ntnu.tdt4240.g17.common.network.game_messages.ControlsMessage;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
 import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.GUI;
@@ -19,9 +22,11 @@ public final class GameView implements Screen {
     private GameModel model;
     private Arena arena;
     private HeadsUpDisplay hud;
-    private GameClient client;
+    private Consumer<ControlsMessage> networkClient;
+
     /**
      * Constructor for game view.
+     *
      * @param batch = The batch that everything will render on.
      */
     public GameView(final SpriteBatch batch) {
@@ -31,31 +36,29 @@ public final class GameView implements Screen {
     @Override
     public void show() {
         arena = new Arena("map2.tmx", 16f, 32, 20, batch);
-        model = new GameModel(batch);
+        model = new GameModel();
         hud = new HeadsUpDisplay(model.getDungeonTilset(), model.getProjectilesTileset());
-        //client = new GameClient(5777, new ClientData());
-        //client.run();
-        //log.info("Is connected: {}", client.getClient().isConnected());
+        networkClient = GameClient.getNetworkClientInstance()::sendTCP;
     }
-
-
 
 
     @Override
     public void render(final float delta) {
-        //if (model.assetManager.update() && model.getClientData().getMatchmadePlayers().size() == 4 && client.getClient().isConnected()) {
+        //if (model.assetManager.update() && model.getClientData().getMatchmadePlayers().size() == 4
+        // && networkClient.getClient().isConnected()) {
         if (model.assetManager.update()) {
             Gdx.gl.glClearColor(1, 1, 1, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             batch.begin();
             batch.draw(model.getBackground(), 0f, 0f, 32, 20);
             arena.renderArena();
-            model.renderPlayers(delta);
+            model.renderPlayers(delta, batch);
             arena.renderForeground();
-            hud.draw(batch,3,10,0);
+            hud.draw(batch, 3, 10, 0);
             model.getEngine().update(delta);
             batch.end();
-            GUI.getInstance().update();
+            final ControlsMessage controlsMessage = GUI.getInstance().update();
+            networkClient.accept(controlsMessage);
         } else {
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -66,7 +69,7 @@ public final class GameView implements Screen {
     }
 
     /**
-     * @param newWidth = new width
+     * @param newWidth  = new width
      * @param newHeight = new height
      */
     @Override

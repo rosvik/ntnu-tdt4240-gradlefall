@@ -5,11 +5,12 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * Combines which button is pressed and angle and magnitude of joystickVector.
  */
-@Getter
+@Getter @ToString
 public class MovementFormat {
 
     /** State of the button presses. */

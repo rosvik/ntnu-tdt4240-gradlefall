@@ -2,28 +2,24 @@ package no.ntnu.tdt4240.g17.cool_game.screens.game.controller;
 
 import com.badlogic.gdx.Gdx;
 
-import java.io.IOException;
-
 import lombok.Getter;
 import no.ntnu.tdt4240.g17.common.network.game_messages.ControlsMessage;
-import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
-import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
-import no.ntnu.tdt4240.g17.cool_game.network.NetworkSettings;
 
 /**
  * Component for the controller.
  * Made with singleton design pattern.
  * @author Håvard 'havfar' Farestveit
  */
-@Getter
 public final class GUI {
+    private static GUI guiInstance;
+
     private InputProcessor inputProcessor;
     private TouchInput firstFinger, secondFinger, thirdFinger;
+    @Getter
     private MovementFormat movementFormat;
     private int screenHeigth, screenWidth;
-    private static GUI GUI;
-    private GameClient gameClient;
-    private ControlsMessage message;
+    @Getter
+    private ControlsMessage lastMessage;
 
     /**
      * Singleton constructor.
@@ -31,12 +27,8 @@ public final class GUI {
     private GUI() {
         screenHeigth = Gdx.graphics.getHeight();
         screenWidth = Gdx.graphics.getWidth();
-        gameClient = new GameClient(NetworkSettings.getServerIp(), NetworkSettings.getPort(), new ClientData());
-        try {
-            gameClient.connectBlocking();
-        } catch (IOException ignored) { }
         inputProcessor = new InputProcessor(screenHeigth, screenWidth);
-        message = new ControlsMessage();
+        lastMessage = new ControlsMessage();
     }
 
     /**
@@ -44,32 +36,37 @@ public final class GUI {
      * @return This instance.
      */
     public static GUI getInstance() {
-        if (GUI == null) {
-            GUI = new GUI();
+        if (guiInstance == null) {
+            synchronized (GUI.class) {
+                if (guiInstance == null) {
+                    guiInstance = new GUI();
+                }
+            }
         }
-        return GUI;
+        return guiInstance;
     }
 
     /**
      * Updates information from each controller input / finger.
      * Sends the data to server as a ControlsMessage.
+     * @return the created lastMessage with all active controls.
      */
-    public void update() {
+    public ControlsMessage update() {
         firstFinger = new TouchInput(Gdx.input.isTouched(0), Gdx.input.getX(0), Gdx.input.getY(0));
         secondFinger = new TouchInput(Gdx.input.isTouched(1), Gdx.input.getX(1), Gdx.input.getY(1));
         thirdFinger = new TouchInput(Gdx.input.isTouched(2), Gdx.input.getX(2), Gdx.input.getY(2));
         movementFormat = inputProcessor.processInput(firstFinger, secondFinger, thirdFinger);
         if (movementFormat.getButtonsPressed().get(1) == 1) {
-            message.jump = true;
+            lastMessage.jump = true;
         }
         if (movementFormat.getButtonsPressed().get(2) == 1) {
-            message.shoot = true;
+            lastMessage.shoot = true;
         }
-        message.moveAngle = movementFormat.getJoystickInput().x;
-        message.shootAngle = movementFormat.getJoystickInput().x;
-        message.moveSpeed = movementFormat.getJoystickInput().y;
-        message.placeBlock = false;
-        message.placeBlockAngle =  movementFormat.getJoystickInput().x;
-        gameClient.send(message);
+        lastMessage.moveAngle = movementFormat.getJoystickInput().x;
+        lastMessage.shootAngle = movementFormat.getJoystickInput().x;
+        lastMessage.moveSpeed = movementFormat.getJoystickInput().y;
+        lastMessage.placeBlock = false;
+        lastMessage.placeBlockAngle =  movementFormat.getJoystickInput().x;
+        return lastMessage;
     }
 }

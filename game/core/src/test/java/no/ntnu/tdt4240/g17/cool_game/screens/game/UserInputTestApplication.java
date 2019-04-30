@@ -21,7 +21,9 @@ import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.UserInputButtons;
 /**
  * Main game class.
  */
-public class UserInputTest extends ApplicationAdapter {
+public class UserInputTestApplication extends ApplicationAdapter {
+    // FIXME: 4/30/2019 Should this file be deleted? -Kristian
+
     /** Batch to render. */
     SpriteBatch batch;
 
@@ -31,8 +33,6 @@ public class UserInputTest extends ApplicationAdapter {
     TextureAtlas atlas;
 
     GameCharacter character;
-
-    float stateTime;
 
     UserInputButtons userInputButtons;
 
@@ -60,7 +60,6 @@ public class UserInputTest extends ApplicationAdapter {
         batch = new SpriteBatch();
         atlas = new TextureAtlas("./Assets/TextureAtlas/Characters/DungeonTileset.atlas");
         character = new GameCharacter("big_zombie", 100,  100, atlas);
-        stateTime = 0;
         userInputButtons = new UserInputButtons(screenHeigth, screenWidth);
         inputToMovementOutput = new InputToMovementOutput();
         oldPosition = new Vector2(screenWidth / 2, screenHeigth / 2);
@@ -70,7 +69,6 @@ public class UserInputTest extends ApplicationAdapter {
 
     @Override
     public final void render() {
-        stateTime += Gdx.graphics.getDeltaTime();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -88,7 +86,8 @@ public class UserInputTest extends ApplicationAdapter {
         movementFormat = inputProcessor.processInput(firstFinger, secondFinger, thirdFinger);
         font.draw(batch, "button: " + movementFormat.getButtonsPressed() + ", value: " + movementFormat.getJoystickInput(), 300, 500);
         character.render(200, 500);
-        character.draw(batch, stateTime);
+        character.update(Gdx.graphics.getDeltaTime());
+        character.draw(batch);
         batch.end();
     }
 

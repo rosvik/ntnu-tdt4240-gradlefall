@@ -9,7 +9,7 @@ import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
  */
 public class HomeController {
 
-    private Navigator parent;
+    private Navigator navigator;
 
     /**
      * Create a new HomeController for a {@link HomeView}.
@@ -17,7 +17,7 @@ public class HomeController {
      * @param navigator navigator class
      */
     public HomeController(final Navigator navigator) {
-        this.parent = navigator;
+        this.navigator = navigator;
     }
 
     /**
@@ -41,14 +41,14 @@ public class HomeController {
     /**
      * g.
      */
-    public void changeToSettings() {
-        parent.changeView(Navigator.Screen.SETTING);
+    public void settingsPressed() {
+        navigator.changeView(Navigator.Screen.SETTING);
     }
 
     /**
      *
      */
-    public void changeToGame() {
-        parent.changeView(Navigator.Screen.GAME);
+    public void playGamePressed() {
+        navigator.changeView(Navigator.Screen.MATCHMAKING);
     }
 }
