@@ -76,7 +76,7 @@ public class ArenaTestUtil {
                     body.setTransform(x, y, 0f);
                     entity.add(new Box2dBodyComponent(body));
                     entity.add(new TransformComponent(new Vector2(body.getPosition()), new Vector2(1f, 1f), body.getAngle()));
-                    entity.add(new PlayerComponent("" + playerNumber, "Player " + playerNumber, true));
+                    entity.add(new PlayerComponent("" + playerNumber, "Player " + playerNumber));
                     entity.add(new BoundingBoxComponent(
                             new Rectangle(0, 0, characterFactory.getCharacterWidth(), characterFactory.getCharacterHeight())));
                 } else if (letter == '#') {
