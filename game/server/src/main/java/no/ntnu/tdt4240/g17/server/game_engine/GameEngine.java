@@ -4,8 +4,6 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerComponent;
 import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerEntityFactory;
@@ -21,8 +19,7 @@ public class GameEngine implements Runnable {
     private final Engine ecsEngine;
 
     /** If the game is over or not. */
-    @Getter @Setter
-    private boolean isGameOver = false;
+    private boolean gameOver = false;
     private final ImmutableArray<Entity> players;
 
     /**
@@ -42,11 +39,11 @@ public class GameEngine implements Runnable {
     public void run() {
         log.info("Starting game on engine {}", this);
         long lastUpdate = System.currentTimeMillis();
-        while (!isGameOver) {
+        while (!gameOver) {
             final long now = System.currentTimeMillis();
             ecsEngine.update(now - lastUpdate);
             lastUpdate = now;
-            isGameOver = doGameOverCheck();
+            gameOver = doGameOverCheck();
         }
         log.info("Game over on engine {}", this);
     }
@@ -55,7 +52,7 @@ public class GameEngine implements Runnable {
      * It is deemed over when one player is alive, or all are dead.
      * @return true if the game is over, false otherwise.
      */
-    private boolean doGameOverCheck() {
+    boolean doGameOverCheck() {
         int alivePlayers = 0;
         for (final Entity player : players) {
             final PlayerComponent playerComponent = PlayerComponent.MAPPER.get(player);
