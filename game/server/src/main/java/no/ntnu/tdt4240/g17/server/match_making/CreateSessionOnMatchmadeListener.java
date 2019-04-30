@@ -2,6 +2,8 @@ package no.ntnu.tdt4240.g17.server.match_making;
 
 import com.badlogic.gdx.math.Vector2;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,26 +30,42 @@ public final class CreateSessionOnMatchmadeListener implements MatchMakingQueue.
 
     @Override
     public void onMatchmade(final PlayerConnection[] playerConnections) {
-        Player[] players = new Player[playerConnections.length];
-        for (int i = 0; i < players.length; i++) {
+        ArrayList<Player> players = new ArrayList<>(playerConnections.length);
+        for (int i = 0; i < playerConnections.length; i++) {
             final PlayerConnection playerConnection = playerConnections[i];
             final Player player = new Player(playerConnection.getId(), playerConnection);
             player.setPlayerName("Player " + i); // FIXME: 4/4/2019 Make names player customizable.
-            players[i] = player;
+            players.add(player);
         }
         final Session session = Session.create(players);
+        final Arena arena = session.getArena();
 
+        final MatchmadeMessage matchmadeMessage = createMatchmadeMessage(players, arena, session.getGameMode());
+
+        notifyPlayers(playerConnections, matchmadeMessage);
+        session.startEngine();
+    }
+
+    /**
+     * Creates a message for matchmaking, from the given players and arena.
+     * @param players the players in the session
+     * @param arena the chosen arena for the match.
+     * @param gameMode the chosen game mode
+     * @return a message that can be sent to clients.
+     */
+    @NotNull
+    private MatchmadeMessage createMatchmadeMessage(final ArrayList<Player> players, final Arena arena,
+                                                    final GameMode gameMode) {
         final MatchmadeMessage matchmadeMessage = new MatchmadeMessage();
-        matchmadeMessage.arena = session.getArena();
-        matchmadeMessage.gameMode = GameMode.HEADHUNTER;
+        matchmadeMessage.arena = arena;
+        matchmadeMessage.gameMode = gameMode;
         matchmadeMessage.players = new ArrayList<>();
 
-        final Arena arena = session.getArena();
         final ArrayList<Vector2> startPositions = new PlayerStartPosition(ArenaUtil.getFilePathFor(arena))
                 .getStartPositions();
 
-        for (int i = 0; i < players.length; i++) {
-            final Player player = players[i];
+        for (int i = 0; i < players.size(); i++) {
+            final Player player = players.get(i);
             final MatchmadeMessagePlayer matchmadeMessagePlayer = new MatchmadeMessagePlayer();
             matchmadeMessagePlayer.playerId = player.getId();
             matchmadeMessagePlayer.playerName = player.getPlayerName();
@@ -56,8 +74,7 @@ public final class CreateSessionOnMatchmadeListener implements MatchMakingQueue.
             matchmadeMessagePlayer.position = new Position(position.x, position.y);
             matchmadeMessage.players.add(matchmadeMessagePlayer);
         }
-
-        notifyPlayers(playerConnections, matchmadeMessage);
+        return matchmadeMessage;
     }
 
     /**

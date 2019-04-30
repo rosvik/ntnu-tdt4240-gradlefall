@@ -27,12 +27,13 @@ public class Session {
 
     @Getter
     private GameMode gameMode;
+    private Thread engineThread;
 
     /** test method, work in progress.
      * @param players the players in this session.
      * @return the session
      */
-    public static Session create(final Player... players) {
+    public static Session create(final List<Player> players) {
         Arena arena = Arena.ARENA_2;
 
         final Session session = new Session();
@@ -41,16 +42,21 @@ public class Session {
 
         session.gameEngine = gameEngine;
         session.arena = arena;
-        session.gameMode = GameMode.HEADHUNTER; // Depends on matchmaking?
+        session.gameMode = GameMode.HEADHUNTER; // FIXME: Depends on matchmaking?
+        session.players.addAll(players);
 
-        final Thread engineThread = new Thread(gameEngine, "GameEngine");
-        engineThread.start();
+        session.engineThread = new Thread(gameEngine, "GameEngine");
 
         return session;
     }
 
     /** Create a new session.
-     * @see #create(Player...) */
+     * @see #create(List) */
     public Session() {
+    }
+
+    /** Start the game enginge thread. */
+    public void startEngine() {
+        engineThread.start();
     }
 }

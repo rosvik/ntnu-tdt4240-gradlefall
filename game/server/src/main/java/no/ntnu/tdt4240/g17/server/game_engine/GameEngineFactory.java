@@ -64,8 +64,7 @@ public class GameEngineFactory {
         final PlayerEntityFactory playerEntityFactory = new PlayerEntityFactory(
                 new CharacterBox2dBodyFactory(world, 2f));
         for (Player player : session.getPlayers()) {
-            //// FIXME: 4/1/2019 playername should be fetched from somewhere
-            final Entity playerEntity = playerEntityFactory.create(player.getId(), "Player " + player.getId());
+            final Entity playerEntity = playerEntityFactory.create(player.getId(), player.getPlayerName());
             playerEntity.add(new NetworkedPlayerComponent(player.getPlayerConnection()));
             engine.addEntity(playerEntity);
         }

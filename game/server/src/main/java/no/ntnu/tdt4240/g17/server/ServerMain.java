@@ -52,7 +52,6 @@ public final class ServerMain {
         handlerDelegator.registerHandler((connection, message) -> log.info("Got message: {}", message), String.class);
 
         final MatchMakingQueue matchmakingQueue = new MatchMakingQueue(new CreateSessionOnMatchmadeListener());
-
         handlerDelegator.registerHandler(((connection, message) -> {
             log.info("Player {} wants to play", connection.getId());
             log.warn("Making a session with only 1 player!");
