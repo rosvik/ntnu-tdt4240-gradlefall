@@ -26,7 +26,7 @@ public class LoadingController {
         navigator.changeView(Navigator.Screen.GAME);
     }
 
-    /** Call when the view is first shown */
+    /** Call when the view is first shown. */
     public void onShow() {
         model.startMatchmaking();
     }

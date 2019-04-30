@@ -40,8 +40,9 @@ public class HomeView extends ApplicationAdapter implements Screen {
     private Music music;
 
     /**
-     * @param homeController needs to take in homecontroler.
-     * @param batch the batch to render into
+     * @param homeController the controller for the view.
+     * @param batch the batch to render into.
+     * @param model the model for the view.
      */
     public HomeView(final HomeController homeController, final SpriteBatch batch, final HomeModel model) {
         this.homeController = homeController;
