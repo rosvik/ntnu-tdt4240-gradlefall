@@ -12,6 +12,7 @@ import no.ntnu.tdt4240.g17.cool_game.screens.loading.LoadingController;
 import no.ntnu.tdt4240.g17.cool_game.screens.loading.LoadingModel;
 import no.ntnu.tdt4240.g17.cool_game.screens.loading.LoadingView;
 import no.ntnu.tdt4240.g17.cool_game.screens.main_menu.HomeController;
+import no.ntnu.tdt4240.g17.cool_game.screens.main_menu.HomeModel;
 import no.ntnu.tdt4240.g17.cool_game.screens.main_menu.HomeView;
 import no.ntnu.tdt4240.g17.cool_game.screens.settings_menu.SettingsController;
 import no.ntnu.tdt4240.g17.cool_game.screens.settings_menu.SettingsModel;
@@ -81,7 +82,7 @@ public class Navigator implements Disposable {
 
             default:
             case HOME:
-                HomeView homeView = new HomeView(new HomeController(this), new SpriteBatch());
+                HomeView homeView = new HomeView(new HomeController(this), new SpriteBatch(), new HomeModel());
                 this.setScreen(homeView);
                 break;
         }
