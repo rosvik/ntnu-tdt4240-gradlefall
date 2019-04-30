@@ -29,7 +29,7 @@ class MessageClassListerTest {
         // When
         final List<Class> knownMessageClasses = MessageClassUtil.getMessageClasses(); // Found by scanning directory.
         final List<Class> classes = MessageClassLister.getMessageClasses();
-        classes.add(ArrayList.class);
+        knownMessageClasses.add(ArrayList.class);
         final String packageName = "no.ntnu.tdt4240.g17.common.network.game_messages.";
 
         // Then
