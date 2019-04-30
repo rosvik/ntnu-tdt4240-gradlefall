@@ -44,4 +44,11 @@ public class HomeController {
     public void changeToSettings() {
         parent.changeView(Navigator.Screen.SETTING);
     }
+
+    /**
+     *
+     */
+    public void changeToGame() {
+        parent.changeView(Navigator.Screen.GAME);
+    }
 }

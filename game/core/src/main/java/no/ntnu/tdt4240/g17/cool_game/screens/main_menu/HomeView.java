@@ -104,6 +104,12 @@ public class HomeView extends ApplicationAdapter implements Screen {
             }
         });
 
+        play.addListener(new ChangeListener() {
+            @Override
+            public void changed(final ChangeEvent event, final Actor actor) {
+                homeController.changeToGame();
+            }
+        });
 
         // action for exit
         quit.addListener(new ChangeListener() {
