@@ -2,14 +2,15 @@ package no.ntnu.tdt4240.g17.cool_game.screens.game;
 
 import com.badlogic.gdx.math.Vector2;
 
-import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.InputProcessor;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.MovementFormat;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.TouchInput;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.InputProcessor;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.MovementFormat;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.TouchInput;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

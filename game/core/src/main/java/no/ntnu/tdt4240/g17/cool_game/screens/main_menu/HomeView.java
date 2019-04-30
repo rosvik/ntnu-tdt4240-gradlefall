@@ -31,7 +31,7 @@ public class HomeView extends ApplicationAdapter implements Screen {
     private Stage stage;
 
     private SpriteBatch batch;
-    private Texture texture;
+    private Texture backgroundTexture;
 
     /**
      * music.
@@ -40,9 +40,11 @@ public class HomeView extends ApplicationAdapter implements Screen {
 
     /**
      * @param homeController needs to take in homecontroler.
+     * @param batch the batch to render into
      */
-    public HomeView(final HomeController homeController) {
+    public HomeView(final HomeController homeController, final SpriteBatch batch) {
         this.homeController = homeController;
+        this.batch = batch;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), STAGE_MIN_FPS));
@@ -55,8 +57,7 @@ public class HomeView extends ApplicationAdapter implements Screen {
     @Override
     public void show() {
         //spritebatches
-        batch = new SpriteBatch();
-        texture = new Texture(Gdx.files.internal("background.png"));
+        backgroundTexture = new Texture(Gdx.files.internal("background.png"));
         // Create a table that fills the screen. Everything else will go inside this table.
         Table table = new Table();
         table.setFillParent(true);
@@ -100,14 +101,14 @@ public class HomeView extends ApplicationAdapter implements Screen {
         settings.addListener(new ChangeListener() {
             @Override
             public void changed(final ChangeEvent event, final Actor actor) {
-                homeController.changeToSettings();
+                homeController.settingsPressed();
             }
         });
 
         play.addListener(new ChangeListener() {
             @Override
             public void changed(final ChangeEvent event, final Actor actor) {
-                homeController.changeToGame();
+                homeController.playGamePressed();
             }
         });
 
@@ -139,7 +140,7 @@ public class HomeView extends ApplicationAdapter implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);   //clears the screen
 
         batch.begin();
-        batch.draw(texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 
         //the buttons

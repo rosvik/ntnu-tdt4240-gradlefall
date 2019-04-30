@@ -24,23 +24,23 @@ public class HeadsUpDisplay {
     /**
      * draws the HUD.
      * @param batch = sprite batch from game view
-     * @param numeberOfLives = current number of lives
-     * @param numerOfProjectiles = current number of projectiles
+     * @param numberOfLives = current number of lives
+     * @param numberOfProjectiles = current number of projectiles
      * @param playerScore = current score.
      *                    todo: add score support
      */
     public void draw(
             final SpriteBatch batch,
-            final int numeberOfLives,
-            final int numerOfProjectiles,
+            final int numberOfLives,
+            final int numberOfProjectiles,
             final int playerScore) {
         int heartX = 23;
-        for (int i = 0; i < numeberOfLives; i++) {
+        for (int i = 0; i < numberOfLives; i++) {
             batch.draw(heart, heartX, 19, 1, 1);
             heartX += 1;
         }
         float projectilesX = 26;
-        for (int i = 0; i < numerOfProjectiles; i++) {
+        for (int i = 0; i < numberOfProjectiles; i++) {
             batch.draw(projectile, projectilesX, 19, 1, 1);
             projectilesX += 0.5f;
         }

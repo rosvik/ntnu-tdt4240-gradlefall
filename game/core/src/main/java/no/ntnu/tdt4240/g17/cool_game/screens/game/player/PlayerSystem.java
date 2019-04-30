@@ -1,13 +1,15 @@
 package no.ntnu.tdt4240.g17.cool_game.screens.game.player;
 
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Engine;
+
+import java.util.Collections;
+
 import lombok.Getter;
 import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
-import java.util.Collections;
 
 /**
  * A system that renders all players according to data from server (client data).
@@ -30,14 +32,18 @@ public class PlayerSystem extends EntitySystem {
 
     /**
      * Renders each object.
+     *
      * @param deltaTime = time since start.
      */
     @Override
     public void update(final float deltaTime) {
         for (Entity entity : entitiesToUpdate) {
             PlayerComponent entityCharacter = character.get(entity);
-            float x = entityCharacter.getCharacter().getState().getxPosition() + 0.01f;//clientData.getPlayerById(entityCharacter.getPlayerId()).position.x;
-            float y = 10;//entityCharacter.getCharacter().getState().getyPosition() + 0.01f;//clientData.getPlayerById(entityCharacter.getPlayerId()).position.y;
+            float x = entityCharacter.getCharacter().getState().getxPosition() + 0.01f;
+            //clientData.getPlayerById(entityCharacter.getPlayerId()).position.x;
+            float y = 10;
+            //entityCharacter.getCharacter().getState().getyPosition() + 0.01f;
+            // clientData.getPlayerById(entityCharacter.getPlayerId()).position.y;
             entityCharacter.getCharacter().render(x, y);
         }
     }
