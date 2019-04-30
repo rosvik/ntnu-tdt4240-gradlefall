@@ -73,8 +73,9 @@ public class Navigator implements Disposable {
                 break;
 
             case MATCHMAKING:
+                final LoadingModel loadingModel = new LoadingModel(GameClient.getNetworkClientInstance());
                 LoadingView loadingView = new LoadingView(new SpriteBatch(),
-                        new LoadingModel(GameClient.getNetworkClientInstance()), new LoadingController(this));
+                        loadingModel, new LoadingController(this, loadingModel));
                 this.setScreen(loadingView);
                 break;
 

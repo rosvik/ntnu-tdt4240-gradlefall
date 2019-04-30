@@ -7,12 +7,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.esotericsoftware.kryonet.Client;
 
+import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
 
 
 /**
  * A view for loading / matchmaking.
  */
+@Slf4j
 public final class LoadingView implements Screen {
 
     private final SpriteBatch batch;
@@ -36,7 +38,9 @@ public final class LoadingView implements Screen {
     @Override
     public void show() {
         networkClient = GameClient.getNetworkClientInstance();
-        bitmapFont = new BitmapFont(Gdx.files.internal("assets/skin/font-export.fnt"));
+        bitmapFont = new BitmapFont(Gdx.files.internal("font/arial.fnt"));
+        log.debug("Showing LoadingView");
+        controller.onShow();
     }
 
     /**
@@ -45,15 +49,17 @@ public final class LoadingView implements Screen {
     @Override
     public void render(final float deltaTime) {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
-        Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         if (!model.isConnected()) {
-            bitmapFont.draw(batch, "Not connected...", 0, 0);
+            bitmapFont.draw(batch, "Not connected...", 20, 20);
         } else {
             if (model.isMatchmaking()) {
-                bitmapFont.draw(batch, "Matchmaking...", 0, 0);
+                bitmapFont.draw(batch, "Matchmaking...", 20, 20);
             } else if (model.hasBeenMatchmade()) {
-                bitmapFont.draw(batch, "Game starting!", 0, 0);
+                bitmapFont.draw(batch, "Game starting!", 20, 20);
+            } else {
+                bitmapFont.draw(batch, "I should be matchmaking now. Something is wrong!", 20, 20);
             }
         }
         batch.end();

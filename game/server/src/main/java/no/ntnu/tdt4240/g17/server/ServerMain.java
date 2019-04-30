@@ -54,7 +54,6 @@ public final class ServerMain {
         final MatchMakingQueue matchmakingQueue = new MatchMakingQueue(new CreateSessionOnMatchmadeListener());
         handlerDelegator.registerHandler(((connection, message) -> {
             log.info("Player {} wants to play", connection.getId());
-            log.warn("Making a session with only 1 player!");
             connection.setState(PlayerState.IN_MATCHMAKING);
             matchmakingQueue.add(connection);
         }), PlayMessage.class);
