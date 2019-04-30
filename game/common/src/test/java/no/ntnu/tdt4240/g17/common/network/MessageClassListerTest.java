@@ -2,6 +2,7 @@ package no.ntnu.tdt4240.g17.common.network;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ class MessageClassListerTest {
         // When
         final List<Class> knownMessageClasses = MessageClassUtil.getMessageClasses(); // Found by scanning directory.
         final List<Class> classes = MessageClassLister.getMessageClasses();
+        knownMessageClasses.add(ArrayList.class);
         final String packageName = "no.ntnu.tdt4240.g17.common.network.game_messages.";
 
         // Then

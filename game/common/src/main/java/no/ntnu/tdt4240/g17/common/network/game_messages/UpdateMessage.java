@@ -2,6 +2,7 @@ package no.ntnu.tdt4240.g17.common.network.game_messages;
 
 import java.util.List;
 
+import lombok.ToString;
 import no.ntnu.tdt4240.g17.common.network.game_messages.data.Block;
 import no.ntnu.tdt4240.g17.common.network.game_messages.data.Effect;
 import no.ntnu.tdt4240.g17.common.network.game_messages.data.Powerup;
@@ -23,6 +24,7 @@ import no.ntnu.tdt4240.g17.common.network.game_messages.data.UpdateMessagePlayer
  * @author Morten 'bujordet' Bujordet
  */
 @SuppressWarnings("VisibilityModifier")
+@ToString
 public class UpdateMessage {
     /** The information about the player state. */
     public List<UpdateMessagePlayer> players;

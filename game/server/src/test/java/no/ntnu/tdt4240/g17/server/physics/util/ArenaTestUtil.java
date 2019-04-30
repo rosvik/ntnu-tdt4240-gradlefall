@@ -12,7 +12,6 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerComponent;
 import no.ntnu.tdt4240.g17.server.game_engine.projectile.ProjectileComponent;
-import no.ntnu.tdt4240.g17.server.physics.ArenaSimulationIT;
 import no.ntnu.tdt4240.g17.server.physics.box2d.BoundingBoxComponent;
 import no.ntnu.tdt4240.g17.server.physics.box2d.Box2dBodyComponent;
 import no.ntnu.tdt4240.g17.server.physics.box2d.TransformComponent;
@@ -69,7 +68,6 @@ public class ArenaTestUtil {
                 // x and y are in meters
                 final int x = c;
                 final int y = rowCount - r - 1;
-                ;
 
                 if (Character.isDigit(letter)) {
                     int playerNumber = Character.digit(letter, 10);
