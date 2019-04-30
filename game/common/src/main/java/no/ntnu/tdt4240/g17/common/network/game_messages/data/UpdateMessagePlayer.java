@@ -3,12 +3,15 @@ package no.ntnu.tdt4240.g17.common.network.game_messages.data;
 
 import java.util.List;
 
+import lombok.ToString;
+
 /**
  * Created by Morten 'bujordet' Bujordet on 3/15/2019.
  *
  * @author Morten 'bujordet' Bujordet
  */
 @SuppressWarnings("VisibilityModifier")
+@ToString(callSuper = true)
 public class UpdateMessagePlayer extends Player {
     /** Aiming direction. */
     public float aimingAngle;

@@ -83,18 +83,19 @@ public final class ReceivePlayerControlsSystem extends EntitySystem {
      * @param idMap map of players and id, for easy lookup
      * @param controlsMessage the message to interpret
      */
-    private void processMessage(final HashMap<String, Entity> idMap, final ControlsMessage controlsMessage) {
+    void processMessage(final HashMap<String, Entity> idMap, final ControlsMessage controlsMessage) {
         final Entity playerEntity = idMap.get(controlsMessage.playerId);
 
-        final Body body = Box2dBodyComponent.MAPPER.get(playerEntity).getBody();
         if (controlsMessage.jump) {
             // FIXME make this an update of an action component or similar
             final int jumpImpulse = 2000;
+            final Body body = Box2dBodyComponent.MAPPER.get(playerEntity).getBody();
             body.applyLinearImpulse(0, jumpImpulse, 0, 0, true);
         }
         if (controlsMessage.moveSpeed != 0f) {
             final Vector2 velocity = new Vector2(1f, 0);
             final float playerMaxSpeed = 7f;
+            final Body body = Box2dBodyComponent.MAPPER.get(playerEntity).getBody();
             velocity.setLength(playerMaxSpeed * controlsMessage.moveSpeed / 100f);
             velocity.setAngle(controlsMessage.moveAngle);
             velocity.y = body.getLinearVelocity().y;

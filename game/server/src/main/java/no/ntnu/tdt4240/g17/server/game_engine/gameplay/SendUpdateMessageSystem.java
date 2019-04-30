@@ -76,7 +76,7 @@ public final class SendUpdateMessageSystem extends IntervalSystem {
      * @return the created message
      */
     @NotNull
-    private UpdateMessage createMessage() {
+    UpdateMessage createMessage() {
         final UpdateMessage updateMessage = new UpdateMessage();
         updateMessage.players = new ArrayList<>(playerEntities.size());
 
