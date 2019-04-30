@@ -51,7 +51,7 @@ public class PlayerEntityFactory {
         final Body body = bodyFactory.create(playerEntity);
 
         playerEntity.add(new Box2dBodyComponent(body));
-        playerEntity.add(new PlayerComponent(playerId, playerDisplayName));
+        playerEntity.add(new PlayerComponent(playerId, playerDisplayName, true));
         playerEntity.add(new TransformComponent(new Vector2(body.getPosition()), new Vector2(1f, 1f), body.getAngle()));
         final Rectangle boundingBox = new Rectangle(0, 0,
                 bodyFactory.getCharacterWidth(), bodyFactory.getCharacterHeight());

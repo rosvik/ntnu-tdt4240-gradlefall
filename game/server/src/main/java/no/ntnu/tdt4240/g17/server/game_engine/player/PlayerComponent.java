@@ -21,4 +21,6 @@ public class PlayerComponent implements Component {
     private String id;
     /** The display name for the player, visible to others. */
     private String displayName;
+    /** If the player is alive or not. */
+    private boolean isAlive;
 }
