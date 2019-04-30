@@ -57,6 +57,7 @@ public class Session {
 
     /** Start the game enginge thread. */
     public void startEngine() {
+        // TODO: 4/30/2019 Some work is needed for when a round is over, to send data and start new rounds etc.
         engineThread.start();
     }
 }

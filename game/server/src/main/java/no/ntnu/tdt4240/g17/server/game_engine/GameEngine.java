@@ -46,6 +46,7 @@ public class GameEngine implements Runnable {
             gameOver = doGameOverCheck();
         }
         log.info("Game over on engine {}", this);
+        // TODO: 4/30/2019 Add a callback or similiar to start new games.
     }
 
     /** Check whether the game is over or not.
