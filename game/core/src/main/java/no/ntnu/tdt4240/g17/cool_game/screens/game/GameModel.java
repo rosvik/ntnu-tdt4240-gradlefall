@@ -83,7 +83,6 @@ public class GameModel {
         System.out.println("LOADING ASSETS...");
         assetManager.finishLoading();
         if (assetManager.update()) {
-            System.out.println("YAY");
             //&& clientData.getMatchmadePlayers() != null) {
             dungeonTilset = assetManager.get(dungeonTilesetPath);
             projectilesTileset = assetManager.get(projectileTilesetPath);
@@ -91,7 +90,7 @@ public class GameModel {
             loading = assetManager.get(loadingImgPath);
 
             //for (int i = 0; i < clientData.getMatchmadePlayers().size(); i++) {
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 1; i++) {
                 players.add(new Entity());
                 engine.addEntity(players.get(i));
                 Position pos = new Position();
