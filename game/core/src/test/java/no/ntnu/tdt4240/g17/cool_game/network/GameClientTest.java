@@ -9,7 +9,9 @@ import java.time.Duration;
 
 import no.ntnu.tdt4240.g17.common.network.game_messages.ControlsMessage;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 
 /**
  * Created by Johannes Tomren Røsvik (@rosvik) on 4/2/2019.
@@ -24,14 +26,14 @@ class GameClientTest {
     @BeforeEach
     void create() {
         ClientData clientData = new ClientData();
-        gameClient = new GameClient(5777, clientData);
+        gameClient = new GameClient("localhost", NetworkSettings.getPort(), clientData);
     }
 
 
     @Test
     void run() {
         assertThrows(AssertionFailedError.class, () ->
-            assertTimeoutPreemptively(Duration.ofMillis(2000), () -> gameClient.run())
+            assertTimeoutPreemptively(Duration.ofMillis(2000), () -> gameClient.connectBlocking())
         );
     }
 

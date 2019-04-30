@@ -2,10 +2,12 @@ package no.ntnu.tdt4240.g17.cool_game.screens.game.controller;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.Gdx;
+
 import lombok.Getter;
 import no.ntnu.tdt4240.g17.common.network.game_messages.ControlsMessage;
 import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
 import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
+import no.ntnu.tdt4240.g17.cool_game.network.NetworkSettings;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.InputProcessor;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.MovementFormat;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.TouchInput;
@@ -31,7 +33,7 @@ public final class ControllerComponent implements Component {
     private ControllerComponent() {
         screenHeigth = Gdx.graphics.getHeight();
         screenWidth = Gdx.graphics.getWidth();
-        gameClient = new GameClient(577, new ClientData());
+        gameClient = new GameClient(NetworkSettings.getServerIp(), NetworkSettings.getPort(), new ClientData());
         inputProcessor = new InputProcessor(screenHeigth, screenWidth);
         message = new ControlsMessage();
     }
