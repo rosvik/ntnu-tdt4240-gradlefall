@@ -1,5 +1,6 @@
 package no.ntnu.tdt4240.g17.common.network;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -45,6 +46,7 @@ public final class MessageClassLister {
     private static final class MessageClassListHolder {
         /** Singleton, immutable list. */
         private static final List<Class> CLASSES_SINGLETON = Collections.unmodifiableList(Arrays.asList(
+            ArrayList.class,
             Arena.class,
             Block.class,
             CancelMessage.class,
