@@ -15,30 +15,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  */
-@Data
 @Slf4j
 public class HomeView extends ApplicationAdapter implements Screen {
 
-    /**
-     * how big part of the screen.
-     */
-    public static final float FRACTIONSCREEN = 30f;
-    /**
-     * ROW.
-     */
-    public static final int ROW = 20;
+    private static final float STAGE_MIN_FPS = 1f / 30f;
 
     private HomeController homeController;
 
-    /**
-     * stageclass.
-     */
+    /** Stage for GUI rendering. */
     private Stage stage;
 
     private SpriteBatch batch;
@@ -56,7 +45,7 @@ public class HomeView extends ApplicationAdapter implements Screen {
         this.homeController = homeController;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / FRACTIONSCREEN));
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), STAGE_MIN_FPS));
         stage.draw();
     }
 
@@ -148,7 +137,7 @@ public class HomeView extends ApplicationAdapter implements Screen {
         batch.end();
 
         //the buttons
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / FRACTIONSCREEN));
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), STAGE_MIN_FPS));
         stage.draw();
     }
 
