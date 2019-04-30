@@ -3,6 +3,8 @@ package no.ntnu.tdt4240.g17.cool_game.screens.game.controller;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.Gdx;
 
+import java.io.IOException;
+
 import lombok.Getter;
 import no.ntnu.tdt4240.g17.common.network.game_messages.ControlsMessage;
 import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
@@ -19,11 +21,12 @@ import no.ntnu.tdt4240.g17.cool_game.screens.game.TouchInput;
  */
 @Getter
 public final class ControllerComponent implements Component {
+    private static ControllerComponent singletonInstance;
+
     private InputProcessor inputProcessor;
     private TouchInput firstFinger, secondFinger, thirdFinger;
     private MovementFormat movementFormat;
     private int screenHeigth, screenWidth;
-    private static ControllerComponent controllerComponent;
     private GameClient gameClient;
     private ControlsMessage message;
 
@@ -34,6 +37,9 @@ public final class ControllerComponent implements Component {
         screenHeigth = Gdx.graphics.getHeight();
         screenWidth = Gdx.graphics.getWidth();
         gameClient = new GameClient(NetworkSettings.getServerIp(), NetworkSettings.getPort(), new ClientData());
+        try {
+            gameClient.connectBlocking();
+        } catch (IOException ignored) { }
         inputProcessor = new InputProcessor(screenHeigth, screenWidth);
         message = new ControlsMessage();
     }
@@ -43,10 +49,14 @@ public final class ControllerComponent implements Component {
      * @return This instance.
      */
     public static ControllerComponent getInstance() {
-        if (controllerComponent == null) {
-            controllerComponent = new ControllerComponent();
+        if (singletonInstance == null) {
+            synchronized (ControllerComponent.class) {
+                if (singletonInstance == null) {
+                    singletonInstance = new ControllerComponent();
+                }
+            }
         }
-        return controllerComponent;
+        return singletonInstance;
     }
 
     /**
@@ -69,6 +79,5 @@ public final class ControllerComponent implements Component {
         message.moveSpeed = movementFormat.getJoystickInput().y;
         message.placeBlock = false;
         message.placeBlockAngle =  movementFormat.getJoystickInput().x;
-        //gameClient.send(message);
     }
 }

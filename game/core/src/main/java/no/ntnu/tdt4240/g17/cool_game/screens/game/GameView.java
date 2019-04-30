@@ -9,16 +9,19 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.esotericsoftware.kryonet.Client;
+
+import java.util.ArrayList;
+
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
 import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
+import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.ControllerComponent;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.ControllerSystem;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.player.PlayerComponent;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.player.PlayerSystem;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.projectile.ProjectileComponent;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.projectile.ProjectileSystem;
-
-import java.util.ArrayList;
 
 /**
  * The MVC View for an active game.
@@ -84,7 +87,10 @@ public class GameView implements Screen {
         characters.add("necromancer");
         controller = new Entity();
         engine.addEntity(controller);
-        engine.addSystem(new ControllerSystem());
+        final ControllerSystem system = new ControllerSystem();
+        final Client networkClient = GameClient.getNetworkClientInstance();
+        system.setServerConnection(networkClient::sendTCP);
+        engine.addSystem(system);
         engine.addSystem(new PlayerSystem());
         engine.addSystem(new ProjectileSystem());
         // Load assets

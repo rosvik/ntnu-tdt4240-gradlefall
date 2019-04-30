@@ -12,11 +12,11 @@ public final class NetworkSettings {
     /** Utility class. */
     private NetworkSettings() { }
 
-    /** The ip of the server to connect to. */
+    /** The ip of the server to connectBlocking to. */
     @Getter @Setter
     private static String serverIp = "localhost";
 
-    /** The port of the server to connect to. */
+    /** The port of the server to connectBlocking to. */
     @Getter @Setter
     private static int port = 5777;
 }

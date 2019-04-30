@@ -1,6 +1,7 @@
 package no.ntnu.tdt4240.g17.cool_game.screens.game.controller;
 
 import com.badlogic.ashley.core.Component;
+
 import no.ntnu.tdt4240.g17.cool_game.screens.game.MovementFormat;
 
 /**
@@ -17,7 +18,7 @@ public class ControllerServerComponent implements Component {
      * Constructor.
      * DONT USE
      */
-    public ControllerServerComponent() {
+    ControllerServerComponent() {
         this.x = 10;
         this.y = 10;
         shoot = false;
@@ -45,11 +46,7 @@ public class ControllerServerComponent implements Component {
             this.x -= 0.001f * magnitude;
         }
 
-        if (movementFormat.getButtonsPressed().get(2) == 1) {
-            shoot = true;
-        } else {
-            shoot = false;
-        }
+        shoot = movementFormat.getButtonsPressed().get(2) == 1;
     }
 
     /**
