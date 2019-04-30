@@ -28,12 +28,11 @@ public final class CreateSessionOnMatchmadeListener implements MatchMakingQueue.
 
     @Override
     public void onMatchmade(final PlayerConnection[] playerConnections) {
-        log.warn("TODO matchmaking");
         Player[] players = new Player[playerConnections.length];
         for (int i = 0; i < players.length; i++) {
             final PlayerConnection playerConnection = playerConnections[i];
             final Player player = new Player(playerConnection.getId(), playerConnection);
-            player.setPlayerName("Player " + i); // TODO: 4/4/2019 Make names player customizable.
+            player.setPlayerName("Player " + i); // FIXME: 4/4/2019 Make names player customizable.
             players[i] = player;
         }
         final Session session = Session.create(players);
@@ -58,7 +57,7 @@ public final class CreateSessionOnMatchmadeListener implements MatchMakingQueue.
             matchmadeMessage.players.add(matchmadeMessagePlayer);
         }
 
-        notifyPlayer(playerConnections, matchmadeMessage);
+        notifyPlayers(playerConnections, matchmadeMessage);
     }
 
     /**
@@ -67,7 +66,7 @@ public final class CreateSessionOnMatchmadeListener implements MatchMakingQueue.
      * @param connections the connections
      * @param message     the messagee to send
      */
-    private static void notifyPlayer(final PlayerConnection[] connections, final MatchmadeMessage message) {
+    private static void notifyPlayers(final PlayerConnection[] connections, final MatchmadeMessage message) {
         for (PlayerConnection connection : connections) {
             connection.sendTCP(message);
             connection.setState(PlayerState.IN_GAME);

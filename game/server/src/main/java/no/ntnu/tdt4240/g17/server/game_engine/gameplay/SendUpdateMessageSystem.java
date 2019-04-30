@@ -31,7 +31,7 @@ public final class SendUpdateMessageSystem extends IntervalSystem {
 
     private ImmutableArray<Entity> entities;
 
-    /** Create a new system that sends messages at the given interval
+    /** Create a new system that sends messages at the given interval.
      * @param interval how often the messages are sent
      * @param priority system priority. Lower comes first
      * @param family the family for entities. use {@link #FAMILY}.
