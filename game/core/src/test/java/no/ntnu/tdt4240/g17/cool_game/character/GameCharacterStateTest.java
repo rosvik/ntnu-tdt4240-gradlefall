@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class GameCharacterStateTest extends GameTest {
     private TextureAtlas projectiles = new TextureAtlas("./TextureAtlas/Projectiles/Projectiles.atlas");
-    private GameCharacterState testState = new GameCharacterState(0,0, "arrow", projectiles);
+    private GameCharacterState testState = new GameCharacterState(0,0);
 
     @Test
     void testGetyPosistion() {
@@ -66,14 +66,5 @@ class GameCharacterStateTest extends GameTest {
     void testIncreaseScore(){
         this.testState.increaseScore(100);
         Assert.assertEquals(100, this.testState.getScore());
-    }
-
-    @Test
-    void testProjectiles(){
-        Assert.assertEquals(3,this.testState.getNumberOfProjectiles());
-        this.testState.shoot();
-        Assert.assertEquals(2,this.testState.getNumberOfProjectiles());
-        this.testState.addProjectiles(2);
-        Assert.assertEquals(4,this.testState.getNumberOfProjectiles());
     }
 }

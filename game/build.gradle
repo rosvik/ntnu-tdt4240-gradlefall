@@ -97,6 +97,19 @@ project(":core") {
     description = "Common code for clients"
     apply plugin: "java-library"
 
+    // Exclude all views from test coverage, because they are untestable
+    // because of Stage, SpriteBatch and shaders.
+    jacocoTestCoverageVerification {
+        afterEvaluate {
+            classDirectories = files(classDirectories.files.collect {
+                fileTree(dir: it,
+                        exclude: [
+                                'no/ntnu/tdt4240/g17/cool_game/screens/**/*View*.class'
+                        ]
+                )
+            })
+        }
+    }
 
     dependencies {
         implementation project(":common")
@@ -104,7 +117,8 @@ project(":core") {
         implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         implementation "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
+        implementation "com.badlogicgames.ashley:ashley:$ashleyVersion"
+        implementation "com.esotericsoftware:kryonet:$kryonetVersion"
 
         testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
 

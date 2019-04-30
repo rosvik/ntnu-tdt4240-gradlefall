@@ -26,6 +26,7 @@ import no.ntnu.tdt4240.g17.server.physics.box2d.body.ProjectileBox2dBodyFactory;
 import no.ntnu.tdt4240.g17.server.physics.util.ArenaTestUtil;
 import no.ntnu.tdt4240.g17.server.physics.util.DesktopPhysicsVisualizer;
 
+
 /**
  * Integration test to set up a basic physics world and let it tick for some iterations.
  *

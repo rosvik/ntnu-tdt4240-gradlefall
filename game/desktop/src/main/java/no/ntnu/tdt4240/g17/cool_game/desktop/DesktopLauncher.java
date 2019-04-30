@@ -2,6 +2,7 @@ package no.ntnu.tdt4240.g17.cool_game.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+
 import no.ntnu.tdt4240.g17.cool_game.MainGame;
 
 /**
