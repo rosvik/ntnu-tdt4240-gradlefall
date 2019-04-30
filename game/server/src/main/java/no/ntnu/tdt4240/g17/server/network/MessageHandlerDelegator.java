@@ -1,5 +1,7 @@
 package no.ntnu.tdt4240.g17.server.network;
 
+import com.esotericsoftware.kryonet.FrameworkMessage;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +57,9 @@ public class MessageHandlerDelegator {
         if (messageHandler != null) {
             messageHandler.handle(connection, message);
         } else {
-            log.warn("Unhandled message: {}", message);
+            if (!(message instanceof FrameworkMessage.KeepAlive)) {
+                log.warn("Unhandled message: {}", message);
+            }
         }
     }
 
