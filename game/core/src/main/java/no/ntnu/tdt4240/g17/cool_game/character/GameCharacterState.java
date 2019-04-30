@@ -4,7 +4,7 @@ package no.ntnu.tdt4240.g17.cool_game.character;
  * State of a gamecharacter.
  * - posistion
  * - number of lives
- * - character score
+ * - chracter score
  */
 public class GameCharacterState {
     private float xPosition;

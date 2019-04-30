@@ -1,6 +1,5 @@
 package no.ntnu.tdt4240.g17.cool_game.screens.game.controller;
 
-import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.Gdx;
 
 import java.io.IOException;
@@ -10,9 +9,6 @@ import no.ntnu.tdt4240.g17.common.network.game_messages.ControlsMessage;
 import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
 import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
 import no.ntnu.tdt4240.g17.cool_game.network.NetworkSettings;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.InputProcessor;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.MovementFormat;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.TouchInput;
 
 /**
  * Component for the controller.
@@ -20,20 +16,19 @@ import no.ntnu.tdt4240.g17.cool_game.screens.game.TouchInput;
  * @author Håvard 'havfar' Farestveit
  */
 @Getter
-public final class ControllerComponent implements Component {
-    private static ControllerComponent singletonInstance;
-
+public final class GUI {
     private InputProcessor inputProcessor;
     private TouchInput firstFinger, secondFinger, thirdFinger;
     private MovementFormat movementFormat;
     private int screenHeigth, screenWidth;
+    private static GUI GUI;
     private GameClient gameClient;
     private ControlsMessage message;
 
     /**
      * Singleton constructor.
      */
-    private ControllerComponent() {
+    private GUI() {
         screenHeigth = Gdx.graphics.getHeight();
         screenWidth = Gdx.graphics.getWidth();
         gameClient = new GameClient(NetworkSettings.getServerIp(), NetworkSettings.getPort(), new ClientData());
@@ -48,15 +43,11 @@ public final class ControllerComponent implements Component {
      * Get the singleton instance.
      * @return This instance.
      */
-    public static ControllerComponent getInstance() {
-        if (singletonInstance == null) {
-            synchronized (ControllerComponent.class) {
-                if (singletonInstance == null) {
-                    singletonInstance = new ControllerComponent();
-                }
-            }
+    public static GUI getInstance() {
+        if (GUI == null) {
+            GUI = new GUI();
         }
-        return singletonInstance;
+        return GUI;
     }
 
     /**
@@ -79,5 +70,6 @@ public final class ControllerComponent implements Component {
         message.moveSpeed = movementFormat.getJoystickInput().y;
         message.placeBlock = false;
         message.placeBlockAngle =  movementFormat.getJoystickInput().x;
+        gameClient.send(message);
     }
 }

@@ -1,7 +1,9 @@
-package no.ntnu.tdt4240.g17.cool_game.screens.game;
+package no.ntnu.tdt4240.g17.cool_game.screens.game.controller;
 
 import com.badlogic.gdx.math.Vector2;
+
 import java.util.ArrayList;
+
 import lombok.Getter;
 
 /**

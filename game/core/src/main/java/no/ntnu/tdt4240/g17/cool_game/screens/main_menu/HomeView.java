@@ -60,7 +60,7 @@ public class HomeView extends ApplicationAdapter implements Screen {
         // Create a table that fills the screen. Everything else will go inside this table.
         Table table = new Table();
         table.setFillParent(true);
-        table.setDebug(true);         //shows border line.
+        //table.setDebug(true);         //shows border line.
         stage.addActor(table);
 
         //create buttons with skin
@@ -104,6 +104,12 @@ public class HomeView extends ApplicationAdapter implements Screen {
             }
         });
 
+        play.addListener(new ChangeListener() {
+            @Override
+            public void changed(final ChangeEvent event, final Actor actor) {
+                homeController.changeToGame();
+            }
+        });
 
         // action for exit
         quit.addListener(new ChangeListener() {

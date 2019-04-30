@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g17.cool_game.screens.game.controller;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.libgdx.test.util.GameTest;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +17,7 @@ class ControllerSystemTest extends GameTest {
         controller = new Entity();
         engine = new Engine();
         engine.addEntity(controller);
-        controller.add(ControllerComponent.getInstance());
+        controller.add(GUI.getInstance());
         controller.add(new ControllerServerComponent());
         cs = new ControllerSystem();
         engine.addSystem(cs);

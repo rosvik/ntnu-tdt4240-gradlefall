@@ -107,7 +107,7 @@ public final class GameClient {
      *
      * @param message The message object.
      */
-    void send(final Object message) {
+    public void send(final Object message) {
         client.sendTCP(message);
     }
 
