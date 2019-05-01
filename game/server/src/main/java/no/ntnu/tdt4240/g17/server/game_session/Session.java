@@ -56,7 +56,7 @@ public class Session {
         session.gameMode = GameMode.HEADHUNTER; // FIXME: Depends on matchmaking?
         session.players.addAll(players);
 
-        session.engineThread = new Thread(gameEngine, "GameEngine");
+        session.engineThread = new Thread(gameEngine, "GameEngine " + gameEngine.getId());
 
         return session;
     }
