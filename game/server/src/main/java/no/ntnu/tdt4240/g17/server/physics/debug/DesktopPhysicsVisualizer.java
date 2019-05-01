@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class DesktopPhysicsVisualizer implements ApplicationListener {
 
-    public static final int PX_PER_METER = 50;
+    private static final int PX_PER_METER = 20;
     private Box2DDebugRenderer box2DDebugRenderer;
 
     private World world = null;

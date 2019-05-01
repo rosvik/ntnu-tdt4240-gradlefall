@@ -29,7 +29,7 @@ public class HomeView extends ApplicationAdapter implements Screen {
     private static final String TEXT_SETTINGS = "SETTINGS";
     private static final String TEXT_QUIT = "QUIT";
     private static final String TEXT_CONNECTING = "CONNECTING...";
-    public static final String NO_CONNECTION = "CONNECTION FAILED";
+    private static final String NO_CONNECTION = "RETRY CONNECTION";
 
     private HomeController homeController;
 

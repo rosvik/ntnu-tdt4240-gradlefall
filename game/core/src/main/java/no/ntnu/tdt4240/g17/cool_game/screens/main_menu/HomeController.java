@@ -16,6 +16,7 @@ public class HomeController {
      * Create a new HomeController for a {@link HomeView}.
      *
      * @param navigator navigator class
+     * @param model the model for the view
      */
     public HomeController(final Navigator navigator, final HomeModel model) {
         this.navigator = navigator;
