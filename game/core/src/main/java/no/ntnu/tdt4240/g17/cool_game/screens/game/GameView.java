@@ -47,12 +47,16 @@ public final class GameView implements Screen {
         //if (model.assetManager.update() && model.getClientData().getMatchmadePlayers().size() == 4
         // && networkClient.getClient().isConnected()) {
         if (model.assetManager.update()) {
+            //if (model.getProjectiles().size() != model.getClientData().getProjectiles().size()) {
+            //    model.updateProjectiles();
+            //}
             Gdx.gl.glClearColor(1, 1, 1, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             batch.begin();
             batch.draw(model.getBackground(), 0f, 0f, 32, 20);
             arena.renderArena();
             model.renderPlayers(delta, batch);
+            //model.renderProjectiles(batch);
             arena.renderForeground();
             hud.draw(batch, 3, 10, 0);
             model.getEngine().update(delta);

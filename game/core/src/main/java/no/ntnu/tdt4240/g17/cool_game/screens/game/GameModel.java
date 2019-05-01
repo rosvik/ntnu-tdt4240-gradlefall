@@ -17,6 +17,7 @@ import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
 import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.player.PlayerComponent;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.player.PlayerSystem;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.projectile.ProjectileComponent;
 
 /** Model for the GameView. */
 @Getter
@@ -122,6 +123,71 @@ public final class GameModel {
             final GameCharacter character = PlayerComponent.MAPPER.get(player).getCharacter();
             character.update(deltaTime);
             character.draw(batch);
+        }
+    }
+
+    /**
+     * Render all projectile onto the batch.
+     * @param batch sprites are rendered to this batch.
+     */
+    public void renderProjectiles(final SpriteBatch batch) {
+        for (int i = 0; i < projectiles.size(); i++) {
+            projectiles.get(i).getComponent(ProjectileComponent.class).draw(batch);
+        }
+    }
+
+
+    /**
+     * If clientdata contains more projectile than screen,
+     * screen creates a new entity (projectile) and append it to engine.
+     * If cliendata conatins fewer projectiles than screen,
+     * screen removes the entity froms screen and engine
+     */
+    public void updateProjectiles() {
+        if (clientData.getProjectiles().size() > projectiles.size()) {
+            for (int i = 0; i < clientData.getProjectiles().size(); i++) {
+                boolean isInList = false;
+                for (int j = 0; j < projectiles.size(); j++) {
+                    Entity entity = projectiles.get(j);
+                    String projectileComponentId = entity.getComponent(ProjectileComponent.class).getProjectileId();
+                    if (clientData.getProjectiles().get(i).projectileId.equals(projectileComponentId)) {
+                        isInList = true;
+                        break;
+                    }
+                }
+                if (!isInList) {
+                    Entity newProjectile = new Entity();
+                    engine.addEntity(newProjectile);
+                    newProjectile.add(new ProjectileComponent(
+                            clientData.getProjectiles().get(i).projectileId,
+                            clientData.getProjectiles().get(i).projectilePosition,
+                            "arrow",
+                            135,
+                            projectilesTileset));
+                    projectiles.add(newProjectile);
+                    if (clientData.getProjectiles().size() == projectiles.size()) {
+                        break;
+                    }
+                }
+            }
+        } else if (clientData.getProjectiles().size() < projectiles.size()) {
+            for (int i = 0; i < projectiles.size(); i++) {
+                boolean isInList = false;
+                String id = projectiles.get(i).getComponent(ProjectileComponent.class).getProjectileId();
+                for (int j = 0; j < clientData.getProjectiles().size(); j++) {
+                    if (clientData.getProjectiles().get(j).projectileId.equals(id)) {
+                        isInList = true;
+                        break;
+                    }
+                }
+                if (!isInList) {
+                    engine.removeEntity(projectiles.get(i));
+                    projectiles.remove(i);
+                    if (clientData.getProjectiles().size() == projectiles.size()) {
+                        break;
+                    }
+                }
+            }
         }
     }
 
