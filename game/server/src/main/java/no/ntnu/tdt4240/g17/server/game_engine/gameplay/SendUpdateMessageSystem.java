@@ -60,6 +60,8 @@ public final class SendUpdateMessageSystem extends IntervalSystem {
 
     @Override
     protected void updateInterval() {
+        final long beforeUpdate = System.currentTimeMillis();
+
         final UpdateMessage updateMessage = createMessage();
 
         for (final Entity entity : playerEntities) {
@@ -77,6 +79,8 @@ public final class SendUpdateMessageSystem extends IntervalSystem {
                 }
             }
         }
+        final long updateTime = System.currentTimeMillis() - beforeUpdate;
+        log.trace("Update time: {}", updateTime);
     }
 
     /**

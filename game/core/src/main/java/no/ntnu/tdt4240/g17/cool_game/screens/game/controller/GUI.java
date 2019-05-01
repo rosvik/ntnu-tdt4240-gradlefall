@@ -63,11 +63,11 @@ public final class GUI {
         if (movementFormat.getButtonsPressed().get(2) == 1) {
             lastMessage.shoot = true;
         }
-        lastMessage.moveAngle = movementFormat.getJoystickInput().x;
-        lastMessage.shootAngle = movementFormat.getJoystickInput().x;
-        lastMessage.moveSpeed = movementFormat.getJoystickInput().y;
+        lastMessage.moveAngleRadians = (float) Math.toRadians(movementFormat.getJoystickInput().x);
+        lastMessage.shootAngleRadians = (float) Math.toRadians(movementFormat.getJoystickInput().x);
+        lastMessage.moveSpeed = (float) Math.toRadians(movementFormat.getJoystickInput().y);
         lastMessage.placeBlock = false;
-        lastMessage.placeBlockAngle =  movementFormat.getJoystickInput().x;
+        lastMessage.placeBlockAngleRadians =  movementFormat.getJoystickInput().x;
         return lastMessage;
     }
 }

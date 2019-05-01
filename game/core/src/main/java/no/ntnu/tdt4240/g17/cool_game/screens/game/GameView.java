@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g17.cool_game.screens.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
@@ -11,10 +12,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
-import java.util.function.Consumer;
-
 import lombok.extern.slf4j.Slf4j;
-import no.ntnu.tdt4240.g17.common.network.game_messages.ControlsMessage;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
 import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
 import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
@@ -28,20 +26,20 @@ import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
  */
 @Slf4j
 public final class GameView implements Screen {
+    private final BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("font/arial.fnt"));
     private UserInputButtons userInputButtons;
     SpriteBatch batch;
     private final Navigator navigator;
     private GameModel model;
     private Arena arena;
     private HeadsUpDisplay hud;
-    private Consumer<ControlsMessage> controlsMessageNetworkSender;
     private boolean isGameOver = false;
     private ShapeRenderer shapeRenderer;
 
     /**
      * Constructor for game view.
      *
-     * @param batch = The batch that everything will render on.
+     * @param batch     = The batch that everything will render on.
      * @param navigator Navigator to change screens
      */
     public GameView(final SpriteBatch batch, final Navigator navigator) {
@@ -56,7 +54,6 @@ public final class GameView implements Screen {
                 NetworkSettings.getPort(), ClientData.getInstance());
         model = new GameModel(ClientData.getInstance());
         hud = new HeadsUpDisplay(model.getDungeonTilset(), model.getProjectilesTileset());
-        controlsMessageNetworkSender = GameClient.getNetworkClientInstance()::sendTCP;
         shapeRenderer = new ShapeRenderer();
         userInputButtons = GUI.getInstance().getInputProcessor().getUserInputButtons();
 
@@ -108,10 +105,7 @@ public final class GameView implements Screen {
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND); // Disable transparent rendering
 
-
             model.getEngine().update(delta);
-            final ControlsMessage controlsMessage = GUI.getInstance().update();
-            controlsMessageNetworkSender.accept(controlsMessage);
         } else {
             // Draw loading view when assets are loading
             Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -152,5 +146,6 @@ public final class GameView implements Screen {
     public void dispose() {
         batch.dispose();
         shapeRenderer.dispose();
+        bitmapFont.dispose();
     }
 }

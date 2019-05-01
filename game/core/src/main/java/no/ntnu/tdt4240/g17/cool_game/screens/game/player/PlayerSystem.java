@@ -48,10 +48,10 @@ public class PlayerSystem extends EntitySystem {
                 log.warn("Player is null for entity {}!", entity);
                 continue;
             }
-
+//            log.trace("Updating player {} to ({}, {})", player.playerName, player.position.x, player.position.y);
             float x = player.position.x;
             //entityCharacter.getCharacter().getState().getxPosition() + 0.01f;
-            float y =              player.position.y;
+            float y = player.position.y;
 //            entityCharacter.getCharacter().getState().getyPosition() + 0.01f;
 //            10;
             entityCharacter.getCharacter().render(x, y);

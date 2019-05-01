@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import lombok.Getter;
@@ -70,14 +71,14 @@ public final class GameEngine implements Runnable, Disposable {
             desktopPhysicsVisualizer.startGui(world, null);
         }
         log.info("Starting game on engine {}", id);
-        long lastUpdate = System.currentTimeMillis();
+        long lastUpdate = System.nanoTime();
         long tickCount = 0;
         while (!gameOver) {
-            final long now = System.currentTimeMillis();
-            final float deltaTimeSeconds = (now - lastUpdate) / 1000f;
-            final long beforeUpdate = System.currentTimeMillis();
+            final long now = System.nanoTime();
+            final float deltaTimeSeconds = TimeUnit.SECONDS.convert(now - lastUpdate, TimeUnit.NANOSECONDS);
+            final long beforeUpdate = System.nanoTime();
             ecsEngine.update(deltaTimeSeconds);
-            final long updateTime = System.currentTimeMillis() - beforeUpdate;
+            final long updateTime = System.nanoTime() - beforeUpdate;
             log.trace("Engine update time: {}", updateTime);
 
             lastUpdate = now;

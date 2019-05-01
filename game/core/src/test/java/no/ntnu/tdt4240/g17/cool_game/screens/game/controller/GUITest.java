@@ -36,7 +36,7 @@ class GUITest extends GameTest {
         final ControlsMessage controlsMessage = gui.update();
 
         // Then
-        float angle = controlsMessage.moveAngle;
+        float angle = controlsMessage.moveAngleRadians;
         float magnitude = controlsMessage.moveSpeed;
         boolean jump = controlsMessage.jump;
         boolean shoot = controlsMessage.shoot;

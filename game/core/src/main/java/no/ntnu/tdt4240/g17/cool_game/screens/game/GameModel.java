@@ -15,44 +15,72 @@ import no.ntnu.tdt4240.g17.common.network.game_messages.data.Position;
 import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
 import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
+import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.SendControlsSystem;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.player.PlayerComponent;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.player.PlayerSystem;
 
-/** Model for the GameView. */
+/**
+ * Model for the GameView.
+ */
 @Getter
 @Slf4j
 public final class GameModel {
 
-    /** Arena. */
+    /**
+     * Arena.
+     */
     private Arena arena;
-    /** Arena width in tiles.*/
+    /**
+     * Arena width in tiles.
+     */
     private float width;
-    /** Arena height in tiles. */
+    /**
+     * Arena height in tiles.
+     */
     private float height;
-    /** Background image. */
+    /**
+     * Background image.
+     */
     private Texture background;
-    /** Loading image. */
+    /**
+     * Loading image.
+     */
     private Texture loading;
-    /** Textureatlas. */
+    /**
+     * Textureatlas.
+     */
     private TextureAtlas dungeonTilset;
     private TextureAtlas projectilesTileset;
-    /** Characters. */
+    /**
+     * Characters.
+     */
     private ArrayList<String> characters = new ArrayList();
-    /** Engine. */
+    /**
+     * Engine.
+     */
     private Engine engine;
-    /** Entities. */
+    /**
+     * Entities.
+     */
     private ArrayList<Entity> players;
     private ArrayList<Entity> projectiles;
-    /** Asset manager. */
+    /**
+     * Asset manager.
+     */
     AssetManager assetManager;
-    /** Tilset path. */
+    /**
+     * Tilset path.
+     */
     static String dungeonTilesetPath = "Assets/TextureAtlas/Characters/DungeonTileset.atlas";
     static String projectileTilesetPath = "Assets/TextureAtlas/Projectiles/Projectiles.atlas";
     static String loadingImgPath = "Loading.png";
     static String backgroundImgPath = "background.png";
     private ClientData clientData;
 
-    /** Create a new instance of the model.
+    /**
+     * Create a new instance of the model.
+     *
      * @param clientData data connected to network via {@link no.ntnu.tdt4240.g17.cool_game.network.GameClient}.
      */
     public GameModel(final ClientData clientData) {
@@ -64,7 +92,12 @@ public final class GameModel {
         characters.add("wizzard_f");
         characters.add("big_zombie");
         characters.add("necromancer");
+
         engine.addSystem(new PlayerSystem(ClientData.getInstance()));
+        final float updateControlsInterval = 0.3f;
+        final SendControlsSystem system = new SendControlsSystem(updateControlsInterval,
+                GameClient.getNetworkClientInstance()::sendTCP);
+        engine.addSystem(system);
         //engine.addSystem(new ProjectileSystem());
         loadAssets();
     }
@@ -114,9 +147,11 @@ public final class GameModel {
         log.trace("Asset loading progress: {}", assetManager.getProgress());
     }
 
-    /** Update animations and render all players onto the batch.
+    /**
+     * Update animations and render all players onto the batch.
+     *
      * @param deltaTime advance animations by this many seconds
-     * @param batch sprites are rendered to this batch.
+     * @param batch     sprites are rendered to this batch.
      */
     public void renderPlayers(final float deltaTime, final SpriteBatch batch) {
         for (final Entity player : players) {

@@ -39,8 +39,8 @@ import no.ntnu.tdt4240.g17.server.physics.box2d.body.CharacterBox2dBodyFactory;
 public class GameEngineFactory {
 
     private static final Vector2 GRAVITY = new Vector2(0, -9.81f);
-    private static final float PHYSICS_UPDATE_SECONDS = 0.05f;
-    private static final float NETWORK_UPDATE_SECONDS = 0.05f;
+    private static final float PHYSICS_UPDATE_SECONDS = 1 / 60f;
+    private static final float NETWORK_UPDATE_SECONDS = 1 / 60f;
 
     /**
      * @param arena   the arena to simulate
@@ -59,7 +59,11 @@ public class GameEngineFactory {
         final ConcurrentLinkedQueue<ControlsMessage> controllMessageQueue = new ConcurrentLinkedQueue<>();
         final ControlsMessageEventBus.Subscription subscription = ControlsMessageEventBus.getInstance()
                 .subscribe(connection -> playerIds.contains(connection.getId()),
-                        (message, connection) -> controllMessageQueue.add(message));
+                        (message, connection) -> {
+                            synchronized (controllMessageQueue) {
+                                controllMessageQueue.add(message);
+                            }
+                        });
 
         final World world = new World(GRAVITY, true);
 
@@ -97,6 +101,7 @@ public class GameEngineFactory {
         addArenaEntities(arena, engine, world);
 
         final GameEngine gameEngine = new GameEngine(engine);
+        gameEngine.setWorld(world);
         gameEngine.addDisposable(subscription::unsubscribe);
         gameEngine.addDisposable(world);
         gameEngine.addDisposable(controllMessageQueue::clear);
