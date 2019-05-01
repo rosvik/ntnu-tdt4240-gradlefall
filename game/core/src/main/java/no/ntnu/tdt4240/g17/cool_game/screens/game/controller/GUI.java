@@ -13,6 +13,7 @@ import no.ntnu.tdt4240.g17.common.network.game_messages.ControlsMessage;
 public final class GUI {
     private static GUI guiInstance;
 
+    @Getter
     private InputProcessor inputProcessor;
     private TouchInput firstFinger, secondFinger, thirdFinger;
     @Getter

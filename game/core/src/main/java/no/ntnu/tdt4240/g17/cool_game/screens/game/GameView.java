@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Rectangle;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -17,6 +20,7 @@ import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
 import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
 import no.ntnu.tdt4240.g17.cool_game.network.NetworkSettings;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.GUI;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.UserInputButtons;
 import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
 
 /**
@@ -24,6 +28,7 @@ import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
  */
 @Slf4j
 public final class GameView implements Screen {
+    private UserInputButtons userInputButtons;
     SpriteBatch batch;
     private final Navigator navigator;
     private GameModel model;
@@ -31,6 +36,7 @@ public final class GameView implements Screen {
     private HeadsUpDisplay hud;
     private Consumer<ControlsMessage> controlsMessageNetworkSender;
     private boolean isGameOver = false;
+    private ShapeRenderer shapeRenderer;
 
     /**
      * Constructor for game view.
@@ -51,6 +57,8 @@ public final class GameView implements Screen {
         model = new GameModel(ClientData.getInstance());
         hud = new HeadsUpDisplay(model.getDungeonTilset(), model.getProjectilesTileset());
         controlsMessageNetworkSender = GameClient.getNetworkClientInstance()::sendTCP;
+        shapeRenderer = new ShapeRenderer();
+        userInputButtons = GUI.getInstance().getInputProcessor().getUserInputButtons();
 
         final Client networkClientInstance = GameClient.getNetworkClientInstance();
         networkClientInstance.addListener(new Listener() {
@@ -74,19 +82,38 @@ public final class GameView implements Screen {
         //if (model.assetManager.update() && model.getClientData().getMatchmadePlayers().size() == 4
         // && controlsMessageNetworkSender.getClient().isConnected()) {
         if (model.assetManager.update()) {
+            // Draw the game when assets are loaded
             Gdx.gl.glClearColor(1, 1, 1, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
             batch.begin();
             batch.draw(model.getBackground(), 0f, 0f, 32, 20);
             arena.renderArena();
             model.renderPlayers(delta, batch);
             arena.renderForeground();
             hud.draw(batch, 3, 10, 0);
-            model.getEngine().update(delta);
             batch.end();
+
+            // Draw input controls
+            Gdx.gl.glEnable(GL20.GL_BLEND); // Enable transparent rendering
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA); // Enable transparent rendering
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            final Circle joystick = userInputButtons.getJoystick();
+            shapeRenderer.setColor(0.3f, 0.3f, 0.3f, 0.4f);
+            shapeRenderer.circle(joystick.x, joystick.y, joystick.radius);
+            final Rectangle jump = userInputButtons.getJump();
+            shapeRenderer.box(jump.x, jump.y, 0, jump.width, jump.height, 0);
+            final Rectangle shoot = userInputButtons.getShoot();
+            shapeRenderer.box(shoot.x, shoot.y, 0, shoot.width, shoot.height, 0);
+            shapeRenderer.end();
+            Gdx.gl.glDisable(GL20.GL_BLEND); // Disable transparent rendering
+
+
+            model.getEngine().update(delta);
             final ControlsMessage controlsMessage = GUI.getInstance().update();
             controlsMessageNetworkSender.accept(controlsMessage);
         } else {
+            // Draw loading view when assets are loading
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             batch.begin();
@@ -124,5 +151,6 @@ public final class GameView implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
+        shapeRenderer.dispose();
     }
 }

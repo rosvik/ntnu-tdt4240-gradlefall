@@ -2,6 +2,7 @@ package no.ntnu.tdt4240.g17.cool_game.screens.game.controller;
 
 import com.badlogic.gdx.math.Vector2;
 
+import lombok.Getter;
 import no.ntnu.tdt4240.g17.cool_game.character.InputToMovementOutput;
 
 /**
@@ -13,6 +14,7 @@ import no.ntnu.tdt4240.g17.cool_game.character.InputToMovementOutput;
 public class InputProcessor {
 
     MovementFormat firstFinger, secondFinger, thirdFinger, movementOutput;
+    @Getter
     UserInputButtons userInputButtons;
     InputToMovementOutput inputToMovementOutput;
 
