@@ -94,7 +94,7 @@ public final class GameModel {
         characters.add("necromancer");
 
         engine.addSystem(new PlayerSystem(ClientData.getInstance()));
-        final float updateControlsInterval = 0.3f;
+        final float updateControlsInterval = 0.1f;
         final SendControlsSystem system = new SendControlsSystem(updateControlsInterval,
                 GameClient.getNetworkClientInstance()::sendTCP);
         engine.addSystem(system);

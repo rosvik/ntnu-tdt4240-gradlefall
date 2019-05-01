@@ -34,8 +34,8 @@ public class PhysicsSystem extends IntervalSystem {
     private final Family family;
     private final float intervalSeconds;
 
-    private int velocityIterations = 3;
-    private int positionIterations = 2;
+    private int velocityIterations = 6;
+    private int positionIterations = 4;
 
     private final World world;
     Iterable<Entity> entitiesToUpdate = Collections.emptyList();

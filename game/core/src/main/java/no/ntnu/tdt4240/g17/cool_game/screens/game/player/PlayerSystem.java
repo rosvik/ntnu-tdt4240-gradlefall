@@ -45,7 +45,7 @@ public class PlayerSystem extends EntitySystem {
             PlayerComponent entityCharacter = character.get(entity);
             final UpdateMessagePlayer player = clientData.getPlayerById(entityCharacter.getPlayerId());
             if (player == null) {
-                log.warn("Player is null for entity {}!", entity);
+                //log.warn("Player is null for entity {} (id={})!", entityCharacter.getPlayerId());
                 continue;
             }
 //            log.trace("Updating player {} to ({}, {})", player.playerName, player.position.x, player.position.y);

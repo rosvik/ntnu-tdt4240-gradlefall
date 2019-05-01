@@ -39,8 +39,8 @@ import no.ntnu.tdt4240.g17.server.physics.box2d.body.CharacterBox2dBodyFactory;
 public class GameEngineFactory {
 
     private static final Vector2 GRAVITY = new Vector2(0, -9.81f);
-    private static final float PHYSICS_UPDATE_SECONDS = 1 / 60f;
-    private static final float NETWORK_UPDATE_SECONDS = 1 / 60f;
+    private static final float PHYSICS_UPDATE_SECONDS = 1 / 120f;
+    private static final float NETWORK_UPDATE_SECONDS = 1 / 30f;
 
     /**
      * @param arena   the arena to simulate
@@ -117,10 +117,10 @@ public class GameEngineFactory {
         // FIXME: 5/1/2019 Read arena file and create it in box2d
         final ArenaTileBox2dBodyFactory arenaFactory = new ArenaTileBox2dBodyFactory(world, 1f, 1f);
 
-        for (int x = 0; x < 50; x++) {
+        for (int x = -5; x < 50; x++) {
             final Entity entity = new Entity();
             final Body body = arenaFactory.create(entity);
-            body.setTransform(x, 0, 0f);
+            body.setTransform(x, -1, 0f);
             entity.add(new Box2dBodyComponent(body));
             engine.addEntity(entity);
         }

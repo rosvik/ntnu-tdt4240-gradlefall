@@ -52,6 +52,7 @@ public final class GameClient {
         client.addListener(new Listener() {
             @Override
             public void received(final Connection connection, final Object message) {
+                log.trace("Got message: {}", message.getClass().getSimpleName());
                 clientData.receive(message);
             }
         });

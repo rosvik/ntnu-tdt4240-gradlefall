@@ -91,7 +91,7 @@ public final class ReceivePlayerControlsSystem extends EntitySystem {
                     processMessage(idMap, controlsMessage);
                 }
             } else {
-                log.debug("No messages.");
+                log.trace("No messages.");
             }
         }
         final long updateTime = System.currentTimeMillis() - beforeUpdate;

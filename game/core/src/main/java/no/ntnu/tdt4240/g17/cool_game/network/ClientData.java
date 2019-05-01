@@ -53,7 +53,7 @@ public class ClientData {
      *
      * @param message The message received from the server
      */
-    public void receive(final Object message) {
+    public synchronized void receive(final Object message) {
         if (message instanceof MatchmadeMessage) {
             MatchmadeMessage matchmadeMessage = ((MatchmadeMessage) message);
 
@@ -93,7 +93,7 @@ public class ClientData {
      * @return UpdateMessagePlayer The player with the given ID or null
      */
     @Nullable
-    public UpdateMessagePlayer getPlayerById(final String id) {
+    public synchronized UpdateMessagePlayer getPlayerById(final String id) {
         if (updatePlayers == null) {
             return null;
         }
