@@ -2,6 +2,7 @@ package no.ntnu.tdt4240.g17.cool_game.screens.main_menu;
 
 import com.badlogic.gdx.Gdx;
 
+import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
 import no.ntnu.tdt4240.g17.cool_game.screens.settings_menu.SettingsModel;
 
 /**
@@ -21,5 +22,10 @@ public class HomeModel {
     /** @return true if music is enabled. */
     public boolean isMusicEnabled() {
         return settingsModel.isMusicEnabled();
+    }
+
+    /** @return true if connected. */
+    public boolean isConnectedToServer() {
+        return GameClient.getNetworkClientInstance().isConnected();
     }
 }

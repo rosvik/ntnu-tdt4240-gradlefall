@@ -29,5 +29,6 @@
 
     <logger name="com.esotericsoftware.kryo" level="INFO" />
     <logger name="com.esotericsoftware.kryonet" level="INFO" />
+    <logger name="no.ntnu.tdt4240.g17.server.game_engine.gameplay.SendUpdateMessageSystem" level="DEBUG" />
 
 </configuration>

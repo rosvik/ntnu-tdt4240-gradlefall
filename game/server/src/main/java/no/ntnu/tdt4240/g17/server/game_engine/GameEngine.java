@@ -55,6 +55,7 @@ public final class GameEngine implements Runnable, Disposable {
      */
     @Override
     public void run() {
+        float targetUpdateRateMs = 1000f * 1f / 30f;
         log.info("Starting game on engine {}", id);
         long lastUpdate = System.currentTimeMillis();
         long tickCount = 0;
@@ -68,6 +69,12 @@ public final class GameEngine implements Runnable, Disposable {
             tickCount++;
             if (tickCount % 1000 == 0) {
                 log.debug("GameEngine {} is currently running (delta={})...", id, deltaTime);
+            }
+
+            if (deltaTime < targetUpdateRateMs) {
+                try {
+                    Thread.sleep((long) (0.8f * (targetUpdateRateMs - deltaTime)));
+                } catch (InterruptedException ignored) { }
             }
         }
         log.info("Game over on engine {}", id);

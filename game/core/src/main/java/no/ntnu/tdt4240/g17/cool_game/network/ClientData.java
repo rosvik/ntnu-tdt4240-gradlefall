@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.common.network.game_messages.GameOverMessage;
 import no.ntnu.tdt4240.g17.common.network.game_messages.IntermediaryEndMessage;
 import no.ntnu.tdt4240.g17.common.network.game_messages.MatchmadeMessage;
@@ -22,7 +23,7 @@ import no.ntnu.tdt4240.g17.common.network.game_messages.data.UpdateMessagePlayer
  *
  * @author Johannes Tomren Røsvik (@rosvik)
  */
-@Getter
+@Getter @Slf4j
 public class ClientData {
 
     private static final ClientData INSTANCE = new ClientData();
@@ -38,7 +39,7 @@ public class ClientData {
     private GameMode gameMode;
     private List<String> winnerIds;
 
-    /** Get the singleton instance.*/
+    /** @return the singleton instance.*/
     public static ClientData getInstance() {
         return INSTANCE;
     }
@@ -61,6 +62,7 @@ public class ClientData {
         }
 
         if (message instanceof UpdateMessage) {
+            log.trace("Got update message: {}", message);
             UpdateMessage updateMessage = ((UpdateMessage) message);
 
             updatePlayers = updateMessage.players;

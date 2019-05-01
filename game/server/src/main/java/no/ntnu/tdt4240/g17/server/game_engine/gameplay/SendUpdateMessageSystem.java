@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Vector2;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.common.network.game_messages.UpdateMessage;
@@ -66,8 +65,17 @@ public final class SendUpdateMessageSystem extends IntervalSystem {
         for (final Entity entity : playerEntities) {
             final NetworkedPlayerComponent networkedPlayerComponent = NetworkedPlayerComponent.MAPPER.get(entity);
             final PlayerConnection connection = networkedPlayerComponent.getPlayerConnection();
-            log.trace("Updating connection {} (IP: {})", connection.getID(), connection.getRemoteAddressTCP());
-            connection.sendTCP(updateMessage);
+            log.trace("Updating connection {} (IP: {}. Player id: {}). Message: {}", connection.getID(),
+                    connection.getRemoteAddressTCP(), connection.getId(), updateMessage);
+            if (connection.isConnected()) {
+                connection.sendTCP(updateMessage);
+            } else {
+                PlayerComponent playerComponent = PlayerComponent.MAPPER.get(entity);
+                if (playerComponent.isAlive()) {
+                    log.trace("Player {} disconnected! Killing him!", playerComponent.getId());
+                    playerComponent.setAlive(false);
+                }
+            }
         }
     }
 
@@ -93,7 +101,7 @@ public final class SendUpdateMessageSystem extends IntervalSystem {
             player.projectileAmmoCount = playerComponent.getAmmo().size();
             player.aimingAngle = playerComponent.getAimingAngle();
             player.blockAmmoCount = 0; // FIXME: 4/30/2019 Use real value
-            player.activePowerups = Collections.emptyList(); // FIXME: 4/30/2019 use real value
+            player.activePowerups = new ArrayList<>(); // FIXME: 5/1/2019 Use real value
             updateMessage.players.add(player);
         }
 

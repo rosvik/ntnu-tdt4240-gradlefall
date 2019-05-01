@@ -70,7 +70,7 @@ public class Navigator implements Disposable {
                 break;
 
             case GAME:
-                GameView gameView = new GameView(new SpriteBatch());
+                GameView gameView = new GameView(new SpriteBatch(), this);
                 this.setScreen(gameView);
                 break;
 

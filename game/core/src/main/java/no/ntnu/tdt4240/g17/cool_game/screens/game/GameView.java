@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 
 import java.util.function.Consumer;
 
@@ -14,6 +17,7 @@ import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
 import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
 import no.ntnu.tdt4240.g17.cool_game.network.NetworkSettings;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.GUI;
+import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
 
 /**
  * The MVC View for an active game.
@@ -21,18 +25,22 @@ import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.GUI;
 @Slf4j
 public final class GameView implements Screen {
     SpriteBatch batch;
+    private final Navigator navigator;
     private GameModel model;
     private Arena arena;
     private HeadsUpDisplay hud;
-    private Consumer<ControlsMessage> networkClient;
+    private Consumer<ControlsMessage> controlsMessageNetworkSender;
+    private boolean isGameOver = false;
 
     /**
      * Constructor for game view.
      *
      * @param batch = The batch that everything will render on.
+     * @param navigator Navigator to change screens
      */
-    public GameView(final SpriteBatch batch) {
+    public GameView(final SpriteBatch batch, final Navigator navigator) {
         this.batch = batch;
+        this.navigator = navigator;
     }
 
     @Override
@@ -42,14 +50,29 @@ public final class GameView implements Screen {
                 NetworkSettings.getPort(), ClientData.getInstance());
         model = new GameModel(ClientData.getInstance());
         hud = new HeadsUpDisplay(model.getDungeonTilset(), model.getProjectilesTileset());
-        networkClient = GameClient.getNetworkClientInstance()::sendTCP;
+        controlsMessageNetworkSender = GameClient.getNetworkClientInstance()::sendTCP;
+
+        final Client networkClientInstance = GameClient.getNetworkClientInstance();
+        networkClientInstance.addListener(new Listener() {
+            @Override
+            public void disconnected(final Connection connection) {
+                // FIXME: 5/1/2019 Add reconnecting etc.
+                log.warn("Disconnected from server!");
+                networkClientInstance.removeListener(this);
+                isGameOver = true;
+            }
+        });
     }
 
 
     @Override
     public void render(final float delta) {
+        if (isGameOver) {
+            // Also happens when disconnected from server.
+            navigator.changeView(Navigator.Screen.HOME);
+        }
         //if (model.assetManager.update() && model.getClientData().getMatchmadePlayers().size() == 4
-        // && networkClient.getClient().isConnected()) {
+        // && controlsMessageNetworkSender.getClient().isConnected()) {
         if (model.assetManager.update()) {
             Gdx.gl.glClearColor(1, 1, 1, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -62,7 +85,7 @@ public final class GameView implements Screen {
             model.getEngine().update(delta);
             batch.end();
             final ControlsMessage controlsMessage = GUI.getInstance().update();
-            networkClient.accept(controlsMessage);
+            controlsMessageNetworkSender.accept(controlsMessage);
         } else {
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

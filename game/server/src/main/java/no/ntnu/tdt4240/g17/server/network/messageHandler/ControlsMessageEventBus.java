@@ -33,6 +33,7 @@ public final class ControlsMessageEventBus {
      * @param message the new message
      */
     public void emit(final PlayerConnection fromConnection, final ControlsMessage message) {
+        message.playerId = fromConnection.getId();
         for (final Subscription subscriber : subscribers) {
             if (subscriber.playerFilter.test(fromConnection)) {
                 subscriber.consumer.accept(message, fromConnection);

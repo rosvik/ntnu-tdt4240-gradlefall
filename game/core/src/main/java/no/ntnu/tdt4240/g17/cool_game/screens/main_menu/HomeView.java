@@ -25,6 +25,11 @@ public class HomeView extends ApplicationAdapter implements Screen {
 
     private static final float STAGE_MIN_FPS = 1f / 30f;
 
+    private static final String TEXT_PLAY = "PLAY";
+    private static final String TEXT_SETTINGS = "SETTINGS";
+    private static final String TEXT_QUIT = "QUIT";
+    private static final String TEXT_CONNECTING = "CONNECTING...";
+
     private HomeController homeController;
 
     /** Stage for GUI rendering. */
@@ -38,6 +43,7 @@ public class HomeView extends ApplicationAdapter implements Screen {
      * music.
      */
     private Music music;
+    private TextButton playButton;
 
     /**
      * @param homeController the controller for the view.
@@ -69,13 +75,13 @@ public class HomeView extends ApplicationAdapter implements Screen {
 
         //create buttons with skin
         Skin skin = new Skin(Gdx.files.internal("skin/neon-ui.json"));
-        TextButton play = new TextButton("PLAY", skin);
-        TextButton settings = new TextButton("SETTINGS", skin);
-        TextButton quit = new TextButton("QUIT", skin);
+        playButton = new TextButton(TEXT_PLAY, skin);
+        TextButton settings = new TextButton(TEXT_SETTINGS, skin);
+        TextButton quit = new TextButton(TEXT_QUIT, skin);
 
         //set textsize in button
         float textSize = 4f;
-        play.getLabel().setFontScale(textSize);
+        playButton.getLabel().setFontScale(textSize);
         settings.getLabel().setFontScale(textSize);
         quit.getLabel().setFontScale(textSize);
 
@@ -84,7 +90,7 @@ public class HomeView extends ApplicationAdapter implements Screen {
         float buttonHeight = 64f * Gdx.graphics.getDensity();
         float buttonWidth = 192f * Gdx.graphics.getDensity();
 
-        table.add(play)
+        table.add(playButton)
                 .prefHeight(buttonHeight)
                 .prefWidth(buttonWidth)
                 .padBottom(spacing);
@@ -108,7 +114,7 @@ public class HomeView extends ApplicationAdapter implements Screen {
             }
         });
 
-        play.addListener(new ChangeListener() {
+        playButton.addListener(new ChangeListener() {
             @Override
             public void changed(final ChangeEvent event, final Actor actor) {
                 homeController.playGamePressed();
@@ -141,6 +147,9 @@ public class HomeView extends ApplicationAdapter implements Screen {
      */
     @Override
     public void render(final float delta) {
+        playButton.setDisabled(!model.isConnectedToServer());
+        playButton.setText(model.isConnectedToServer() ? TEXT_PLAY : TEXT_CONNECTING);
+
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);   //clears the screen
 

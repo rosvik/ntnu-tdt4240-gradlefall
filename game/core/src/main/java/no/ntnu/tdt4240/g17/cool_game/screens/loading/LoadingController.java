@@ -30,4 +30,10 @@ public class LoadingController {
     public void onShow() {
         model.startMatchmaking();
     }
+
+    /** Call when matchmaking should be interrupted. */
+    public void cancelMatchmaking() {
+        // TODO: 5/1/2019 Send some message to server about cancelling
+        navigator.changeView(Navigator.Screen.HOME);
+    }
 }

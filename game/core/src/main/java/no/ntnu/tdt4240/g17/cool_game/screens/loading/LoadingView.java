@@ -60,6 +60,7 @@ public final class LoadingView implements Screen {
                 bitmapFont.draw(batch, "Game starting!", 20, 20);
             } else {
                 bitmapFont.draw(batch, "I should be matchmaking now. Something is wrong!", 20, 20);
+                controller.cancelMatchmaking();
             }
         }
         batch.end();

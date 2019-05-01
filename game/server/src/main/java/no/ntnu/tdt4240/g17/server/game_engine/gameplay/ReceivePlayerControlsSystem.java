@@ -88,6 +88,10 @@ public final class ReceivePlayerControlsSystem extends EntitySystem {
      */
     void processMessage(final HashMap<String, Entity> idMap, final ControlsMessage controlsMessage) {
         final Entity playerEntity = idMap.get(controlsMessage.playerId);
+        if (playerEntity == null) {
+            log.error("Failed to find a player with id '{}' in map {}", controlsMessage.playerId, idMap);
+            return;
+        }
 
         if (controlsMessage.jump) {
             // FIXME make this an update of an action component or similar
