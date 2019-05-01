@@ -30,7 +30,8 @@ public final class SendControlsSystem extends IntervalSystem {
      * @param priority priority in ecs engine. Lower comes first.
      * @param controlsMessageNetworkSender will get the message to send over network
      */
-    public SendControlsSystem(final float interval, final int priority, final Consumer<ControlsMessage> controlsMessageNetworkSender) {
+    public SendControlsSystem(final float interval, final int priority,
+                              final Consumer<ControlsMessage> controlsMessageNetworkSender) {
         super(interval, priority);
         this.controlsMessageNetworkSender = controlsMessageNetworkSender;
     }
