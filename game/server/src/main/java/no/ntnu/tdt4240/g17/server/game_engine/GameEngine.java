@@ -25,6 +25,7 @@ public final class GameEngine implements Runnable, Disposable {
     @Getter
     private final int id = ENGINE_CREATION_COUNTER.incrementAndGet();
 
+    @Getter
     private final Engine ecsEngine;
     private final ArrayList<Disposable> disposables = new ArrayList<>(4);
 

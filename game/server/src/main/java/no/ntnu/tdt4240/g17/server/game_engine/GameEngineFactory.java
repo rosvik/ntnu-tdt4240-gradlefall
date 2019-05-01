@@ -18,7 +18,6 @@ import no.ntnu.tdt4240.g17.server.game_engine.gameplay.SendUpdateMessageSystem;
 import no.ntnu.tdt4240.g17.server.game_engine.player.NetworkedPlayerComponent;
 import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerEntityFactory;
 import no.ntnu.tdt4240.g17.server.game_session.Player;
-import no.ntnu.tdt4240.g17.server.game_session.Session;
 import no.ntnu.tdt4240.g17.server.network.messageHandler.ControlsMessageEventBus;
 import no.ntnu.tdt4240.g17.server.physics.PhysicsSystem;
 import no.ntnu.tdt4240.g17.server.physics.WrapAroundSystem;
@@ -37,16 +36,16 @@ public class GameEngineFactory {
 
     /**
      * @param arena   the arena to simulate
-     * @param session the game session to pick players from
+     * @param players players in the game session
      * @return a new GameEngine
      */
-    public GameEngine create(final Arena arena, final Session session) {
+    public GameEngine create(final Arena arena, final List<Player> players) {
         final Engine engine = new Engine();
 
 
         final Rectangle bounds = ArenaUtil.getBoundsFor(arena);
 
-        final List<String> playerIds = session.getPlayers().stream()
+        final List<String> playerIds = players.stream()
                 .map(player -> player.getPlayerConnection().getId())
                 .collect(Collectors.toList());
         final ConcurrentLinkedQueue<ControlsMessage> controllMessageQueue = new ConcurrentLinkedQueue<>();
@@ -71,7 +70,7 @@ public class GameEngineFactory {
         // FIXME: 4/1/2019 put this somewhere else
         final PlayerEntityFactory playerEntityFactory = new PlayerEntityFactory(
                 new CharacterBox2dBodyFactory(world, 2f));
-        for (Player player : session.getPlayers()) {
+        for (Player player : players) {
             final Entity playerEntity = playerEntityFactory.create(player.getId(), player.getPlayerName());
             playerEntity.add(new NetworkedPlayerComponent(player.getPlayerConnection()));
             engine.addEntity(playerEntity);

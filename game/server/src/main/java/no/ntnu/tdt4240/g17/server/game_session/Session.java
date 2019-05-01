@@ -45,17 +45,16 @@ public class Session {
      * @return the session
      */
     public static Session create(final List<Player> players) {
-        Arena arena = Arena.ARENA_2;
-
         final Session session = new Session();
-        final GameEngineFactory gameEngineFactory = new GameEngineFactory();
-        final GameEngine gameEngine = gameEngineFactory.create(arena, session);
 
-        session.gameEngine = gameEngine;
+        Arena arena = Arena.ARENA_2;
         session.arena = arena;
         session.gameMode = GameMode.HEADHUNTER; // FIXME: Depends on matchmaking?
         session.players.addAll(players);
 
+        final GameEngineFactory gameEngineFactory = new GameEngineFactory();
+        final GameEngine gameEngine = gameEngineFactory.create(arena, players);
+        session.gameEngine = gameEngine;
         session.engineThread = new Thread(gameEngine, "GameEngine " + gameEngine.getId());
 
         return session;
