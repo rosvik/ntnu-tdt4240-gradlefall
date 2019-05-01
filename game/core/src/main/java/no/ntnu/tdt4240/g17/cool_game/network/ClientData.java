@@ -1,5 +1,7 @@
 package no.ntnu.tdt4240.g17.cool_game.network;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
 import lombok.Getter;
@@ -23,6 +25,8 @@ import no.ntnu.tdt4240.g17.common.network.game_messages.data.UpdateMessagePlayer
 @Getter
 public class ClientData {
 
+    private static final ClientData INSTANCE = new ClientData();
+
     private List<Projectile> projectiles;
     private Arena arena;
 
@@ -33,6 +37,15 @@ public class ClientData {
 
     private GameMode gameMode;
     private List<String> winnerIds;
+
+    /** Get the singleton instance.*/
+    public static ClientData getInstance() {
+        return INSTANCE;
+    }
+
+    /** Singleton object. */
+    ClientData() {
+    }
 
     /**
      * Handle a message from the server and save it.
@@ -77,6 +90,7 @@ public class ClientData {
      * @param id The ID of the player
      * @return UpdateMessagePlayer The player with the given ID or null
      */
+    @Nullable
     public UpdateMessagePlayer getPlayerById(final String id) {
         if (updatePlayers == null) {
             return null;

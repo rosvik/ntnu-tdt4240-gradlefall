@@ -5,10 +5,13 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.libgdx.test.util.GameTest;
-import no.ntnu.tdt4240.g17.common.network.game_messages.data.Position;
+
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import no.ntnu.tdt4240.g17.common.network.game_messages.data.Position;
+import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
 
 class ProjectileSystemTest extends GameTest {
 
@@ -20,7 +23,7 @@ class ProjectileSystemTest extends GameTest {
 
     @BeforeEach
     void setUp() {
-        system = new ProjectileSystem();
+        system = new ProjectileSystem(ClientData.getInstance());
         engine = new Engine();
         projectile = new Entity();
         position = new Position();

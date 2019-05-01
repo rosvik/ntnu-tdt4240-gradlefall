@@ -9,12 +9,15 @@ import com.badlogic.ashley.core.Family;
 import java.util.Collections;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import no.ntnu.tdt4240.g17.common.network.game_messages.data.UpdateMessagePlayer;
 import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
 
 /**
  * A system that renders all players according to data from server (client data).
  */
 @Getter
+@Slf4j
 public class PlayerSystem extends EntitySystem {
     private Family family;
     private ComponentMapper<PlayerComponent> character;
@@ -23,11 +26,12 @@ public class PlayerSystem extends EntitySystem {
 
     /**
      * Find all players and projectiles.
+     * @param clientData the client data from server.
      */
-    public PlayerSystem() {
+    public PlayerSystem(final ClientData clientData) {
+        this.clientData = clientData;
         family = Family.all(PlayerComponent.class).get();
         character = ComponentMapper.getFor(PlayerComponent.class);
-        clientData = new ClientData();
     }
 
     /**
@@ -37,13 +41,19 @@ public class PlayerSystem extends EntitySystem {
      */
     @Override
     public void update(final float deltaTime) {
-        for (Entity entity : entitiesToUpdate) {
+        for (final Entity entity : entitiesToUpdate) {
             PlayerComponent entityCharacter = character.get(entity);
-            float x = entityCharacter.getCharacter().getState().getxPosition() + 0.01f;
-            //clientData.getPlayerById(entityCharacter.getPlayerId()).position.x;
-            float y = 10;
-            //entityCharacter.getCharacter().getState().getyPosition() + 0.01f;
-            // clientData.getPlayerById(entityCharacter.getPlayerId()).position.y;
+            final UpdateMessagePlayer player = clientData.getPlayerById(entityCharacter.getPlayerId());
+            if (player == null) {
+                log.warn("Player is null for entity {}!", entity);
+                continue;
+            }
+
+            float x = player.position.x;
+            //entityCharacter.getCharacter().getState().getxPosition() + 0.01f;
+            float y =              player.position.y;
+//            entityCharacter.getCharacter().getState().getyPosition() + 0.01f;
+//            10;
             entityCharacter.getCharacter().render(x, y);
         }
     }

@@ -52,18 +52,19 @@ public final class GameModel {
     static String backgroundImgPath = "background.png";
     private ClientData clientData;
 
-    /** Create a new instance of the model. */
-    public GameModel() {
+    /** Create a new instance of the model.
+     * @param clientData data connected to network via {@link no.ntnu.tdt4240.g17.cool_game.network.GameClient}.
+     */
+    public GameModel(final ClientData clientData) {
+        this.clientData = clientData;
         assetManager = new AssetManager();
         engine = new Engine();
-        engine.removeAllEntities();
         players = new ArrayList<>();
-        clientData = new ClientData();
         characters.add("knight_m");
         characters.add("wizzard_f");
         characters.add("big_zombie");
         characters.add("necromancer");
-        engine.addSystem(new PlayerSystem());
+        engine.addSystem(new PlayerSystem(ClientData.getInstance()));
         //engine.addSystem(new ProjectileSystem());
         loadAssets();
     }
@@ -86,14 +87,13 @@ public final class GameModel {
         log.debug("Loading assets...");
         assetManager.finishLoading();
         if (assetManager.update()) {
-            //&& clientData.getMatchmadePlayers() != null) {
             dungeonTilset = assetManager.get(dungeonTilesetPath);
             projectilesTileset = assetManager.get(projectileTilesetPath);
             background = assetManager.get(backgroundImgPath);
             loading = assetManager.get(loadingImgPath);
 
-            //for (int i = 0; i < clientData.getMatchmadePlayers().size(); i++) {
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < clientData.getMatchmadePlayers().size(); i++) {
+//            for (int i = 0; i < 1; i++) {
                 players.add(new Entity());
                 engine.addEntity(players.get(i));
                 Position pos = new Position();
@@ -101,10 +101,11 @@ public final class GameModel {
                 pos.y = 10;
                 // Add player component
                 players.get(i).add(
-                        new PlayerComponent("" + i,
-                                //clientData.getMatchmadePlayers().get(i).playerId,
-                                pos,
-                                //clientData.getMatchmadePlayers().get(i).position,
+                        new PlayerComponent(
+//                                "" + i,
+                                clientData.getMatchmadePlayers().get(i).playerId,
+//                                pos,
+                                clientData.getMatchmadePlayers().get(i).position,
                                 characters.get(i % 4),
                                 dungeonTilset));
             }

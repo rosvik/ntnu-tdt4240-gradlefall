@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Disposable;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerComponent;
 import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerEntityFactory;
@@ -21,6 +22,7 @@ import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerEntityFactory;
 public final class GameEngine implements Runnable, Disposable {
 
     private static final AtomicInteger ENGINE_CREATION_COUNTER = new AtomicInteger(0);
+    @Getter
     private final int id = ENGINE_CREATION_COUNTER.incrementAndGet();
 
     private final Engine ecsEngine;
@@ -57,13 +59,14 @@ public final class GameEngine implements Runnable, Disposable {
         long tickCount = 0;
         while (!gameOver) {
             final long now = System.currentTimeMillis();
-            ecsEngine.update(now - lastUpdate);
+            final long deltaTime = now - lastUpdate;
+            ecsEngine.update(deltaTime);
             lastUpdate = now;
             gameOver = doGameOverCheck();
 
             tickCount++;
-            if (tickCount % 2000 == 0) {
-                log.debug("GameEngine {} is currently running...", id);
+            if (tickCount % 1000 == 0) {
+                log.debug("GameEngine {} is currently running (delta={})...", id, deltaTime);
             }
         }
         log.info("Game over on engine {}", id);

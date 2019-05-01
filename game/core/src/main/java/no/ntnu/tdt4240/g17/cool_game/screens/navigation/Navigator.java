@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 
 import lombok.extern.slf4j.Slf4j;
+import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
 import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.GameView;
 import no.ntnu.tdt4240.g17.cool_game.screens.loading.LoadingController;
@@ -75,6 +76,7 @@ public class Navigator implements Disposable {
 
             case MATCHMAKING:
                 final LoadingModel loadingModel = new LoadingModel(GameClient.getNetworkClientInstance());
+                loadingModel.setOnMatchmadeListener(ClientData.getInstance()::receive);
                 LoadingView loadingView = new LoadingView(new SpriteBatch(),
                         loadingModel, new LoadingController(this, loadingModel));
                 this.setScreen(loadingView);

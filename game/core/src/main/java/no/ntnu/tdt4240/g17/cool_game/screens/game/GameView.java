@@ -10,7 +10,9 @@ import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.common.network.game_messages.ControlsMessage;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
+import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
 import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
+import no.ntnu.tdt4240.g17.cool_game.network.NetworkSettings;
 import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.GUI;
 
 /**
@@ -36,7 +38,9 @@ public final class GameView implements Screen {
     @Override
     public void show() {
         arena = new Arena("map2.tmx", 16f, 32, 20, batch);
-        model = new GameModel();
+        final GameClient gameClient = new GameClient(NetworkSettings.getServerIp(),
+                NetworkSettings.getPort(), ClientData.getInstance());
+        model = new GameModel(ClientData.getInstance());
         hud = new HeadsUpDisplay(model.getDungeonTilset(), model.getProjectilesTileset());
         networkClient = GameClient.getNetworkClientInstance()::sendTCP;
     }
