@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.common.network.game_messages.MatchmadeMessage;
@@ -62,7 +63,7 @@ public final class CreateSessionOnMatchmadeListener implements MatchMakingQueue.
         matchmadeMessage.gameMode = gameMode;
         matchmadeMessage.players = new ArrayList<>();
 
-        final ArrayList<Vector2> startPositions = new PlayerStartPosition(ArenaUtil.getFilePathFor(arena))
+        final List<Vector2> startPositions = new PlayerStartPosition(ArenaUtil.getFilePathFor(arena))
                 .getStartPositions();
 
         for (int i = 0; i < players.size(); i++) {

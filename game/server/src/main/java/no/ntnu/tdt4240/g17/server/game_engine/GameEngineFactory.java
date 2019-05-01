@@ -82,7 +82,7 @@ public class GameEngineFactory {
         // FIXME: 4/1/2019 put this somewhere else
         final PlayerEntityFactory playerEntityFactory = new PlayerEntityFactory(
                 new CharacterBox2dBodyFactory(world, 2f));
-        final ArrayList<Vector2> startPositions = new PlayerStartPosition(ArenaUtil.getFilePathFor(arena))
+        final List<Vector2> startPositions = new PlayerStartPosition(ArenaUtil.getFilePathFor(arena))
                 .getStartPositions();
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
@@ -116,11 +116,11 @@ public class GameEngineFactory {
     private static void addArenaEntities(final Arena arena, final Engine engine, final World world) {
         // FIXME: 5/1/2019 Read arena file and create it in box2d
         final ArenaTileBox2dBodyFactory arenaFactory = new ArenaTileBox2dBodyFactory(world, 1f, 1f);
-
-        for (int x = -5; x < 50; x++) {
+        final List<Vector2> tiles = ArenaUtil.getTileCoordinatesFor(arena);
+        for (final Vector2 tile : tiles) {
             final Entity entity = new Entity();
             final Body body = arenaFactory.create(entity);
-            body.setTransform(x, -1, 0f);
+            body.setTransform(tile.x, tile.y, 0f);
             entity.add(new Box2dBodyComponent(body));
             engine.addEntity(entity);
         }
