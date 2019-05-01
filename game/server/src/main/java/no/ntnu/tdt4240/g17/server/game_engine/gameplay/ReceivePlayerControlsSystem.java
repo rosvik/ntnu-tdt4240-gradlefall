@@ -114,7 +114,7 @@ public final class ReceivePlayerControlsSystem extends EntitySystem {
         log.trace("Processing message: {}", controlsMessage);
         if (controlsMessage.jump) {
             // FIXME make this an update of an action component or similar
-            final int jumpImpulse = 500;
+            final int jumpImpulse = 800;
             final Body body = Box2dBodyComponent.MAPPER.get(playerEntity).getBody();
             if (body.getLinearVelocity().y == 0) {
                 // FIXME: 5/1/2019 Add check for ground or double jump etc
