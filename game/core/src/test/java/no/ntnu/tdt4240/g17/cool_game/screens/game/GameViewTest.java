@@ -8,13 +8,15 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
+
 @Disabled("Can't run because asset loading fails it")
 class GameViewTest extends GameTest {
     GameView view;
 
     @BeforeEach
     void setUp() {
-        view = new GameView(Mockito.mock(SpriteBatch.class));
+        view = new GameView(Mockito.mock(SpriteBatch.class), Mockito.mock(Navigator.class));
         view.show();
     }
 
