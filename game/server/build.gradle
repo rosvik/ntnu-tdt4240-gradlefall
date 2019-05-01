@@ -4,3 +4,19 @@ dependencies {
 
 sourceCompatibility = "8"
 targetCompatibility = "8"
+
+project.ext.mainClassName = "no.ntnu.tdt4240.g17.server.ServerMain"
+
+task dist(type: Jar) {
+    group = "build"
+    description = "Build a fatjar for running the server"
+    manifest {
+        attributes 'Main-Class': project.mainClassName
+    }
+
+    from {configurations.runtimeClasspath.collect {it.isDirectory() ? it : zipTree(it)}}
+    with jar
+}
+
+dist
+dist.dependsOn classes

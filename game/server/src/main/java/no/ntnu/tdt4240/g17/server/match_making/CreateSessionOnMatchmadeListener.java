@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.common.network.game_messages.MatchmadeMessage;
@@ -30,6 +31,7 @@ public final class CreateSessionOnMatchmadeListener implements MatchMakingQueue.
 
     @Override
     public void onMatchmade(final PlayerConnection[] playerConnections) {
+        log.info("Creating session for {} players.", playerConnections.length);
         ArrayList<Player> players = new ArrayList<>(playerConnections.length);
         for (int i = 0; i < playerConnections.length; i++) {
             final PlayerConnection playerConnection = playerConnections[i];
@@ -61,7 +63,7 @@ public final class CreateSessionOnMatchmadeListener implements MatchMakingQueue.
         matchmadeMessage.gameMode = gameMode;
         matchmadeMessage.players = new ArrayList<>();
 
-        final ArrayList<Vector2> startPositions = new PlayerStartPosition(ArenaUtil.getFilePathFor(arena))
+        final List<Vector2> startPositions = new PlayerStartPosition(ArenaUtil.getFilePathFor(arena))
                 .getStartPositions();
 
         for (int i = 0; i < players.size(); i++) {
@@ -84,6 +86,7 @@ public final class CreateSessionOnMatchmadeListener implements MatchMakingQueue.
      * @param message     the messagee to send
      */
     private static void notifyPlayers(final PlayerConnection[] connections, final MatchmadeMessage message) {
+        log.info("Notifying {} players that they are matchmade.", connections.length);
         for (PlayerConnection connection : connections) {
             connection.sendTCP(message);
             connection.setState(PlayerState.IN_GAME);

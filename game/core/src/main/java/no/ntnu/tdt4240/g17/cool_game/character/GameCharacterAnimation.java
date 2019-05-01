@@ -25,15 +25,15 @@ public class GameCharacterAnimation {
      */
     public GameCharacterAnimation(final String name, final TextureAtlas atlas) {
         this.isMovingLeft = false;
-        this.idleAnimation = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegions(name + "_idle_anim"));
-        this.runningAnimation = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegions(name + "_run_anim"));
-        this.jumpingAnimation = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegion(name + "_idle_anim"));
+        this.idleAnimation = new Animation<>(FRAME_DURATION, atlas.findRegions(name + "_idle_anim"));
+        this.runningAnimation = new Animation<>(FRAME_DURATION, atlas.findRegions(name + "_run_anim"));
+        this.jumpingAnimation = new Animation<>(FRAME_DURATION, atlas.findRegion(name + "_idle_anim"));
 
         if (atlas.findRegion(name + "_hit_anim") == null) {
             this.fallingAnimation =
-                    new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegions(name + "_idle_anim").get(2));
+                    new Animation<>(FRAME_DURATION, atlas.findRegions(name + "_idle_anim").get(2));
         } else {
-            this.fallingAnimation = new Animation<TextureRegion>(FRAME_DURATION, atlas.findRegion(name + "_hit_anim"));
+            this.fallingAnimation = new Animation<>(FRAME_DURATION, atlas.findRegion(name + "_hit_anim"));
         }
         this.idle();
 

@@ -9,7 +9,7 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/desktop.err</file>
+        <file>../../desktop/logs/desktop.err</file>
         <append>true</append>
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
@@ -21,8 +21,6 @@
 
     <root level="DEBUG">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" level="WARN"/>
     </root>
-    <logger name="no.ntnu" level="WARN">
-        <appender-ref ref="FILE" />
-    </logger>
 </configuration>

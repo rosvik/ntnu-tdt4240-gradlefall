@@ -34,6 +34,7 @@ class SendUpdateMessageSystemTest {
     private Engine engine;
     private Entity testPlayer;
     private World world;
+    private PlayerConnection playerConnectionMock;
 
     @BeforeAll
     static void init() {
@@ -48,7 +49,8 @@ class SendUpdateMessageSystemTest {
         final PlayerEntityFactory playerEntityFactory = new PlayerEntityFactory(characterBox2dBodyFactory);
 
         testPlayer = playerEntityFactory.create("1", "testPlayer");
-        testPlayer.add(new NetworkedPlayerComponent(Mockito.mock(PlayerConnection.class)));
+        playerConnectionMock = Mockito.mock(PlayerConnection.class);
+        testPlayer.add(new NetworkedPlayerComponent(playerConnectionMock));
         engine.addEntity(testPlayer);
     }
 
@@ -73,5 +75,21 @@ class SendUpdateMessageSystemTest {
         assertThat(message.players.get(0).position.x, is(10f));
         assertThat(message.players.get(0).position.y, is(5f));
         System.out.println(message.toString());
+    }
+
+    @Test
+    void shouldHandleUpdateWithoutCrash() {
+        // Given
+        final SendUpdateMessageSystem system = new SendUpdateMessageSystem(1, 10, SendUpdateMessageSystem.FAMILY);
+        engine.addSystem(system);
+        TransformComponent.MAPPER.get(testPlayer).getPosition().set(10f, 5f);
+        Mockito.when(playerConnectionMock.isConnected()).thenReturn(true);
+
+        // When
+        system.updateInterval();
+
+        // Then
+        Mockito.verify(playerConnectionMock).isConnected();
+        Mockito.verify(playerConnectionMock).sendTCP(Mockito.any(UpdateMessage.class));
     }
 }

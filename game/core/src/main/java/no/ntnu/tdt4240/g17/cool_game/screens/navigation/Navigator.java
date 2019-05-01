@@ -2,20 +2,27 @@ package no.ntnu.tdt4240.g17.cool_game.screens.navigation;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 
-
-import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
+import no.ntnu.tdt4240.g17.cool_game.network.GameClient;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.GameView;
+import no.ntnu.tdt4240.g17.cool_game.screens.loading.LoadingController;
+import no.ntnu.tdt4240.g17.cool_game.screens.loading.LoadingModel;
+import no.ntnu.tdt4240.g17.cool_game.screens.loading.LoadingView;
 import no.ntnu.tdt4240.g17.cool_game.screens.main_menu.HomeController;
+import no.ntnu.tdt4240.g17.cool_game.screens.main_menu.HomeModel;
 import no.ntnu.tdt4240.g17.cool_game.screens.main_menu.HomeView;
 import no.ntnu.tdt4240.g17.cool_game.screens.settings_menu.SettingsController;
 import no.ntnu.tdt4240.g17.cool_game.screens.settings_menu.SettingsModel;
 import no.ntnu.tdt4240.g17.cool_game.screens.settings_menu.SettingsView;
 
 /**
- *
+ * Navigates between screens in the application.
  */
-@Data
+@Slf4j
 public class Navigator implements Disposable {
 
     /**
@@ -29,17 +36,14 @@ public class Navigator implements Disposable {
         /**
          * Settings screen.
          */
-        SETTING
+        SETTING,
+        /** Matchmaking screen. */
+        MATCHMAKING,
+        /**
+         * Game screen.
+         */
+        GAME
     }
-
-    /**
-     * Home to refer to be used later on.
-     */
-    public static final int HOME = 0;
-    /**
-     * Settings refers to static variable to be used later on.
-     */
-    public static final int SETTING = 1;
 
     private com.badlogic.gdx.Screen screen;
 
@@ -48,33 +52,41 @@ public class Navigator implements Disposable {
      * initialzed throught a constructor.
      */
     public Navigator() {
-        this.initialize();
+        changeView(Screen.HOME);
     }
 
     /**
-     * Initialize the navigator.
-     * TODO: lag en factory for alle views
+     * @param screenType is screenType. method changes view.
      */
-    public void initialize() {
-        HomeView homeView = new HomeView(new HomeController(this));
-        setScreen(homeView);
-    }
+    public void changeView(final Screen screenType) {
+        log.info("Changing screen to: {}", screenType.name());
 
-    /**
-     * @param screenIndex is screenIndex. method changes view.
-     */
-    public void changeView(final Screen screenIndex) {
-
-        switch (screenIndex) {
+        switch (screenType) {
             case SETTING:
                 SettingsModel settingsModel = new SettingsModel(Gdx.app.getPreferences(SettingsModel.PREFS_NAME));
                 SettingsView settingsView = new SettingsView(this,
                         new SettingsController(settingsModel), settingsModel);
                 this.setScreen(settingsView);
                 break;
+
+            case GAME:
+                GameView gameView = new GameView(new SpriteBatch(), this);
+                this.setScreen(gameView);
+                break;
+
+            case MATCHMAKING:
+                final LoadingModel loadingModel = new LoadingModel(GameClient.getNetworkClientInstance());
+                loadingModel.setOnMatchmadeListener(ClientData.getInstance()::receive);
+                LoadingView loadingView = new LoadingView(new SpriteBatch(),
+                        loadingModel, new LoadingController(this, loadingModel));
+                this.setScreen(loadingView);
+                break;
+
             default:
             case HOME:
-                HomeView homeView = new HomeView(new HomeController(this));
+                final HomeModel homeModel = new HomeModel();
+                final HomeController homeController = new HomeController(this, homeModel);
+                HomeView homeView = new HomeView(homeController, new SpriteBatch(), homeModel);
                 this.setScreen(homeView);
                 break;
         }

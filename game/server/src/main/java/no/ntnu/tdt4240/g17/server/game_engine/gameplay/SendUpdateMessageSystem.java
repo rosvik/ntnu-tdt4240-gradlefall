@@ -2,15 +2,14 @@ package no.ntnu.tdt4240.g17.server.game_engine.gameplay;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.systems.IntervalSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.common.network.game_messages.UpdateMessage;
@@ -27,7 +26,7 @@ import no.ntnu.tdt4240.g17.server.physics.box2d.TransformComponent;
  * @author Kristian 'krissrex' Rekstad
  */
 @Slf4j
-public final class SendUpdateMessageSystem extends IntervalSystem {
+public final class SendUpdateMessageSystem extends EntitySystem {
 
     /** The family for playerEntities this system will use. */
     public static final Family FAMILY = Family.all(
@@ -35,9 +34,11 @@ public final class SendUpdateMessageSystem extends IntervalSystem {
             TransformComponent.class,
             NetworkedPlayerComponent.class
     ).get();
-    private final Family family;
 
+    private final float interval;
+    private final Family family;
     private ImmutableArray<Entity> playerEntities;
+    private float timeAccumulator = 0f;
 
     /** Create a new system that sends messages at the given interval.
      * @param interval how often the messages are sent
@@ -45,7 +46,8 @@ public final class SendUpdateMessageSystem extends IntervalSystem {
      * @param family the family for playerEntities. use {@link #FAMILY}.
      */
     public SendUpdateMessageSystem(final int priority, final float interval, final Family family) {
-        super(interval, priority);
+        super(priority);
+        this.interval = interval;
         this.family = family;
     }
 
@@ -60,15 +62,37 @@ public final class SendUpdateMessageSystem extends IntervalSystem {
     }
 
     @Override
+    public void update(final float deltaTime) {
+        timeAccumulator += deltaTime;
+        if (timeAccumulator >= interval) {
+            updateInterval();
+            timeAccumulator = 0f;
+        }
+    }
+
+    /** Run to send network data. */
     protected void updateInterval() {
+        final long beforeUpdate = System.currentTimeMillis();
+
         final UpdateMessage updateMessage = createMessage();
 
         for (final Entity entity : playerEntities) {
             final NetworkedPlayerComponent networkedPlayerComponent = NetworkedPlayerComponent.MAPPER.get(entity);
             final PlayerConnection connection = networkedPlayerComponent.getPlayerConnection();
-            log.trace("Updating connection {} (IP: {})", connection.getID(), connection.getRemoteAddressTCP());
-            connection.sendTCP(updateMessage);
+            log.trace("Updating connection {} (IP: {}. Player id: {}). Message: {}", connection.getID(),
+                    connection.getRemoteAddressTCP(), connection.getId(), updateMessage);
+            if (connection.isConnected()) {
+                connection.sendTCP(updateMessage);
+            } else {
+                PlayerComponent playerComponent = PlayerComponent.MAPPER.get(entity);
+                if (playerComponent.isAlive()) {
+                    log.warn("Player {} disconnected! Killing him!", playerComponent.getId());
+                    playerComponent.setAlive(false);
+                }
+            }
         }
+        final long updateTime = System.currentTimeMillis() - beforeUpdate;
+        log.trace("Update time: {}", updateTime);
     }
 
     /**
@@ -93,7 +117,7 @@ public final class SendUpdateMessageSystem extends IntervalSystem {
             player.projectileAmmoCount = playerComponent.getAmmo().size();
             player.aimingAngle = playerComponent.getAimingAngle();
             player.blockAmmoCount = 0; // FIXME: 4/30/2019 Use real value
-            player.activePowerups = Collections.emptyList(); // FIXME: 4/30/2019 use real value
+            player.activePowerups = new ArrayList<>(); // FIXME: 5/1/2019 Use real value
             updateMessage.players.add(player);
         }
 

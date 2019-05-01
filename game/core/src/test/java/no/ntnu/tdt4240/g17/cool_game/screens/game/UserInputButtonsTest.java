@@ -4,6 +4,9 @@ import com.badlogic.gdx.math.Vector2;
 
 import org.junit.jupiter.api.Test;
 
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.MovementFormat;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.UserInputButtons;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserInputButtonsTest {

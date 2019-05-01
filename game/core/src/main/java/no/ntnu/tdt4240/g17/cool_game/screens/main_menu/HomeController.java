@@ -9,15 +9,18 @@ import no.ntnu.tdt4240.g17.cool_game.screens.navigation.Navigator;
  */
 public class HomeController {
 
-    private Navigator parent;
+    private Navigator navigator;
+    private final HomeModel model;
 
     /**
      * Create a new HomeController for a {@link HomeView}.
      *
      * @param navigator navigator class
+     * @param model the model for the view
      */
-    public HomeController(final Navigator navigator) {
-        this.parent = navigator;
+    public HomeController(final Navigator navigator, final HomeModel model) {
+        this.navigator = navigator;
+        this.model = model;
     }
 
     /**
@@ -41,7 +44,18 @@ public class HomeController {
     /**
      * g.
      */
-    public void changeToSettings() {
-        parent.changeView(Navigator.Screen.SETTING);
+    public void settingsPressed() {
+        navigator.changeView(Navigator.Screen.SETTING);
+    }
+
+    /**
+     *
+     */
+    public void playGamePressed() {
+        if (model.isConnectedToServer()) {
+            navigator.changeView(Navigator.Screen.MATCHMAKING);
+        } else if (!model.isTryingToConnectToServer()) {
+            model.retryConnection();
+        }
     }
 }

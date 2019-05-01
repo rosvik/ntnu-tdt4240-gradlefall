@@ -23,6 +23,7 @@ import no.ntnu.tdt4240.g17.server.availability.FailureListener;
 @Slf4j
 public class GameServer implements Runnable, Disposable {
     private final int tcpPort;
+    private int udpPort;
     private final FailureListener failureListener;
 
     private final List<PlayerConnection> connections = new ArrayList<>();
@@ -31,15 +32,18 @@ public class GameServer implements Runnable, Disposable {
 
     /**
      * Create a new game server.
-     *  @param tcpPort         TCP port to listen to.
+     * @param tcpPort         TCP port to listen to.
      * @param failureListener a listener to report failures to.
      * @param handlerDelegator a delegator that handles messages
+     * @param udpPort UDP port to listen to
      */
     public GameServer(final int tcpPort, final FailureListener failureListener,
-                      final MessageHandlerDelegator handlerDelegator) {
+                      final MessageHandlerDelegator handlerDelegator, final int udpPort) {
         this.tcpPort = tcpPort;
         this.failureListener = failureListener;
         this.handlerDelegator = handlerDelegator;
+        this.udpPort = udpPort;
+
         server = new Server() {
             @Override
             protected Connection newConnection() {
@@ -61,7 +65,7 @@ public class GameServer implements Runnable, Disposable {
         server.addListener(new PlayerConnectionListener(connections, handlerDelegator));
 
         try {
-            server.bind(tcpPort);
+            server.bind(tcpPort, udpPort);
         } catch (IOException ex) {
             log.error("Unable to bind to {}", tcpPort, ex);
             // FIXME: 3/22/2019 Retry after some time?

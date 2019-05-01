@@ -1,7 +1,9 @@
 package no.ntnu.tdt4240.g17.cool_game.character;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class GameCharacter {
     private GameCharacterState state;
     private GameCharacterAnimation animation;
+    private float animationStateTime = 0f;
 
     /**
      * Constructor.
@@ -69,11 +72,18 @@ public class GameCharacter {
     }
 
     /**
-     * @param batch = function will draw the current frame to this spritebatch.
-     * @param stateTime = time of game, chooses what frame will be shown
+     * Updates the animation state.
+     * @param deltaTime the amount of time to update the animation with.
      */
-    public void draw(final SpriteBatch batch, final float stateTime) {
-        TextureRegion characterTextureRegion = this.animation.getFrame(stateTime);
+    public void update(final float deltaTime) {
+        animationStateTime += deltaTime;
+    }
+
+    /**
+     * @param batch = function will draw the current frame to this spritebatch.
+     */
+    public void draw(final SpriteBatch batch) {
+        TextureRegion characterTextureRegion = this.animation.getFrame(animationStateTime);
         batch.draw(characterTextureRegion,
                 this.state.getxPosition(),
                 this.state.getyPosition(),

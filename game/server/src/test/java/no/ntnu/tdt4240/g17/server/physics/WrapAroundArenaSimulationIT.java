@@ -20,8 +20,8 @@ import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.server.physics.box2d.Box2dBodyComponent;
+import no.ntnu.tdt4240.g17.server.physics.debug.DesktopPhysicsVisualizer;
 import no.ntnu.tdt4240.g17.server.physics.util.ArenaTestUtil;
-import no.ntnu.tdt4240.g17.server.physics.util.DesktopPhysicsVisualizer;
 
 /**
  * Integration test to set up a basic physics world and test wrap-around of position

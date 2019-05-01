@@ -61,45 +61,77 @@ public final class ReceivePlayerControlsSystem extends EntitySystem {
 
     @Override
     public void update(final float deltaTime) {
-        if (!lastControlsMessages.isEmpty()) {
-            // Prepare entities for easy lookup
-            final int size = entities.size();
-            final HashMap<String, Entity> idMap = new HashMap<>(size);
-            for (int i = 0; i < size; i++) {
-                final Entity entity = entities.get(i);
-                final PlayerComponent playerComponent = PlayerComponent.MAPPER.get(entity);
-                idMap.put(playerComponent.getId(), entity);
-            }
+        final long beforeUpdate = System.currentTimeMillis();
 
-            // Read control messages
-            ControlsMessage controlsMessage = null;
-            while ((controlsMessage = lastControlsMessages.poll()) != null) {
-                processMessage(idMap, controlsMessage);
+        // TODO: 5/1/2019 Add some mechanism to avoid starvation.
+        // The amount of processed messages could be capped,
+        // eg. max 5 per player, or total of 50 messages or 5ms processing etc.
+        synchronized (lastControlsMessages) {
+            if (!lastControlsMessages.isEmpty()) {
+                // Prepare entities for easy lookup
+                final int size = entities.size();
+                final HashMap<String, Entity> idMap = new HashMap<>(size);
+                for (int i = 0; i < size; i++) {
+                    final Entity entity = entities.get(i);
+                    final PlayerComponent playerComponent = PlayerComponent.MAPPER.get(entity);
+                    idMap.put(playerComponent.getId(), entity);
+                }
+
+                // Read control messages
+                long processingStart = System.currentTimeMillis();
+                long maxProcessingMs = 10;
+                ControlsMessage controlsMessage = null;
+                while ((controlsMessage = lastControlsMessages.poll()) != null) {
+                    if (System.currentTimeMillis() - processingStart > maxProcessingMs) {
+                        lastControlsMessages.clear();
+                        log.debug("Dropping {} messages from queue. Processed for {} s", lastControlsMessages.size(),
+                                (System.currentTimeMillis() - processingStart) / 1000f);
+                        break;
+                    }
+                    processMessage(idMap, controlsMessage);
+                }
+            } else {
+                log.trace("No messages.");
             }
         }
+        final long updateTime = System.currentTimeMillis() - beforeUpdate;
+        log.trace("Update time: {}", updateTime);
     }
 
-    /** Interprets what a player wanted to do in a given message.
-     * @param idMap map of players and id, for easy lookup
+    /**
+     * Interprets what a player wanted to do in a given message.
+     *
+     * @param idMap           map of players and id, for easy lookup
      * @param controlsMessage the message to interpret
      */
     void processMessage(final HashMap<String, Entity> idMap, final ControlsMessage controlsMessage) {
         final Entity playerEntity = idMap.get(controlsMessage.playerId);
+        if (playerEntity == null) {
+            log.error("Failed to find a player with id '{}' in map {}", controlsMessage.playerId, idMap);
+            return;
+        }
 
+        log.trace("Processing message: {}", controlsMessage);
         if (controlsMessage.jump) {
             // FIXME make this an update of an action component or similar
-            final int jumpImpulse = 2000;
+            final int jumpImpulse = 800;
             final Body body = Box2dBodyComponent.MAPPER.get(playerEntity).getBody();
-            body.applyLinearImpulse(0, jumpImpulse, 0, 0, true);
+            if (body.getLinearVelocity().y == 0) {
+                // FIXME: 5/1/2019 Add check for ground or double jump etc
+                body.applyLinearImpulse(0, jumpImpulse, 0, 0, true);
+                log.debug("Player jump: {}", controlsMessage.playerId);
+            }
         }
         if (controlsMessage.moveSpeed != 0f) {
-            final Vector2 velocity = new Vector2(1f, 0);
-            final float playerMaxSpeed = 7f;
+            final Vector2 moveVelocity = new Vector2(1f, 0);
             final Body body = Box2dBodyComponent.MAPPER.get(playerEntity).getBody();
-            velocity.setLength(playerMaxSpeed * controlsMessage.moveSpeed / 100f);
-            velocity.setAngle(controlsMessage.moveAngle);
-            velocity.y = body.getLinearVelocity().y;
-            body.setLinearVelocity(velocity.x, 0f);
+//            velocity.setLength(playerMaxSpeed * controlsMessage.moveSpeed / 100f);
+            final float playerMaxSpeed = 7f;
+            moveVelocity.setLength(playerMaxSpeed);
+            moveVelocity.setAngle((float) Math.toDegrees(controlsMessage.moveAngleRadians));
+            moveVelocity.y = body.getLinearVelocity().y;
+            body.setLinearVelocity(moveVelocity.x, moveVelocity.y);
+            log.trace("Updating player {} speed: {}", controlsMessage.playerId, moveVelocity);
         }
         if (controlsMessage.shoot) {
             final PlayerComponent playerComponent = PlayerComponent.MAPPER.get(playerEntity);

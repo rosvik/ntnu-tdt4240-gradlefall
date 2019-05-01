@@ -25,7 +25,7 @@ class GameEngineFactoryTest {
         final Session session = Session.create(new ArrayList<>());
 
         // When
-        final GameEngine gameEngine = factory.create(Arena.ARENA_2, session);
+        final GameEngine gameEngine = factory.create(Arena.ARENA_2, new ArrayList<>());
 
         // Then
         assertThat(gameEngine, is(notNullValue()));

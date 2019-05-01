@@ -51,9 +51,10 @@ class GameServerIT {
         // Setup
         final MessageHandlerDelegator handlerDelegator = new MessageHandlerDelegator();
         final int tcpPort = 5777;
+        final int udpPort = 5778;
         final GameServer gameServer = new GameServer(tcpPort, (severity, throwable) -> {
             fail(severity.name(), throwable);
-        }, handlerDelegator);
+        }, handlerDelegator, udpPort);
 
         MessageClassLister.getMessageClasses().forEach(client.getKryo()::register);
 

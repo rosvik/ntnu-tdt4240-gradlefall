@@ -1,6 +1,9 @@
 package no.ntnu.tdt4240.g17.server.game_arena;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+
+import java.util.List;
 
 import no.ntnu.tdt4240.g17.common.network.game_messages.data.Arena;
 
@@ -13,6 +16,8 @@ public final class ArenaUtil {
 
     /** Utility class. */
     private ArenaUtil() { }
+
+    private static final ArenaTmxReader TILE_READER = new ArenaTmxReader();
 
     /**
      * Get the bounds for a arena.
@@ -35,5 +40,14 @@ public final class ArenaUtil {
             default:
             case ARENA_2: return "map2.tmx";
         }
+    }
+
+    /**
+     * Get the tiles in a map.
+     * @param arena the arena to read tiles form
+     * @return a list of (x,y) positions of tiles' bottom left corner.
+     */
+    public static List<Vector2> getTileCoordinatesFor(final Arena arena) {
+        return TILE_READER.getTiles(arena);
     }
 }

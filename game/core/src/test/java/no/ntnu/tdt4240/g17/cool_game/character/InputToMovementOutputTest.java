@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import no.ntnu.tdt4240.g17.cool_game.screens.game.MovementFormat;
-import no.ntnu.tdt4240.g17.cool_game.screens.game.UserInputButtons;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.MovementFormat;
+import no.ntnu.tdt4240.g17.cool_game.screens.game.controller.UserInputButtons;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

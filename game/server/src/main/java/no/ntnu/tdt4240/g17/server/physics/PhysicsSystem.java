@@ -35,7 +35,7 @@ public class PhysicsSystem extends IntervalSystem {
     private final float intervalSeconds;
 
     private int velocityIterations = 6;
-    private int positionIterations = 3;
+    private int positionIterations = 4;
 
     private final World world;
     Iterable<Entity> entitiesToUpdate = Collections.emptyList();
@@ -56,6 +56,8 @@ public class PhysicsSystem extends IntervalSystem {
 
     @Override
     protected final void updateInterval() {
+        final long beforeUpdate = System.currentTimeMillis();
+
         final long before = System.currentTimeMillis();
         world.step(intervalSeconds, velocityIterations, positionIterations);
         final long time = System.currentTimeMillis() - before;
@@ -71,6 +73,8 @@ public class PhysicsSystem extends IntervalSystem {
             transformComponent.setPosition(position);
             transformComponent.setRotation(body.getAngle());
         }
+        final long updateTime = System.currentTimeMillis() - beforeUpdate;
+        log.trace("Update time: {}", updateTime);
     }
 
     @Override

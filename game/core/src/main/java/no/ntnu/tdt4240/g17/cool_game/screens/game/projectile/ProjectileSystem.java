@@ -1,13 +1,15 @@
 package no.ntnu.tdt4240.g17.cool_game.screens.game.projectile;
 
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Engine;
+
+import java.util.Collections;
+
 import lombok.Getter;
 import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
-import java.util.Collections;
 
 /**
  * Lombok.
@@ -24,11 +26,12 @@ public class ProjectileSystem extends EntitySystem {
 
     /**
      * Find all players and projectiles.
+     * @param clientData the data from server
      */
-    public ProjectileSystem() {
+    public ProjectileSystem(final ClientData clientData) {
+        this.clientData = clientData;
         family = Family.all(ProjectileComponent.class).get();
         projectile = ComponentMapper.getFor(ProjectileComponent.class);
-        clientData = new ClientData();
         entitiesToUpdate = Collections.emptyList();
     }
 

@@ -25,24 +25,37 @@ public class HomeView extends ApplicationAdapter implements Screen {
 
     private static final float STAGE_MIN_FPS = 1f / 30f;
 
+    private static final String TEXT_PLAY = "PLAY";
+    private static final String TEXT_SETTINGS = "SETTINGS";
+    private static final String TEXT_QUIT = "QUIT";
+    private static final String TEXT_CONNECTING = "CONNECTING...";
+    private static final String NO_CONNECTION = "RETRY CONNECTION";
+    private static final String TEXT_PLAY_LOCAL = "PLAY (LAN)";
+
     private HomeController homeController;
 
     /** Stage for GUI rendering. */
     private Stage stage;
 
     private SpriteBatch batch;
-    private Texture texture;
+    private final HomeModel model;
+    private Texture backgroundTexture;
 
     /**
      * music.
      */
     private Music music;
+    private TextButton playButton;
 
     /**
-     * @param homeController needs to take in homecontroler.
+     * @param homeController the controller for the view.
+     * @param batch the batch to render into.
+     * @param model the model for the view.
      */
-    public HomeView(final HomeController homeController) {
+    public HomeView(final HomeController homeController, final SpriteBatch batch, final HomeModel model) {
         this.homeController = homeController;
+        this.batch = batch;
+        this.model = model;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), STAGE_MIN_FPS));
@@ -55,23 +68,22 @@ public class HomeView extends ApplicationAdapter implements Screen {
     @Override
     public void show() {
         //spritebatches
-        batch = new SpriteBatch();
-        texture = new Texture(Gdx.files.internal("background.png"));
+        backgroundTexture = new Texture(Gdx.files.internal("background.png"));
         // Create a table that fills the screen. Everything else will go inside this table.
         Table table = new Table();
         table.setFillParent(true);
-        table.setDebug(true);         //shows border line.
+        //table.setDebug(true);         //shows border line.
         stage.addActor(table);
 
         //create buttons with skin
         Skin skin = new Skin(Gdx.files.internal("skin/neon-ui.json"));
-        TextButton play = new TextButton("PLAY", skin);
-        TextButton settings = new TextButton("SETTINGS", skin);
-        TextButton quit = new TextButton("QUIT", skin);
+        playButton = new TextButton(TEXT_PLAY, skin);
+        TextButton settings = new TextButton(TEXT_SETTINGS, skin);
+        TextButton quit = new TextButton(TEXT_QUIT, skin);
 
         //set textsize in button
         float textSize = 4f;
-        play.getLabel().setFontScale(textSize);
+        playButton.getLabel().setFontScale(textSize);
         settings.getLabel().setFontScale(textSize);
         quit.getLabel().setFontScale(textSize);
 
@@ -80,7 +92,7 @@ public class HomeView extends ApplicationAdapter implements Screen {
         float buttonHeight = 64f * Gdx.graphics.getDensity();
         float buttonWidth = 192f * Gdx.graphics.getDensity();
 
-        table.add(play)
+        table.add(playButton)
                 .prefHeight(buttonHeight)
                 .prefWidth(buttonWidth)
                 .padBottom(spacing);
@@ -100,10 +112,16 @@ public class HomeView extends ApplicationAdapter implements Screen {
         settings.addListener(new ChangeListener() {
             @Override
             public void changed(final ChangeEvent event, final Actor actor) {
-                homeController.changeToSettings();
+                homeController.settingsPressed();
             }
         });
 
+        playButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(final ChangeEvent event, final Actor actor) {
+                homeController.playGamePressed();
+            }
+        });
 
         // action for exit
         quit.addListener(new ChangeListener() {
@@ -119,8 +137,10 @@ public class HomeView extends ApplicationAdapter implements Screen {
 
         music = Gdx.audio.newMusic(Gdx.files.internal("Tune1.mp3"));
         music.setLooping(true);
-        music.setVolume(0.3f);
-        music.play();
+        music.setVolume(model.getMusicVolume());
+        if (model.isMusicEnabled()) {
+            music.play();
+        }
         //homeController.startMusic();
     }
 
@@ -129,11 +149,26 @@ public class HomeView extends ApplicationAdapter implements Screen {
      */
     @Override
     public void render(final float delta) {
+        if (model.isTryingToConnectToServer()) {
+            playButton.setDisabled(true);
+            playButton.setText(TEXT_CONNECTING);
+        } else if (model.isConnectedToServer()) {
+            playButton.setDisabled(false);
+            if (model.isLocalNetworkServer()) {
+                playButton.setText(TEXT_PLAY_LOCAL);
+            } else {
+                playButton.setText(TEXT_PLAY);
+            }
+        } else {
+            playButton.setDisabled(false);
+            playButton.setText(NO_CONNECTION);
+        }
+
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);   //clears the screen
 
         batch.begin();
-        batch.draw(texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 
         //the buttons
