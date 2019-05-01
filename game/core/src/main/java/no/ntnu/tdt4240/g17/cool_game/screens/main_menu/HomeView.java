@@ -30,6 +30,7 @@ public class HomeView extends ApplicationAdapter implements Screen {
     private static final String TEXT_QUIT = "QUIT";
     private static final String TEXT_CONNECTING = "CONNECTING...";
     private static final String NO_CONNECTION = "RETRY CONNECTION";
+    private static final String TEXT_PLAY_LOCAL = "PLAY (LAN)";
 
     private HomeController homeController;
 
@@ -148,12 +149,18 @@ public class HomeView extends ApplicationAdapter implements Screen {
      */
     @Override
     public void render(final float delta) {
-        playButton.setDisabled(!model.isConnectedToServer());
         if (model.isTryingToConnectToServer()) {
+            playButton.setDisabled(true);
             playButton.setText(TEXT_CONNECTING);
         } else if (model.isConnectedToServer()) {
-            playButton.setText(TEXT_PLAY);
+            playButton.setDisabled(false);
+            if (model.isLocalNetworkServer()) {
+                playButton.setText(TEXT_PLAY_LOCAL);
+            } else {
+                playButton.setText(TEXT_PLAY);
+            }
         } else {
+            playButton.setDisabled(false);
             playButton.setText(NO_CONNECTION);
         }
 

@@ -59,4 +59,9 @@ public class HomeModel {
         connectionThread.setDaemon(true);
         connectionThread.start();
     }
+
+    /** @return true if the server is on the local network. */
+    public boolean isLocalNetworkServer() {
+        return GameClient.isLocalNetwork();
+    }
 }

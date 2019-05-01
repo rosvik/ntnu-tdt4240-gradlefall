@@ -34,6 +34,7 @@ public final class DesktopPhysicsVisualizer implements ApplicationListener {
     private Consumer<Float> updateCallback;
     @Setter
     private boolean shouldStop = false;
+    private boolean hasCalledExit = false;
 
     /**
      * @param box2dWorld world to render
@@ -74,6 +75,17 @@ public final class DesktopPhysicsVisualizer implements ApplicationListener {
 
     @Override
     public void render() {
+        if (shouldStop) {
+            if (!hasCalledExit) {
+                hasCalledExit = true;
+                try {
+                    dispose();
+                } catch (Exception ignored) { }
+                Gdx.app.exit();
+            }
+            return;
+        }
+
         Gdx.gl.glClearColor(0, 0, 0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -84,10 +96,6 @@ public final class DesktopPhysicsVisualizer implements ApplicationListener {
         if (world != null) {
             camera.update();
             box2DDebugRenderer.render(world, camera.combined);
-        }
-
-        if (shouldStop) {
-            Gdx.app.exit();
         }
     }
 

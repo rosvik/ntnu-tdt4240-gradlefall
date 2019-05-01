@@ -24,6 +24,7 @@ public final class GameClient {
     private String serverIp;
 
     private static volatile boolean isClientConnecting = false;
+    private static volatile boolean isLocalNetwork = false;
 
     @Nullable
     private static Client clientSingleton = null;
@@ -65,6 +66,17 @@ public final class GameClient {
         return isClientConnecting;
     }
 
+    /** @return true if the connected server is from local network discovery. */
+    public static boolean isLocalNetwork() {
+        return isLocalNetwork;
+    }
+
+    /**
+     * @param isLocal true if the last successful connect was to a local network server.
+     */
+    public static void setIsLocalNetwork(final boolean isLocal) {
+        isLocalNetwork = isLocal;
+    }
 
     /**
      * Ensure the client is connected.
@@ -88,13 +100,14 @@ public final class GameClient {
     public static synchronized void connectClientBlocking(final Client client,
                                                           final String serverIp, final int tcpPort) throws IOException {
         isClientConnecting = true;
+        isLocalNetwork = false;
         boolean failed = true;
         long waitTimeMs = 400;
         long maxWaitMs = 15000; // 15 seconds. roughly 6 failures in a row.
         client.start(); // Starts a new thread. Must run while connect is tried.
         while (failed) {
             try {
-                client.connect(5000, serverIp, tcpPort);
+                client.connect(5000, serverIp, tcpPort, NetworkSettings.getUdpPort());
                 failed = false;
             } catch (IOException e) {
                 log.error("Unable to connect to {}:{}", serverIp, tcpPort, e);

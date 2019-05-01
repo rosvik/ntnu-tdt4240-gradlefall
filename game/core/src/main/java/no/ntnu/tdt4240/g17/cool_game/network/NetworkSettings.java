@@ -19,4 +19,8 @@ public final class NetworkSettings {
     /** The port of the server to connectBlocking to. */
     @Getter @Setter
     private static int port = 5777;
+
+    /** The port that local network servers will broadcast themselves on. */
+    @Getter
+    private static int udpPort = 5778;
 }

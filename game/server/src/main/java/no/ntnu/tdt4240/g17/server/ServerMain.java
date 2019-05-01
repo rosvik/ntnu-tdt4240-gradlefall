@@ -46,7 +46,8 @@ public final class ServerMain {
         // TODO: 3/22/2019 Read from a config file or environment
         final int tcpPort = 5777;
         final MessageHandlerDelegator handlerDelegator = new MessageHandlerDelegator();
-        final GameServer gameServer = new GameServer(tcpPort, failureListener, handlerDelegator);
+        final int udpPort = 5778;
+        final GameServer gameServer = new GameServer(tcpPort, failureListener, handlerDelegator, udpPort);
 
         final ThreadGroup connectionThreadGroup = new ThreadGroup("Connection");
         final Thread serverThread = new Thread(connectionThreadGroup, gameServer, "GameServer");
