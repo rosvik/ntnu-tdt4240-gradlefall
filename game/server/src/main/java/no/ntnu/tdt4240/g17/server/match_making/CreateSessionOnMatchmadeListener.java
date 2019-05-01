@@ -30,6 +30,7 @@ public final class CreateSessionOnMatchmadeListener implements MatchMakingQueue.
 
     @Override
     public void onMatchmade(final PlayerConnection[] playerConnections) {
+        log.info("Creating session for {} players.", playerConnections.length);
         ArrayList<Player> players = new ArrayList<>(playerConnections.length);
         for (int i = 0; i < playerConnections.length; i++) {
             final PlayerConnection playerConnection = playerConnections[i];
@@ -84,6 +85,7 @@ public final class CreateSessionOnMatchmadeListener implements MatchMakingQueue.
      * @param message     the messagee to send
      */
     private static void notifyPlayers(final PlayerConnection[] connections, final MatchmadeMessage message) {
+        log.info("Notifying {} players that they are matchmade.", connections.length);
         for (PlayerConnection connection : connections) {
             connection.sendTCP(message);
             connection.setState(PlayerState.IN_GAME);

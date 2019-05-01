@@ -31,6 +31,7 @@ public class HomeView extends ApplicationAdapter implements Screen {
     private Stage stage;
 
     private SpriteBatch batch;
+    private final HomeModel model;
     private Texture backgroundTexture;
 
     /**
@@ -39,12 +40,14 @@ public class HomeView extends ApplicationAdapter implements Screen {
     private Music music;
 
     /**
-     * @param homeController needs to take in homecontroler.
-     * @param batch the batch to render into
+     * @param homeController the controller for the view.
+     * @param batch the batch to render into.
+     * @param model the model for the view.
      */
-    public HomeView(final HomeController homeController, final SpriteBatch batch) {
+    public HomeView(final HomeController homeController, final SpriteBatch batch, final HomeModel model) {
         this.homeController = homeController;
         this.batch = batch;
+        this.model = model;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), STAGE_MIN_FPS));
@@ -126,8 +129,10 @@ public class HomeView extends ApplicationAdapter implements Screen {
 
         music = Gdx.audio.newMusic(Gdx.files.internal("Tune1.mp3"));
         music.setLooping(true);
-        music.setVolume(0.3f);
-        music.play();
+        music.setVolume(model.getMusicVolume());
+        if (model.isMusicEnabled()) {
+            music.play();
+        }
         //homeController.startMusic();
     }
 

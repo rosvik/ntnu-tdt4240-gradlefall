@@ -3,6 +3,7 @@ package no.ntnu.tdt4240.g17.server;
 import com.badlogic.gdx.physics.box2d.Box2D;
 
 import lombok.extern.slf4j.Slf4j;
+import no.ntnu.tdt4240.g17.common.network.game_messages.ControlsMessage;
 import no.ntnu.tdt4240.g17.common.network.game_messages.PlayMessage;
 import no.ntnu.tdt4240.g17.server.availability.FailureListener;
 import no.ntnu.tdt4240.g17.server.match_making.CreateSessionOnMatchmadeListener;
@@ -49,15 +50,19 @@ public final class ServerMain {
         final ThreadGroup connectionThreadGroup = new ThreadGroup("Connection");
         final Thread serverThread = new Thread(connectionThreadGroup, gameServer, "GameServer");
 
-        handlerDelegator.registerHandler((connection, message) -> log.info("Got message: {}", message), String.class);
-
         final MatchMakingQueue matchmakingQueue = new MatchMakingQueue(new CreateSessionOnMatchmadeListener());
         handlerDelegator.registerHandler(((connection, message) -> {
             log.info("Player {} wants to play", connection.getId());
-            log.warn("Making a session with only 1 player!");
             connection.setState(PlayerState.IN_MATCHMAKING);
             matchmakingQueue.add(connection);
         }), PlayMessage.class);
+
+        handlerDelegator.registerHandler((connection, message) -> {
+            // FIXME: 4/30/2019 Send messages to the correct session, based on connection.
+            //  The game engine factory has a queue for messages.
+            log.info("Got controls: {}", message);
+            // could use event bus pattern for this, and subscribe based on players
+        }, ControlsMessage.class);
 
         final ShutdownProcedureThread shutdownThread = new ShutdownProcedureThread(gameServer, serverThread);
         shutdownThread.installAsShutdownHook();

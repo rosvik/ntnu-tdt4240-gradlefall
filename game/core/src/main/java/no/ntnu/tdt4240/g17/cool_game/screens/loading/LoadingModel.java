@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.common.network.game_messages.MatchmadeMessage;
 import no.ntnu.tdt4240.g17.common.network.game_messages.PlayMessage;
 import no.ntnu.tdt4240.g17.common.network.game_messages.data.GameMode;
@@ -20,6 +21,7 @@ import no.ntnu.tdt4240.g17.common.network.game_messages.data.GameMode;
  *
  * @author Kristian 'krissrex' Rekstad
  */
+@Slf4j
 public final class LoadingModel implements Disposable {
 
     private final Listener matchmadeListener;
@@ -41,9 +43,10 @@ public final class LoadingModel implements Disposable {
             @Override
             public void received(final Connection connection, final Object message) {
                 if (message instanceof MatchmadeMessage) {
+                    isBeingMatchmade = false;
+                    hasBeenMatchmade = true;
+                    log.info("Player has been matchmade!");
                     if (onMatchmadeListener != null) {
-                        isBeingMatchmade = false;
-                        hasBeenMatchmade = true;
                         onMatchmadeListener.accept((MatchmadeMessage) message);
                     }
                 }
@@ -79,6 +82,7 @@ public final class LoadingModel implements Disposable {
             playMessage.gameMode = GameMode.HEADHUNTER; // FIXME: 4/30/2019 read this from player selection.
             playMessage.playerId = null; // FIXME: 4/30/2019 send or get this from server.
             playMessage.playerName = "Unset name"; // FIXME: 4/30/2019 read this from prefs
+            log.info("Sending play message to server.");
             networkClientInstance.sendTCP(playMessage);
             isBeingMatchmade = true;
             return true;
