@@ -29,6 +29,7 @@ public class HomeView extends ApplicationAdapter implements Screen {
     private static final String TEXT_SETTINGS = "SETTINGS";
     private static final String TEXT_QUIT = "QUIT";
     private static final String TEXT_CONNECTING = "CONNECTING...";
+    public static final String NO_CONNECTION = "CONNECTION FAILED";
 
     private HomeController homeController;
 
@@ -148,7 +149,13 @@ public class HomeView extends ApplicationAdapter implements Screen {
     @Override
     public void render(final float delta) {
         playButton.setDisabled(!model.isConnectedToServer());
-        playButton.setText(model.isConnectedToServer() ? TEXT_PLAY : TEXT_CONNECTING);
+        if (model.isTryingToConnectToServer()) {
+            playButton.setText(TEXT_CONNECTING);
+        } else if (model.isConnectedToServer()) {
+            playButton.setText(TEXT_PLAY);
+        } else {
+            playButton.setText(NO_CONNECTION);
+        }
 
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);   //clears the screen

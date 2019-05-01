@@ -75,6 +75,7 @@ public final class GameView implements Screen {
         if (isGameOver) {
             // Also happens when disconnected from server.
             navigator.changeView(Navigator.Screen.HOME);
+            return;
         }
         //if (model.assetManager.update() && model.getClientData().getMatchmadePlayers().size() == 4
         // && controlsMessageNetworkSender.getClient().isConnected()) {

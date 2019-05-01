@@ -20,7 +20,7 @@ class HomeControllerTest {
     @BeforeEach
     void setUp(){
         navigator = mock(Navigator.class);
-        homeController = new HomeController(navigator);
+        homeController = new HomeController(navigator, new HomeModel());
     }
 
     @Test

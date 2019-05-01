@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class DesktopPhysicsVisualizer implements ApplicationListener {
 
+    public static final int PX_PER_METER = 50;
     private Box2DDebugRenderer box2DDebugRenderer;
 
     private World world = null;
@@ -43,6 +44,7 @@ public final class DesktopPhysicsVisualizer implements ApplicationListener {
         this.updateCallback = onUpdateCallback;
         this.world = box2dWorld;
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.forceExit = false;
         final LwjglApplication lwjglApplication = new LwjglApplication(this, config);
         try {
             final Field mainLoopThread = LwjglApplication.class.getDeclaredField("mainLoopThread");
@@ -58,13 +60,16 @@ public final class DesktopPhysicsVisualizer implements ApplicationListener {
     public void create() {
         log.debug("Visualizer created");
         box2DDebugRenderer = new Box2DDebugRenderer(true, false, false, true, true, true);
-        camera.setToOrtho(false, 16, 16);
-        camera.position.sub(4, 2, 0);
+        camera.setToOrtho(false, Gdx.graphics.getWidth() / PX_PER_METER,
+                Gdx.graphics.getHeight() / PX_PER_METER);
+        camera.position.sub(4, 2, 0); // Shift the camera to see the outside
     }
 
     @Override
     public void resize(final int width, final int height) {
         Gdx.gl.glViewport(0, 0, width, height);
+        camera.setToOrtho(false, width / PX_PER_METER, height / PX_PER_METER);
+        camera.position.sub(4, 2, 0);
     }
 
     @Override

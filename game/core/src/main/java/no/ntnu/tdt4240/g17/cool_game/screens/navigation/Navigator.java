@@ -84,7 +84,9 @@ public class Navigator implements Disposable {
 
             default:
             case HOME:
-                HomeView homeView = new HomeView(new HomeController(this), new SpriteBatch(), new HomeModel());
+                final HomeModel homeModel = new HomeModel();
+                final HomeController homeController = new HomeController(this, homeModel);
+                HomeView homeView = new HomeView(homeController, new SpriteBatch(), homeModel);
                 this.setScreen(homeView);
                 break;
         }

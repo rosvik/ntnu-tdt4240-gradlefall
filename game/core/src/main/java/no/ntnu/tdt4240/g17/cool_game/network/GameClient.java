@@ -23,6 +23,8 @@ public final class GameClient {
     private final Client client;
     private String serverIp;
 
+    private static volatile boolean isClientConnecting = false;
+
     @Nullable
     private static Client clientSingleton = null;
     /** @return A client singleton. It may or may not be connected to the server.
@@ -58,6 +60,12 @@ public final class GameClient {
         });
     }
 
+    /** @return true if the client in {@link #getNetworkClientInstance()} is trying to connect. */
+    public static boolean isClientConnecting() {
+        return isClientConnecting;
+    }
+
+
     /**
      * Ensure the client is connected.
      * @throws IOException if connecting fails
@@ -79,6 +87,7 @@ public final class GameClient {
      */
     public static synchronized void connectClientBlocking(final Client client,
                                                           final String serverIp, final int tcpPort) throws IOException {
+        isClientConnecting = true;
         boolean failed = true;
         long waitTimeMs = 400;
         long maxWaitMs = 15000; // 15 seconds. roughly 6 failures in a row.
@@ -88,12 +97,14 @@ public final class GameClient {
                 client.connect(5000, serverIp, tcpPort);
                 failed = false;
             } catch (IOException e) {
-                log.error("Unable to connectBlocking to {}", tcpPort, e);
+                log.error("Unable to connect to {}:{}", serverIp, tcpPort, e);
                 try {
                     Thread.sleep(waitTimeMs);
-                    waitTimeMs *= 1.8f; //Retry with exponential backoff
+                    waitTimeMs *= 1.5f; //Retry with exponential backoff
                     if (waitTimeMs > maxWaitMs) {
                         client.stop();
+                        isClientConnecting = false;
+                        log.warn("Gave up on connecting to {}:{}", serverIp, tcpPort);
                         throw new IOException("Unable to connectBlocking after too many retries", e);
                     }
                 } catch (InterruptedException ex) {
@@ -101,6 +112,7 @@ public final class GameClient {
                 }
             }
         }
+        isClientConnecting = false;
     }
 
     /**

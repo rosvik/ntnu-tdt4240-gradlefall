@@ -14,7 +14,7 @@ public final class NetworkSettings {
 
     /** The ip of the server to connectBlocking to. */
     @Getter @Setter
-    private static String serverIp = "localhost";
+    private static String serverIp = "10.22.212.196"; //"localhost";
 
     /** The port of the server to connectBlocking to. */
     @Getter @Setter

@@ -52,14 +52,14 @@ public final class LoadingView implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         if (!model.isConnected()) {
-            bitmapFont.draw(batch, "Not connected...", 20, 20);
+            bitmapFont.draw(batch, "Not connected...", 100, 100);
         } else {
             if (model.isMatchmaking()) {
-                bitmapFont.draw(batch, "Matchmaking...", 20, 20);
+                bitmapFont.draw(batch, "Matchmaking...", 100, 100);
             } else if (model.hasBeenMatchmade()) {
-                bitmapFont.draw(batch, "Game starting!", 20, 20);
+                bitmapFont.draw(batch, "Game starting!", 100, 100);
             } else {
-                bitmapFont.draw(batch, "I should be matchmaking now. Something is wrong!", 20, 20);
+                bitmapFont.draw(batch, "I should be matchmaking now. Something is wrong!", 100, 100);
                 controller.cancelMatchmaking();
             }
         }

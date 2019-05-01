@@ -20,13 +20,16 @@ public class MainGame extends ApplicationAdapter {
     public final void create() {
         navigator = new Navigator();
 
-        new Thread(() -> {
+        final Thread connectionThread = new Thread(() -> {
             final Client networkClient = GameClient.getNetworkClientInstance();
             try {
                 GameClient.connectClientBlocking(networkClient,
                         NetworkSettings.getServerIp(), NetworkSettings.getPort());
-            } catch (IOException e) { }
-        }).start();
+            } catch (IOException e) {
+            }
+        }, "Connection thread");
+        connectionThread.setDaemon(true);
+        connectionThread.start();
     }
 
     @Override
