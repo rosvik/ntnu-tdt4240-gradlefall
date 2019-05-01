@@ -57,12 +57,8 @@ public final class GUI {
         secondFinger = new TouchInput(Gdx.input.isTouched(1), Gdx.input.getX(1), Gdx.input.getY(1));
         thirdFinger = new TouchInput(Gdx.input.isTouched(2), Gdx.input.getX(2), Gdx.input.getY(2));
         movementFormat = inputProcessor.processInput(firstFinger, secondFinger, thirdFinger);
-        if (movementFormat.getButtonsPressed().get(1) == 1) {
-            lastMessage.jump = true;
-        }
-        if (movementFormat.getButtonsPressed().get(2) == 1) {
-            lastMessage.shoot = true;
-        }
+        lastMessage.jump = movementFormat.getButtonsPressed().get(1) == 1;
+        lastMessage.shoot = movementFormat.getButtonsPressed().get(2) == 1;
         lastMessage.moveAngleRadians = (float) Math.toRadians(movementFormat.getJoystickInput().x);
         lastMessage.shootAngleRadians = (float) Math.toRadians(movementFormat.getJoystickInput().x);
         lastMessage.moveSpeed = (float) Math.toRadians(movementFormat.getJoystickInput().y);
