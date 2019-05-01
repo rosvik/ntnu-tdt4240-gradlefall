@@ -6,7 +6,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
 
 import no.ntnu.tdt4240.g17.common.network.game_messages.ControlsMessage;
 import no.ntnu.tdt4240.g17.common.network.game_messages.data.Arena;
@@ -17,6 +19,7 @@ import no.ntnu.tdt4240.g17.server.game_engine.player.NetworkedPlayerComponent;
 import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerEntityFactory;
 import no.ntnu.tdt4240.g17.server.game_session.Player;
 import no.ntnu.tdt4240.g17.server.game_session.Session;
+import no.ntnu.tdt4240.g17.server.network.messageHandler.ControlsMessageEventBus;
 import no.ntnu.tdt4240.g17.server.physics.PhysicsSystem;
 import no.ntnu.tdt4240.g17.server.physics.WrapAroundSystem;
 import no.ntnu.tdt4240.g17.server.physics.box2d.body.CharacterBox2dBodyFactory;
@@ -33,8 +36,7 @@ public class GameEngineFactory {
     private static final float NETWORK_UPDATE_SECONDS = PHYSICS_UPDATE_SECONDS;
 
     /**
-     *
-     * @param arena the arena to simulate
+     * @param arena   the arena to simulate
      * @param session the game session to pick players from
      * @return a new GameEngine
      */
@@ -44,8 +46,14 @@ public class GameEngineFactory {
 
         final Rectangle bounds = ArenaUtil.getBoundsFor(arena);
 
-        // TODO: 4/1/2019 Connect this queue to server.
+        final List<String> playerIds = session.getPlayers().stream()
+                .map(player -> player.getPlayerConnection().getId())
+                .collect(Collectors.toList());
         final ConcurrentLinkedQueue<ControlsMessage> controllMessageQueue = new ConcurrentLinkedQueue<>();
+        final ControlsMessageEventBus.Subscription subscription = ControlsMessageEventBus.getInstance()
+                .subscribe(connection -> playerIds.contains(connection.getId()),
+                        (message, connection) -> controllMessageQueue.add(message));
+
         final World world = new World(GRAVITY, true);
 
 
@@ -69,6 +77,10 @@ public class GameEngineFactory {
             engine.addEntity(playerEntity);
         }
 
-        return new GameEngine(engine);
+        final GameEngine gameEngine = new GameEngine(engine);
+        gameEngine.addDisposable(subscription::unsubscribe);
+        gameEngine.addDisposable(world);
+        gameEngine.addDisposable(controllMessageQueue::clear);
+        return gameEngine;
     }
 }

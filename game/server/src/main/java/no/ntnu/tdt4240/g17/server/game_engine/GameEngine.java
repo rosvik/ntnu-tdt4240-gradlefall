@@ -3,6 +3,9 @@ package no.ntnu.tdt4240.g17.server.game_engine;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.utils.Disposable;
+
+import java.util.ArrayList;
 
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerComponent;
@@ -14,9 +17,10 @@ import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerEntityFactory;
  * @author Kristian 'krissrex' Rekstad
  */
 @Slf4j
-public class GameEngine implements Runnable {
+public final class GameEngine implements Runnable, Disposable {
 
     private final Engine ecsEngine;
+    private final ArrayList<Disposable> disposables = new ArrayList<>(4);
 
     /** If the game is over or not. */
     private boolean gameOver = false;
@@ -30,6 +34,11 @@ public class GameEngine implements Runnable {
     public GameEngine(final Engine engine) {
         ecsEngine = engine;
         players = ecsEngine.getEntitiesFor(PlayerEntityFactory.FAMILY);
+    }
+
+    /** @param disposable will be disposed when this gameEngine is disposed*/
+    public void addDisposable(final Disposable disposable) {
+        disposables.add(disposable);
     }
 
     /**
@@ -47,6 +56,8 @@ public class GameEngine implements Runnable {
         }
         log.info("Game over on engine {}", this);
         // TODO: 4/30/2019 Add a callback or similiar to start new games.
+        log.info("Disposing game engine");
+        dispose();
     }
 
     /** Check whether the game is over or not.
@@ -62,5 +73,11 @@ public class GameEngine implements Runnable {
             }
         }
         return alivePlayers <= 1;
+    }
+
+    @Override
+    public void dispose() {
+        disposables.forEach(Disposable::dispose);
+        disposables.clear();
     }
 }

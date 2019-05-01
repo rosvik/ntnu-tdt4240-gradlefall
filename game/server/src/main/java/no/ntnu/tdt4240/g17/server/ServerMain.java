@@ -11,6 +11,7 @@ import no.ntnu.tdt4240.g17.server.match_making.MatchMakingQueue;
 import no.ntnu.tdt4240.g17.server.network.GameServer;
 import no.ntnu.tdt4240.g17.server.network.MessageHandlerDelegator;
 import no.ntnu.tdt4240.g17.server.network.PlayerState;
+import no.ntnu.tdt4240.g17.server.network.messageHandler.ControlsMessageEventBus;
 
 /**
  * Main class for the server.
@@ -57,12 +58,7 @@ public final class ServerMain {
             matchmakingQueue.add(connection);
         }), PlayMessage.class);
 
-        handlerDelegator.registerHandler((connection, message) -> {
-            // FIXME: 4/30/2019 Send messages to the correct session, based on connection.
-            //  The game engine factory has a queue for messages.
-            log.info("Got controls: {}", message);
-            // could use event bus pattern for this, and subscribe based on players
-        }, ControlsMessage.class);
+        handlerDelegator.registerHandler(ControlsMessageEventBus.getInstance()::emit, ControlsMessage.class);
 
         final ShutdownProcedureThread shutdownThread = new ShutdownProcedureThread(gameServer, serverThread);
         shutdownThread.installAsShutdownHook();

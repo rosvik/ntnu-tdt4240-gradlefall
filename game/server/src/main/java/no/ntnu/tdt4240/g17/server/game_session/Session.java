@@ -2,6 +2,7 @@ package no.ntnu.tdt4240.g17.server.game_session;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import lombok.Getter;
 import no.ntnu.tdt4240.g17.common.network.game_messages.data.Arena;
@@ -16,6 +17,10 @@ import no.ntnu.tdt4240.g17.server.game_engine.GameEngineFactory;
  */
 public class Session {
 
+    private static final AtomicInteger SESSIONS_CREATED_COUNTER = new AtomicInteger(0);
+
+    private final int sessionId = SESSIONS_CREATED_COUNTER.incrementAndGet();
+
     @Getter
     private List<Player> players = new ArrayList<>();
 
@@ -28,6 +33,12 @@ public class Session {
     @Getter
     private GameMode gameMode;
     private Thread engineThread;
+
+    /** For fun and statistics.
+     * @return how many session instances have been created. */
+    public static int getSessionsCreatedCount() {
+        return SESSIONS_CREATED_COUNTER.get();
+    }
 
     /** test method, work in progress.
      * @param players the players in this session.

@@ -61,6 +61,9 @@ public final class ReceivePlayerControlsSystem extends EntitySystem {
 
     @Override
     public void update(final float deltaTime) {
+        // TODO: 5/1/2019 Add some mechanism to avoid starvation.
+        // The amount of processed messages could be capped,
+        // eg. max 5 per player, or total of 50 messages or 5ms processing etc.
         if (!lastControlsMessages.isEmpty()) {
             // Prepare entities for easy lookup
             final int size = entities.size();
