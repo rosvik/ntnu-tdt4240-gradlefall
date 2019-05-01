@@ -5,6 +5,8 @@ import com.esotericsoftware.kryonet.Listener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.Supplier;
 
 import lombok.Getter;
@@ -21,7 +23,7 @@ import no.ntnu.tdt4240.g17.server.network.PlayerConnection;
 public final class MatchMakingQueue {
 
     private static final int MATCH_PLAYER_SIZE = 4;
-    static final int MAX_QUEUE_WAIT_MILLISECONDS = 10000;
+    static final int MAX_QUEUE_WAIT_MILLISECONDS = 8000;
 
     private List<QueueEntry> queue = new ArrayList<>();
     private final OnPlayersMatchmadeListener playersMatchmadeListener;
@@ -35,6 +37,18 @@ public final class MatchMakingQueue {
      */
     public MatchMakingQueue(final OnPlayersMatchmadeListener playersMatchmadeListener) {
         this.playersMatchmadeListener = playersMatchmadeListener;
+
+        final boolean isDaemon = true;
+        final Timer matchMakingTimer = new Timer("MatchMakingTimer", isDaemon);
+
+        final int initialDelayMs = 2000;
+        final int intervalMs = 1000;
+        matchMakingTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                tryMatchmaking();
+            }
+        }, initialDelayMs, intervalMs);
     }
 
     /**
@@ -58,7 +72,7 @@ public final class MatchMakingQueue {
     /**
      * Called after a new connection has been added.
      */
-    public void tryMatchmaking() {
+    protected synchronized void tryMatchmaking() {
         if (this.queue.isEmpty()) {
             return;
         }
