@@ -6,6 +6,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.utils.Disposable;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerComponent;
@@ -18,6 +19,9 @@ import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerEntityFactory;
  */
 @Slf4j
 public final class GameEngine implements Runnable, Disposable {
+
+    private static final AtomicInteger ENGINE_CREATION_COUNTER = new AtomicInteger(0);
+    private final int id = ENGINE_CREATION_COUNTER.incrementAndGet();
 
     private final Engine ecsEngine;
     private final ArrayList<Disposable> disposables = new ArrayList<>(4);
@@ -34,6 +38,8 @@ public final class GameEngine implements Runnable, Disposable {
     public GameEngine(final Engine engine) {
         ecsEngine = engine;
         players = ecsEngine.getEntitiesFor(PlayerEntityFactory.FAMILY);
+
+        log.debug("Created engine {}.", id);
     }
 
     /** @param disposable will be disposed when this gameEngine is disposed*/
@@ -46,17 +52,22 @@ public final class GameEngine implements Runnable, Disposable {
      */
     @Override
     public void run() {
-        log.info("Starting game on engine {}", this);
+        log.info("Starting game on engine {}", id);
         long lastUpdate = System.currentTimeMillis();
+        long tickCount = 0;
         while (!gameOver) {
             final long now = System.currentTimeMillis();
             ecsEngine.update(now - lastUpdate);
             lastUpdate = now;
             gameOver = doGameOverCheck();
+
+            tickCount++;
+            if (tickCount % 2000 == 0) {
+                log.debug("GameEngine {} is currently running...", id);
+            }
         }
-        log.info("Game over on engine {}", this);
+        log.info("Game over on engine {}", id);
         // TODO: 4/30/2019 Add a callback or similiar to start new games.
-        log.info("Disposing game engine");
         dispose();
     }
 
@@ -77,6 +88,7 @@ public final class GameEngine implements Runnable, Disposable {
 
     @Override
     public void dispose() {
+        log.info("Disposing game engine {}", id);
         disposables.forEach(Disposable::dispose);
         disposables.clear();
     }
