@@ -1,4 +1,4 @@
-package no.ntnu.tdt4240.g17.server.physics.util;
+package no.ntnu.tdt4240.g17.server.physics.debug;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -9,29 +9,39 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Field;
 import java.util.function.Consumer;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Created by Kristian 'krissrex' Rekstad on 3/15/2019.
+ * For debugging. Opens a GUI with the world.
  *
  * @author Kristian 'krissrex' Rekstad
  */
 @Slf4j
-public class DesktopPhysicsVisualizer implements ApplicationListener {
+public final class DesktopPhysicsVisualizer implements ApplicationListener {
 
     private Box2DDebugRenderer box2DDebugRenderer;
 
     private World world = null;
     private OrthographicCamera camera = new OrthographicCamera();
-    private Consumer<Float> onUpdateCallback;
+    @Nullable
+    private Consumer<Float> updateCallback;
+    @Setter
+    private boolean shouldStop = false;
 
-
-    public Thread startGui(World world, Consumer<Float> onUpdateCallback) {
-        this.onUpdateCallback = onUpdateCallback;
-        this.world = world;
+    /**
+     * @param box2dWorld world to render
+     * @param onUpdateCallback called when gui is updated
+     * @return the main thread for the gui
+     */
+    public Thread startGui(final World box2dWorld, @Nullable final Consumer<Float> onUpdateCallback) {
+        this.updateCallback = onUpdateCallback;
+        this.world = box2dWorld;
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         final LwjglApplication lwjglApplication = new LwjglApplication(this, config);
         try {
@@ -59,16 +69,20 @@ public class DesktopPhysicsVisualizer implements ApplicationListener {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(0, 0,0, 1f);
+        Gdx.gl.glClearColor(0, 0, 0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (onUpdateCallback != null) {
-            onUpdateCallback.accept(Gdx.graphics.getDeltaTime());
+        if (updateCallback != null) {
+            updateCallback.accept(Gdx.graphics.getDeltaTime());
         }
 
         if (world != null) {
             camera.update();
             box2DDebugRenderer.render(world, camera.combined);
+        }
+
+        if (shouldStop) {
+            Gdx.app.exit();
         }
     }
 

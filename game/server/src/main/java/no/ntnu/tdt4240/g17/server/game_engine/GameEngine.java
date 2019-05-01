@@ -3,15 +3,18 @@ package no.ntnu.tdt4240.g17.server.game_engine;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerComponent;
 import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerEntityFactory;
+import no.ntnu.tdt4240.g17.server.physics.debug.DesktopPhysicsVisualizer;
 
 /**
  * This game engine simulates a single round of gameplay.
@@ -21,6 +24,8 @@ import no.ntnu.tdt4240.g17.server.game_engine.player.PlayerEntityFactory;
 @Slf4j
 public final class GameEngine implements Runnable, Disposable {
 
+    private static final boolean DEBUG_USE_GUI = "true".equals(System.getenv("debug.physics.gui.enabled"));
+
     private static final AtomicInteger ENGINE_CREATION_COUNTER = new AtomicInteger(0);
     @Getter
     private final int id = ENGINE_CREATION_COUNTER.incrementAndGet();
@@ -28,6 +33,9 @@ public final class GameEngine implements Runnable, Disposable {
     @Getter
     private final Engine ecsEngine;
     private final ArrayList<Disposable> disposables = new ArrayList<>(4);
+
+    @Setter
+    private World world;
 
     /** If the game is over or not. */
     private boolean gameOver = false;
@@ -55,29 +63,35 @@ public final class GameEngine implements Runnable, Disposable {
      */
     @Override
     public void run() {
-        float targetUpdateRateMs = 1000f * 1f / 30f;
+        DesktopPhysicsVisualizer desktopPhysicsVisualizer = null;
+        if (DEBUG_USE_GUI) {
+            log.info("Using GUI for physics on engine {}", id);
+            desktopPhysicsVisualizer = new DesktopPhysicsVisualizer();
+            desktopPhysicsVisualizer.startGui(world, null);
+        }
         log.info("Starting game on engine {}", id);
         long lastUpdate = System.currentTimeMillis();
         long tickCount = 0;
         while (!gameOver) {
             final long now = System.currentTimeMillis();
-            final long deltaTime = now - lastUpdate;
-            ecsEngine.update(deltaTime);
+            final float deltaTimeSeconds = (now - lastUpdate) / 1000f;
+            final long beforeUpdate = System.currentTimeMillis();
+            ecsEngine.update(deltaTimeSeconds);
+            final long updateTime = System.currentTimeMillis() - beforeUpdate;
+            log.trace("Engine update time: {}", updateTime);
+
             lastUpdate = now;
             gameOver = doGameOverCheck();
 
             tickCount++;
-            if (tickCount % 1000 == 0) {
-                log.debug("GameEngine {} is currently running (delta={})...", id, deltaTime);
-            }
-
-            if (deltaTime < targetUpdateRateMs) {
-                try {
-                    Thread.sleep((long) (0.8f * (targetUpdateRateMs - deltaTime)));
-                } catch (InterruptedException ignored) { }
+            if (tickCount % 100 == 0) {
+                log.debug("GameEngine {} is currently running (delta={})...", id, deltaTimeSeconds);
             }
         }
         log.info("Game over on engine {}", id);
+        if (desktopPhysicsVisualizer != null) {
+            desktopPhysicsVisualizer.setShouldStop(true);
+        }
         // TODO: 4/30/2019 Add a callback or similiar to start new games.
         dispose();
     }
