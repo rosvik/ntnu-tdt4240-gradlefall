@@ -101,8 +101,16 @@ public final class GameView implements Screen {
             shapeRenderer.circle(joystick.x, joystick.y, joystick.radius);
             final Rectangle jump = userInputButtons.getJump();
             shapeRenderer.box(jump.x, jump.y, 0, jump.width, jump.height, 0);
-            final Rectangle shoot = userInputButtons.getShoot();
-            shapeRenderer.box(shoot.x, shoot.y, 0, shoot.width, shoot.height, 0);
+            final boolean showShootButton = false;
+            final boolean showPlaceButton = false;
+            if (showShootButton) {
+                final Rectangle shoot = userInputButtons.getShoot();
+                shapeRenderer.box(shoot.x, shoot.y, 0, shoot.width, shoot.height, 0);
+            }
+            if (showPlaceButton) {
+                final Rectangle placeBlock = userInputButtons.getPlace();
+                shapeRenderer.box(placeBlock.x, placeBlock.y, 0, placeBlock.width, placeBlock.height, 0);
+            }
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND); // Disable transparent rendering
 
