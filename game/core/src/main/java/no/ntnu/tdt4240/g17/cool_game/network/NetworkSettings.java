@@ -33,7 +33,7 @@ public final class NetworkSettings {
      * @return the host addresss to use.
      */
     private static String getDefaultHostname() {
-        final String environmentIp = System.getenv("server.ip");
+        final String environmentIp = System.getenv("SERVER_IP");
         if (environmentIp != null && !environmentIp.trim().isEmpty()) {
             log.info("Using ip address {}", environmentIp);
             return environmentIp.trim();

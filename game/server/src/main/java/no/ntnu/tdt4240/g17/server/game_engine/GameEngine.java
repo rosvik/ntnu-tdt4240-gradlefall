@@ -24,7 +24,7 @@ import no.ntnu.tdt4240.g17.server.physics.debug.DesktopPhysicsVisualizer;
 @Slf4j
 public final class GameEngine implements Runnable, Disposable {
 
-    private static final boolean DEBUG_USE_GUI = "true".equals(System.getenv("debug.physics.gui.enabled"));
+    private static final boolean DEBUG_USE_GUI = "true".equals(System.getenv("DEBUG_PHYSICS_GUI_ENABLE"));
 
     private static final AtomicInteger ENGINE_CREATION_COUNTER = new AtomicInteger(0);
     @Getter
