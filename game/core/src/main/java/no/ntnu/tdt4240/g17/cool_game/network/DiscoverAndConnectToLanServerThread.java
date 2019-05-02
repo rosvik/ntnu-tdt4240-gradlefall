@@ -37,7 +37,7 @@ public final class DiscoverAndConnectToLanServerThread extends Thread {
                     final Client networkClientInstance = GameClient.getNetworkClientInstance();
                     GameClient.connectClientBlocking(networkClientInstance,
                             hostAddress, NetworkSettings.getPort());
-                    NetworkSettings.setServerIp(hostAddress);
+                    NetworkSettings.setServerAddress(hostAddress);
                     GameClient.setIsLocalNetwork(true);
                     log.info("Chose local server '{}' instead.", hostAddress);
                 }

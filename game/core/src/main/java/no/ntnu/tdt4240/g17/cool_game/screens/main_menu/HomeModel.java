@@ -52,7 +52,7 @@ public class HomeModel {
             public void run() {
                 try {
                     GameClient.connectClientBlocking(GameClient.getNetworkClientInstance(),
-                            NetworkSettings.getServerIp(), NetworkSettings.getPort());
+                            NetworkSettings.getServerAddress(), NetworkSettings.getPort());
                 } catch (IOException ignored) { }
             }
         };

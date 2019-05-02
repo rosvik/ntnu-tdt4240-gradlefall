@@ -28,11 +28,13 @@ public final class GameClient {
 
     @Nullable
     private static Client clientSingleton = null;
+    private static final Object[] SINGLETON_LOCK = new Object[]{};
+
     /** @return A client singleton. It may or may not be connected to the server.
      * @see #connectClientBlocking(Client, String, int) */
     public static Client getNetworkClientInstance() {
         if (clientSingleton == null) {
-            synchronized (GameClient.class) {
+            synchronized (SINGLETON_LOCK) {
                 if (clientSingleton == null) {
                     clientSingleton = new Client(8192 * 2, 2048 * 2);
                     MessageClassLister.getMessageClasses().forEach(clientSingleton.getKryo()::register);

@@ -26,7 +26,7 @@ public final class ConnectToServerThread extends Thread {
                     return;
                 }
                 GameClient.connectClientBlocking(networkClient,
-                        NetworkSettings.getServerIp(), NetworkSettings.getPort());
+                        NetworkSettings.getServerAddress(), NetworkSettings.getPort());
             }
         } catch (IOException e) {
         }

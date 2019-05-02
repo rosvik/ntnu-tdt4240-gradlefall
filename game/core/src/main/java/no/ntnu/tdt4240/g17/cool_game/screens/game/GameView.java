@@ -50,7 +50,7 @@ public final class GameView implements Screen {
     @Override
     public void show() {
         arena = new Arena("map2.tmx", 16f, 32, 20, batch);
-        final GameClient gameClient = new GameClient(NetworkSettings.getServerIp(),
+        final GameClient gameClient = new GameClient(NetworkSettings.getServerAddress(),
                 NetworkSettings.getPort(), ClientData.getInstance());
         model = new GameModel(ClientData.getInstance());
         hud = new HeadsUpDisplay(model.getDungeonTilset(), model.getProjectilesTileset());

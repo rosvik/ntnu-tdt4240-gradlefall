@@ -19,7 +19,7 @@ public class MainGame extends ApplicationAdapter {
     public final void create() {
         navigator = new Navigator();
 
-        new ConnectToServerThread().run();
+        new ConnectToServerThread().start();
         new DiscoverAndConnectToLanServerThread().start();
     }
 
