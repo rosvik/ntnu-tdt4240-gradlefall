@@ -84,10 +84,17 @@ public class GameCharacter {
      */
     public void draw(final SpriteBatch batch) {
         TextureRegion characterTextureRegion = this.animation.getFrame(animationStateTime);
+        final float width = this.animation.getWidth();
+        float x = this.state.getxPosition();
+        if (width < 0) {
+            // Compensate the flipping of sprites by adjusting left-side.
+            // This keeps (0, 0) as bottom left corner of sprite.
+            x -= width;
+        }
         batch.draw(characterTextureRegion,
-                this.state.getxPosition(),
+                x,
                 this.state.getyPosition(),
-                this.animation.getWidth(),
+                width,
                 this.animation.getHeight());
     }
 }
