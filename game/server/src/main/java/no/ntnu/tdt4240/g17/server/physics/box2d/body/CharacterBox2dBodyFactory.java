@@ -2,6 +2,7 @@ package no.ntnu.tdt4240.g17.server.physics.box2d.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -19,11 +20,11 @@ public class CharacterBox2dBodyFactory extends BaseBox2dBodyFactory {
 
     /** The height of created characters in meters. */
     @Getter @Setter
-    private float characterHeight = 1.8f;
+    private float characterHeight = 1f;
 
     /** The width of created characters in meters. */
     @Getter @Setter
-    private float characterWidth = 0.5f;
+    private float characterWidth = 1f;
 
     /**
      * Create a factory for character body generation.
@@ -58,10 +59,12 @@ public class CharacterBox2dBodyFactory extends BaseBox2dBodyFactory {
     @Override
     protected void setBodyDefSettings(final BodyDef bodyDef) {
         bodyDef.linearDamping = linearDamping;
+        bodyDef.allowSleep = false;
+        bodyDef.bullet = true;
     }
 
     /**
-     * Creates a box of 1.8m height.
+     * Creates a box with dimensions of {@link #getCharacterWidth()} and {@link #getCharacterHeight()}.
      *
      * @param body attach shapes to this
      */
@@ -69,7 +72,7 @@ public class CharacterBox2dBodyFactory extends BaseBox2dBodyFactory {
     protected void addShapes(final Body body) {
         final PolygonShape shape = new PolygonShape();
         // The bottom has a center point and lifted edges to avoid getting stuck between tiles.
-        final float edgeHeight = 0.1f;
+        final float edgeHeight = 0.15f;
         shape.set(new float[]{
                 0, edgeHeight,
                 characterWidth / 2f, 0,
@@ -77,10 +80,15 @@ public class CharacterBox2dBodyFactory extends BaseBox2dBodyFactory {
                 characterWidth, characterHeight,
                 0, characterHeight
         });
-        /* roughly 70kg weight.
-        Does not matter for kinematic objects, they have 0 mass */
-        final int characterDensity = 77;
-        body.createFixture(shape, characterDensity);
+        final int characterDensity = 100; // Determines mass, and how fast they fall.
+        final FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.filter.categoryBits = CollisionFiltering.CATEGORY_PLAYER;
+        fixtureDef.filter.maskBits = CollisionFiltering.MASK_PLAYER;
+        fixtureDef.density = characterDensity;
+        fixtureDef.friction = 0.8f;
+        body.createFixture(fixtureDef);
+
         shape.dispose();
     }
 

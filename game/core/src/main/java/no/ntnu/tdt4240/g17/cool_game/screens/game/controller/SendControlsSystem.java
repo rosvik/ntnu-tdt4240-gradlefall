@@ -39,7 +39,7 @@ public final class SendControlsSystem extends IntervalSystem {
     @Override
     protected void updateInterval() {
         final ControlsMessage controlsMessage = GUI.getInstance().update();
-        log.debug("Sending controls {}", controlsMessage);
+        log.trace("Sending controls {}", controlsMessage);
         controlsMessageNetworkSender.accept(controlsMessage);
     }
 }

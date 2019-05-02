@@ -23,21 +23,26 @@ import no.ntnu.tdt4240.g17.common.network.game_messages.data.UpdateMessagePlayer
  *
  * @author Johannes Tomren Røsvik (@rosvik)
  */
-@Getter @Slf4j
+@Slf4j
 public class ClientData {
 
     private static final ClientData INSTANCE = new ClientData();
 
+    @Getter
     private List<Projectile> projectiles;
+    @Getter
     private Arena arena;
-
+    @Getter
     private List<Player> intermediaryEndPlayers;
+    @Getter
     private List<UpdateMessagePlayer> updatePlayers;
-    private List<MatchmadeMessagePlayer> matchmadePlayers;
+    @Getter
     private List<GameOverMessagePlayer> gameOverPlayers;
-
+    @Getter
     private GameMode gameMode;
+    @Getter
     private List<String> winnerIds;
+    private List<MatchmadeMessagePlayer> matchmadePlayers;
 
     /** @return the singleton instance.*/
     public static ClientData getInstance() {
@@ -59,6 +64,7 @@ public class ClientData {
 
             arena = matchmadeMessage.arena;
             matchmadePlayers = matchmadeMessage.players;
+            this.notifyAll();
         }
 
         if (message instanceof UpdateMessage) {
@@ -105,6 +111,11 @@ public class ClientData {
         }
 
         return null;
+    }
+
+    /** @return the matchmade players. */
+    public synchronized List<MatchmadeMessagePlayer> getMatchmadePlayers() {
+        return matchmadePlayers;
     }
 
     /**

@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
@@ -80,7 +81,7 @@ public class GameEngineFactory {
 
         // FIXME: 4/1/2019 put this somewhere else
         final PlayerEntityFactory playerEntityFactory = new PlayerEntityFactory(
-                new CharacterBox2dBodyFactory(world, 2f));
+                new CharacterBox2dBodyFactory(world, 1f));
         final List<Vector2> startPositions = new PlayerStartPosition(ArenaUtil.getFilePathFor(arena))
                 .getStartPositions();
         for (int i = 0; i < players.size(); i++) {
@@ -122,6 +123,38 @@ public class GameEngineFactory {
             body.setTransform(tile.x, tile.y, 0f);
             entity.add(new Box2dBodyComponent(body));
             engine.addEntity(entity);
+        }
+
+        if (arena == Arena.ARENA_2) {
+            // Plug holes outside the arena, so warping players dont go outside.
+            final List<Vector2> arenaWarpCovers = Arrays.asList(
+                    // top side
+                    new Vector2(7, 20),
+                    new Vector2(11, 20),
+                    new Vector2(20, 20),
+                    new Vector2(24, 20),
+                    new Vector2(24, 20),
+                    // bottom
+                    new Vector2(7, -1),
+                    new Vector2(11, -1),
+                    new Vector2(20, -1),
+                    new Vector2(24, -1),
+                    new Vector2(24, -1),
+                    // left side
+                    new Vector2(-1, 5),
+                    new Vector2(-1, 8),
+                    // right side
+                    new Vector2(32, 5),
+                    new Vector2(32, 8)
+            );
+
+            for (final Vector2 arenaWarpCover : arenaWarpCovers) {
+                final Entity entity = new Entity();
+                final Body body = arenaFactory.create(entity);
+                body.setTransform(arenaWarpCover.x, arenaWarpCover.y, 0);
+                entity.add(new Box2dBodyComponent(body));
+                engine.addEntity(entity);
+            }
         }
     }
 }

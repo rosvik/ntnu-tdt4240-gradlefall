@@ -2,6 +2,7 @@ package no.ntnu.tdt4240.g17.server.physics.box2d.body;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -63,7 +64,13 @@ public class ArenaTileBox2dBodyFactory extends BaseBox2dBodyFactory {
                 boxWidthMeters, boxHeightMeters,
                 0, boxHeightMeters
         });
-        body.createFixture(shape, 1f);
+        final FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.friction = 0;
+        fixtureDef.filter.categoryBits = CollisionFiltering.CATEGORY_ARENA;
+        fixtureDef.filter.maskBits = CollisionFiltering.MASK_ARENA;
+        fixtureDef.density = 1f;
+        body.createFixture(fixtureDef);
         shape.dispose();
     }
 

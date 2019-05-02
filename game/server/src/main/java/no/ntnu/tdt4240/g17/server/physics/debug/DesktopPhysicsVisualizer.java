@@ -45,6 +45,8 @@ public final class DesktopPhysicsVisualizer implements ApplicationListener {
         this.updateCallback = onUpdateCallback;
         this.world = box2dWorld;
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.width = 800;
+        config.height = 600;
         config.forceExit = false;
         final LwjglApplication lwjglApplication = new LwjglApplication(this, config);
         try {

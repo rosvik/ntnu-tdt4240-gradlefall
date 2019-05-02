@@ -34,7 +34,7 @@ public final class GameClient {
         if (clientSingleton == null) {
             synchronized (GameClient.class) {
                 if (clientSingleton == null) {
-                    clientSingleton = new Client();
+                    clientSingleton = new Client(8192 * 2, 2048 * 2);
                     MessageClassLister.getMessageClasses().forEach(clientSingleton.getKryo()::register);
                 }
             }

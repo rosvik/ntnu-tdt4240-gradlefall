@@ -108,7 +108,8 @@ public class ProjectileBox2dBodyFactory extends BaseBox2dBodyFactory {
         fixtureDef.restitution = 0.05f;
         fixtureDef.friction = 0.9f;
         fixtureDef.density = 1;
-
+        fixtureDef.filter.categoryBits = CollisionFiltering.CATEGORY_PROJECTILE;
+        fixtureDef.filter.maskBits = CollisionFiltering.MASK_PROJECTILE;
         fixtureDef.shape = polygonShape;
 
         body.createFixture(fixtureDef);

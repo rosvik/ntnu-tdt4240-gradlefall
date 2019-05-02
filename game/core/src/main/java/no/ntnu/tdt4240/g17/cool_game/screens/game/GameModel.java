@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import no.ntnu.tdt4240.g17.common.network.game_messages.data.Position;
 import no.ntnu.tdt4240.g17.cool_game.character.GameCharacter;
 import no.ntnu.tdt4240.g17.cool_game.game_arena.Arena;
 import no.ntnu.tdt4240.g17.cool_game.network.ClientData;
@@ -27,6 +26,7 @@ import no.ntnu.tdt4240.g17.cool_game.screens.game.player.PlayerSystem;
 @Slf4j
 public final class GameModel {
 
+    private static final int MAX_PLAYERS = 4;
     /**
      * Arena.
      */
@@ -94,7 +94,7 @@ public final class GameModel {
         characters.add("necromancer");
 
         engine.addSystem(new PlayerSystem(ClientData.getInstance()));
-        final float updateControlsInterval = 0.1f;
+        final float updateControlsInterval = 0.05f;
         final SendControlsSystem system = new SendControlsSystem(updateControlsInterval,
                 GameClient.getNetworkClientInstance()::sendTCP);
         engine.addSystem(system);
@@ -125,13 +125,18 @@ public final class GameModel {
             background = assetManager.get(backgroundImgPath);
             loading = assetManager.get(loadingImgPath);
 
+            while (clientData.getMatchmadePlayers() == null) {
+                try {
+                    log.warn("Client data is null! Waiting...");
+                    clientData.wait();
+                } catch (InterruptedException ignored) { }
+            }
+            log.info("Client data is not null");
+
             for (int i = 0; i < clientData.getMatchmadePlayers().size(); i++) {
 //            for (int i = 0; i < 1; i++) {
                 players.add(new Entity());
                 engine.addEntity(players.get(i));
-                Position pos = new Position();
-                pos.x = 10;
-                pos.y = 10;
                 // Add player component
                 players.get(i).add(
                         new PlayerComponent(
@@ -139,7 +144,7 @@ public final class GameModel {
                                 clientData.getMatchmadePlayers().get(i).playerId,
 //                                pos,
                                 clientData.getMatchmadePlayers().get(i).position,
-                                characters.get(i % 4),
+                                characters.get(i % MAX_PLAYERS),
                                 dungeonTilset));
             }
             log.debug("Asset loading complete!");

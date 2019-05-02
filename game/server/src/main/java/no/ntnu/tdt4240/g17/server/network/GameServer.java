@@ -44,7 +44,7 @@ public class GameServer implements Runnable, Disposable {
         this.handlerDelegator = handlerDelegator;
         this.udpPort = udpPort;
 
-        server = new Server() {
+        server = new Server(16384 * 2, 2048 * 2) {
             @Override
             protected Connection newConnection() {
                 return new PlayerConnection();
