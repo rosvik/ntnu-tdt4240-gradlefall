@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.com/rosvik/ntnu-tdt4240-progark-project.svg?token=g6wDiqtebzTTKGgy2fiG&branch=master)](https://travis-ci.com/rosvik/ntnu-tdt4240-progark-project)
 
-# ntnu-tdt4240-progark-project
+# Gradlefall
+
+Gradlefall is an Android game built to for the software architecture course (TDT4240) at NTNU. 
 
 ## Contributing
 
