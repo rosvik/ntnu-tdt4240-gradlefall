@@ -4,10 +4,9 @@
 
 Gradlefall is an Android game built to for the software architecture course, TDT4240, at NTNU. 
 
-![screenshot](docs/screenshot.png)
+![Screenshot](docs/screenshot.jpg)
 
-The game is a 2-4 player, networked, versus game. Inspiration is taken from the game [Towerfall](http://www.towerfall-game.com). Each player starts in a corner of a small arena. The players all have a visually different appearance. They have a finite amount of projectiles, and the goal is to shoot the other players.
-
+The game is a multiplayer, networked, competitive game. Inspiration is taken from the game [Towerfall](http://www.towerfall-game.com). Each player starts in a corner of a small arena. The players all have a visually different appearance. They have a finite amount of projectiles, and the goal is to shoot the other players.
 
 ## Running
 
